@@ -2,13 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { auth } from 'firebase';
-
-enum AuthProviders {
-  Google = 'Google',
-  Facebook = 'Facebook',
-  GitHub = 'GitHub',
-  Twitter = 'Twitter'
-}
+import {AuthProviders} from '../models/auth-providers.enum';
 
 @Component({
   selector: 'app-login',
