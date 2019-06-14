@@ -6,7 +6,8 @@ import { auth } from 'firebase';
 enum AuthProviders {
   Google = 'Google',
   Facebook = 'Facebook',
-  GitHub = 'GitHub'
+  GitHub = 'GitHub',
+  Twitter = 'Twitter'
 }
 
 @Component({
@@ -38,6 +39,15 @@ export class LoginComponent implements OnInit {
       case AuthProviders.Google:
         console.log(provider);
         this.angularFireAuth.auth.signInWithPopup(new auth.GoogleAuthProvider());
+        break;
+      case AuthProviders.Facebook:
+        this.angularFireAuth.auth.signInWithPopup(new auth.FacebookAuthProvider());
+        break;
+      case AuthProviders.Twitter:
+        this.angularFireAuth.auth.signInWithPopup(new auth.TwitterAuthProvider());
+        break;
+      case AuthProviders.GitHub:
+        this.angularFireAuth.auth.signInWithPopup(new auth.GithubAuthProvider());
         break;
       /*case 'Email':
         // this.angularFireAuth.auth.signInWithEmailAndPassword(this.email, this.password);
