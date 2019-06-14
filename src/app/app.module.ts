@@ -6,13 +6,20 @@ import { FormsModule } from '@angular/forms';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { FirebaseUIModule } from 'firebaseui-angular';
-import { firebaseUiAuthConfig } from './firebase-ui-auth-config';
 import { AppRoutingModule } from './app-routing.module';
 import { firebaseConfig } from './firebase-config';
+import { SongsModule } from './songs/songs.module';
+import { NavbarComponent } from './common/navbar/navbar.component';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { EnumToArrayPipe } from './tools/enum-to-array-pipe';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    NavbarComponent,
+    EnumToArrayPipe,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -20,8 +27,10 @@ import { firebaseConfig } from './firebase-config';
     AppRoutingModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireAuthModule,
-    FirebaseUIModule.forRoot(firebaseUiAuthConfig),
-    AppRoutingModule
+    AngularFirestoreModule,
+    FirebaseUIModule,
+    AppRoutingModule,
+    SongsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

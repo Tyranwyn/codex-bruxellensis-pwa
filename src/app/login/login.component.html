@@ -1,0 +1,15 @@
+<div class="buttons" *ngIf="loginByEmail == false; else emailLogin">
+  <a class="button" *ngFor="let provider of authProviders | enumToArray" (click)="login(provider)">{{provider}}</a>
+  <a class="button" (click)="loginByEmail = true">Email</a>
+</div>
+<ng-template #emailLogin>
+  <div class="control">
+    <input class="input" [(ngModel)]="email" type="text" placeholder="username/email">
+  </div>
+  <div class="control">
+    <input class="input" [(ngModel)]="password" type="password" placeholder="password">
+  </div>
+  <a class="button is-primary" (click)="login('Email')">Login</a>
+  <a class="button" (click)="loginByEmail = false">Back</a>
+</ng-template>
+
