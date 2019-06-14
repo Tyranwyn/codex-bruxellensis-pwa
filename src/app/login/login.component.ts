@@ -49,10 +49,9 @@ export class LoginComponent implements OnInit {
       case AuthProviders.GitHub:
         this.angularFireAuth.auth.signInWithPopup(new auth.GithubAuthProvider());
         break;
-      /*case 'Email':
-        // this.angularFireAuth.auth.signInWithEmailAndPassword(this.email, this.password);
-        this.angularFireAuth.auth.sendSignInLinkToEmail(this.email, {})
-        break;*/
+      case 'Email':
+        this.angularFireAuth.auth.createUserWithEmailAndPassword(this.email, this.password);
+        break;
       default:
         console.log(`The provider: ${provider}, is not configured yet.`);
     }
