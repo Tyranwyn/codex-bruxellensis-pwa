@@ -8,6 +8,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { FirebaseUIModule } from 'firebaseui-angular';
 import { firebaseUiAuthConfig } from './firebase-ui-auth-config';
 import { AppRoutingModule } from './app-routing.module';
+import { firebaseConfig } from './firebase-config';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,7 @@ import { AppRoutingModule } from './app-routing.module';
     BrowserModule,
     FormsModule,
     AppRoutingModule,
-    AngularFireModule.initializeApp({}),
+    AngularFireModule.initializeApp(firebaseConfig),
     AngularFireAuthModule,
     FirebaseUIModule.forRoot(firebaseUiAuthConfig),
     AppRoutingModule
