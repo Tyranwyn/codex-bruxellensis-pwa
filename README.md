@@ -2,6 +2,13 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.0.2.
 
+## Project Setup
+
+First install the project with `npm install`, do a `git flow init` with all standard values and create a `src/app/firebase-config.ts` file with all the right parameters (ask me for credentials).
+
+When creating a feature use git flow: `git flow feature start featurename`.
+Push this to a new according branch and when it's ready create a merge request.
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
