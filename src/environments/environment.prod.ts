@@ -1,3 +1,7 @@
 export const environment = {
-  production: true
+  production: true,
+  databases: {
+    songs: 'songs',
+    userData: 'user-data'
+  }
 };
