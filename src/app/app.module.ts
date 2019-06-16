@@ -15,6 +15,7 @@ import { LoginComponent } from './login/login.component';
 import { SongsComponent } from './songs/songs.component';
 import { SongListComponent } from './songs/song-list/song-list.component';
 import { SongDetailComponent } from './songs/song-detail/song-detail.component';
+import { AngularFontAwesomeModule } from 'angular-font-awesome';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { SongDetailComponent } from './songs/song-detail/song-detail.component';
     AngularFireAuthModule,
     AngularFirestoreModule,
     FirebaseUIModule,
-    AppRoutingModule
+    AppRoutingModule,
+    AngularFontAwesomeModule
   ],
   providers: [],
   bootstrap: [AppComponent]

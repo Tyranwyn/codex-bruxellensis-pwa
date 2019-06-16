@@ -3,11 +3,21 @@
   <a class="button" (click)="loginByEmail = true">Email</a>
 </div>
 <ng-template #emailLogin>
-  <div class="control">
-    <input class="input" [(ngModel)]="email" type="text" placeholder="username/email">
+  <div class="field">
+    <div class="control has-icons-left">
+      <input class="input" [(ngModel)]="email" type="email" placeholder="Email">
+      <span class="icon is-small is-left">
+        <fa name="envelope"></fa>
+      </span>
+    </div>
   </div>
-  <div class="control">
-    <input class="input" [(ngModel)]="password" type="password" placeholder="password">
+  <div class="field">
+    <div class="control has-icons-left">
+      <input class="input" [(ngModel)]="password" type="password" placeholder="Password">
+      <span class="icon is-small is-left">
+        <fa name="lock"></fa>
+      </span>
+    </div>
   </div>
   <a class="button is-primary" (click)="login('EmailLogin')">Login</a>
   <a class="button is-info" (click)="login('EmailSignup')">Signup</a>
