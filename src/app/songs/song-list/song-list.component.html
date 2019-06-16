@@ -1,6 +1,6 @@
 <table class="table is-hoverable is-fullwidth" *ngIf="$songs | async as songs;">
   <tbody>
-    <tr *ngFor="let song of songs">
+    <tr *ngFor="let song of songs" [routerLink]="['/song', song.id]" style="cursor: pointer; border: 0;">
       <td>{{song.title}}</td>
       <td>{{song.page}}</td>
     </tr>

@@ -8,18 +8,23 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { FirebaseUIModule } from 'firebaseui-angular';
 import { AppRoutingModule } from './app-routing.module';
 import { firebaseConfig } from './firebase-config';
-import { SongsModule } from './songs/songs.module';
 import { NavbarComponent } from './common/navbar/navbar.component';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { EnumToArrayPipe } from './tools/enum-to-array-pipe';
 import { LoginComponent } from './login/login.component';
+import { SongsComponent } from './songs/songs.component';
+import { SongListComponent } from './songs/song-list/song-list.component';
+import { SongDetailComponent } from './songs/song-detail/song-detail.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
     EnumToArrayPipe,
-    LoginComponent
+    LoginComponent,
+    SongsComponent,
+    SongListComponent,
+    SongDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -29,8 +34,7 @@ import { LoginComponent } from './login/login.component';
     AngularFireAuthModule,
     AngularFirestoreModule,
     FirebaseUIModule,
-    AppRoutingModule,
-    SongsModule
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

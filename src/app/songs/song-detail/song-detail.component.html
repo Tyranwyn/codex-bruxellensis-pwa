@@ -1,3 +1,25 @@
-<p>
-  song-detail works!
-</p>
+<section class="hero" *ngIf="$song | async as song">
+  <div class="hero-body">
+    <p>{{song.page}}</p>
+    <div class="columns">
+      <div class="column" *ngIf="song.associationName">
+        <h1 class="title">{{song.associationName}}</h1>
+        <div class="preformatted">{{song.associationInfo}}</div>
+      </div>
+      <div class="column" *ngIf="song.battleCryName">
+        <div>
+          <h1 class="title">{{song.battleCryName}}</h1>
+          <h2 class="subtitle">{{song.battleCryInfo}}</h2>
+          <div class="preformatted">{{song.battleCry}}</div>
+        </div>
+      </div>
+      <div class="column" *ngIf="song.title">
+        <div>
+          <h1 class="title">{{song.title}}</h1>
+          <h2 class="subtitle" style="white-space: pre;">{{song.bgInfo}}</h2>
+          <div class="preformatted">{{song.lyrics}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
