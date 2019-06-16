@@ -9,7 +9,7 @@ import {environment} from '../../environments/environment';
 })
 export class SongService {
 
-  songCollection: AngularFirestoreCollection<Song>;
+  private songCollection: AngularFirestoreCollection<Song>;
 
   constructor(afs: AngularFirestore) {
     this.songCollection = afs.collection<Song>(environment.databases.songs);
@@ -26,7 +26,6 @@ export class SongService {
   }
 
   addSong(song: Song): Promise<DocumentReference> {
-    console.log(song.title + 'being copied');
     return this.songCollection.add(song);
   }
 
