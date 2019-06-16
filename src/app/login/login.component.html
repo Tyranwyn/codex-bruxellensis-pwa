@@ -9,7 +9,11 @@
   <div class="control">
     <input class="input" [(ngModel)]="password" type="password" placeholder="password">
   </div>
-  <a class="button is-primary" (click)="login('Email')">Login</a>
+  <a class="button is-primary" (click)="login('EmailLogin')">Login</a>
+  <a class="button is-info" (click)="login('EmailSignup')">Signup</a>
   <a class="button" (click)="loginByEmail = false">Back</a>
 </ng-template>
-
+<div class="notification is-danger" *ngIf="error">
+  <button class="delete" (click)="error = null"></button>
+  {{error.message}}
+</div>

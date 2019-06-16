@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 import {AuthProviders} from '../models/auth-providers.enum';
 import {AuthenticationService} from '../services/authentication.service';
+import UserCredential = firebase.auth.UserCredential;
 
 @Component({
   selector: 'app-login',
@@ -15,6 +16,7 @@ export class LoginComponent implements OnInit {
   loginByEmail = false;
   email;
   password;
+  error;
 
   constructor(private router: Router,
               private angularFireAuth: AngularFireAuth,
@@ -30,12 +32,14 @@ export class LoginComponent implements OnInit {
   }
 
   login(provider: string) {
-    if (provider === 'Email') {
-      this.authService.login(provider, this.email, this.password)
-        .catch(reason => console.log(reason));
-    } else {
-      this.authService.login(provider)
-        .catch(reason => console.log(reason));
+    try {
+      if (provider.startsWith('Email')) {
+        this.authService.login(provider, this.email, this.password);
+      } else {
+        this.authService.login(provider);
+      }
+    } catch (e) {
+      this.error = e;
     }
   }
 }

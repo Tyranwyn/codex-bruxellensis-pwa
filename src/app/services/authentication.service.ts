@@ -21,7 +21,9 @@ export class AuthenticationService {
         return this.angularFireAuth.auth.signInWithPopup(new auth.TwitterAuthProvider());
       case AuthProviders.GitHub:
         return this.angularFireAuth.auth.signInWithPopup(new auth.GithubAuthProvider());
-      case 'Email':
+      case 'EmailLogin':
+        return this.angularFireAuth.auth.signInWithEmailAndPassword(email, password);
+      case 'EmailSignup':
         return this.angularFireAuth.auth.createUserWithEmailAndPassword(email, password);
       default:
         console.log(`The provider: ${provider}, is not configured yet.`);
