@@ -1,3 +1,9 @@
+<div class="control has-icons-left">
+  <input class="input" [(ngModel)]="filter" (ngModelChange)="search()" type="email" placeholder="Search">
+  <span class="icon is-small is-left">
+        <fa name="search"></fa>
+      </span>
+</div>
 <table class="table is-hoverable is-fullwidth" *ngIf="$songs | async as songs;">
   <tbody>
     <tr *ngFor="let song of songs" [routerLink]="['/song', song.id]" style="cursor: pointer; border: 0;">

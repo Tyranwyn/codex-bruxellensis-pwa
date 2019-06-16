@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Song } from '../../models/song';
 import { SongService } from '../../services/song-service';
-import { map } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 
 const comparePageNumbers = (a: Song, b: Song) => {
   if (a.page < b.page) {
@@ -22,6 +22,12 @@ const comparePageNumbers = (a: Song, b: Song) => {
 export class SongListComponent implements OnInit {
 
   $songs: Observable<Song[]>;
+  filter: string;
+
+  filterSongs = (song: Song) => {
+    const filterString = '' + song.page + song.title + song.battleCryName + song.associationName;
+    return filterString.toLowerCase().indexOf(this.filter.toLowerCase()) !== -1;
+  }
 
   constructor(private songService: SongService) {
     this.$songs = songService.getAllSongs()
@@ -31,5 +37,11 @@ export class SongListComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  search() {
+    this.$songs = this.$songs.pipe(
+      map(songs => songs.filter(song => this.filterSongs(song)))
+    );
   }
 }
