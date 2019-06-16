@@ -13,4 +13,8 @@ import 'zone.js/dist/zone-error';
 
 export const environment = {
   production: false,
+  databases: {
+    songs: 'songs-test',
+    userData: 'user-data-test'
+  }
 };

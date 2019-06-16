@@ -1,3 +1,8 @@
-<p>
-  song-list works!
-</p>
+<table class="table is-hoverable is-fullwidth" *ngIf="$songs | async as songs;">
+  <tbody>
+    <tr *ngFor="let song of songs">
+      <td>{{song.title}}</td>
+      <td>{{song.page}}</td>
+    </tr>
+  </tbody>
+</table>
