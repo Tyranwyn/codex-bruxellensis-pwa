@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { Category } from '../../models/category.enum';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -8,7 +10,11 @@ import { AngularFireAuth } from '@angular/fire/auth';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(private angularFireAuth: AngularFireAuth) { }
+  categories = Category;
+
+  constructor(private angularFireAuth: AngularFireAuth,
+              private router: Router) {
+  }
 
   ngOnInit() {
   }
@@ -17,4 +23,7 @@ export class NavbarComponent implements OnInit {
     this.angularFireAuth.auth.signOut();
   }
 
+  categoryFilter(category: string) {
+    this.router.navigate([''], {queryParams: {category}});
+  }
 }

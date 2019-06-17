@@ -5,16 +5,7 @@ import { SongService } from '../../services/song-service';
 import { map } from 'rxjs/operators';
 import { Title } from '@angular/platform-browser';
 import { environment } from '../../../environments/environment';
-
-const comparePageNumbers = (a: Song, b: Song) => {
-  if (a.page < b.page) {
-    return -1;
-  }
-  if (a.page > b.page) {
-    return 1;
-  }
-  return 0;
-};
+import { ActivatedRoute, ParamMap } from '@angular/router';
 
 @Component({
   selector: 'app-song-list',
@@ -32,12 +23,10 @@ export class SongListComponent implements OnInit {
   }
 
   constructor(private songService: SongService,
-              private titleService: Title) {
+              private titleService: Title,
+              private route: ActivatedRoute) {
     titleService.setTitle(environment.title);
-    this.$songs = songService.getAllSongs()
-      .pipe(
-        map(s => s.sort(comparePageNumbers))
-      );
+    this.route.queryParamMap.subscribe(paramMap => this.songsInit(paramMap));
   }
 
   ngOnInit() {
@@ -47,5 +36,14 @@ export class SongListComponent implements OnInit {
     this.$songs = this.$songs.pipe(
       map(songs => songs.filter(song => this.filterSongs(song)))
     );
+  }
+
+  songsInit(paramMap: ParamMap) {
+    const category = paramMap.get('category');
+    if (category) {
+      this.$songs = this.songService.getSongsByCategory(category);
+    } else {
+      this.$songs = this.songService.getAllSongs();
+    }
   }
 }
