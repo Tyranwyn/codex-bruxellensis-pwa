@@ -24,17 +24,22 @@ export class SongListComponent implements OnInit {
   filterSongs = (song: Song) => {
     const filterString = '' + song.page + song.title + song.battleCryName + song.associationName;
     return filterString.toLowerCase().indexOf(this.filter.toLowerCase()) !== -1;
-  }
+  };
 
   constructor(private songService: SongService,
               private titleService: Title,
               private route: ActivatedRoute,
               private userDataService: UserDataService,
               private auth: AngularFireAuth) {
-    userDataService.getUserData()
-      .subscribe(userData => this.userData = userData);
     titleService.setTitle(environment.title);
-    route.queryParamMap.subscribe(paramMap => this.songsInit(paramMap));
+    auth.user
+      .subscribe(user => {
+          if (user) {
+            this.userDataService.getUserData(user.uid).subscribe(userData => this.userData = userData);
+          }
+        }
+      );
+    this.route.queryParamMap.subscribe(paramMap => this.songsInit(paramMap));
   }
 
   ngOnInit() {
@@ -57,7 +62,8 @@ export class SongListComponent implements OnInit {
 
   isSongFavorite(id: string): boolean {
     if (this.userData.favorites) {
-      // this.userData.favorites.indexOf()
+      this.userData.favorites.find(ref => ref.id === id);
+      return true;
     }
     return false;
   }

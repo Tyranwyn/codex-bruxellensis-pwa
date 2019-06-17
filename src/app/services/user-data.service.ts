@@ -12,7 +12,7 @@ import { User } from 'firebase';
 })
 export class UserDataService {
 
-  private static currentUid: string;
+  // private static currentUid: string;
   // private userData: Subject<UserData>;
   private userDataCollection: AngularFirestoreCollection<UserData>;
 
@@ -26,28 +26,30 @@ export class UserDataService {
       const userDataDoc = this.userDataCollection.doc<UserData>(user.uid);
       userDataDoc.get()
         .subscribe(userData => {
-            if (!userData && !userData.data()) {
-              const initUserData: UserData = {accountType: AccountType.USER};
-              userDataDoc.set(initUserData);
+            if (!userData.data()) {
+              const initUserData: UserData = {accountType: AccountType.USER, favorites: []};
+              userDataDoc.set(initUserData).catch(e => console.log(e));
             }
           }
         );
       // this.userData = userDataDoc.valueChanges();
-      UserDataService.currentUid = user.uid;
+      // UserDataService.currentUid = user.uid;
     } else {
-      UserDataService.currentUid = null;
+      // UserDataService.currentUid = null;
     }
   }
 
-  getUserData(): Observable<UserData> {
-    if (UserDataService.currentUid) {
-      return this.userDataCollection.doc<UserData>(UserDataService.currentUid)
+  getUserData(id: string): Observable<UserData> {
+    if (id) {
+      return this.userDataCollection.doc<UserData>(id)
         .valueChanges();
     }
     return EMPTY;
   }
 
   updateUserData(userData: UserData) {
-    this.userDataCollection.doc<UserData>(UserDataService.currentUid).update(userData);
+    this.angularFireAuth.user.subscribe( user =>
+      this.userDataCollection.doc<UserData>(user.uid).update(userData)
+    );
   }
 }
