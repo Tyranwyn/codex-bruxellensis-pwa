@@ -8,6 +8,7 @@ import { environment } from '../../../environments/environment';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { UserDataService } from '../../services/user-data.service';
 import { UserData } from '../../models/user-data';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-song-list',
@@ -28,7 +29,8 @@ export class SongListComponent implements OnInit {
   constructor(private songService: SongService,
               private titleService: Title,
               private route: ActivatedRoute,
-              private userDataService: UserDataService) {
+              private userDataService: UserDataService,
+              private auth: AngularFireAuth) {
     userDataService.getUserData()
       .subscribe(userData => this.userData = userData);
     titleService.setTitle(environment.title);
