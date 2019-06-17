@@ -54,4 +54,11 @@ export class SongListComponent implements OnInit {
       this.$songs = this.songService.getAllSongs();
     }
   }
+
+  isSongFavorite(id: string): boolean {
+    if (this.userData.favorites) {
+      // this.userData.favorites.indexOf()
+    }
+    return false;
+  }
 }
