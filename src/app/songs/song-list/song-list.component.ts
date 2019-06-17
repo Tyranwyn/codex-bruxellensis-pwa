@@ -6,6 +6,8 @@ import { map } from 'rxjs/operators';
 import { Title } from '@angular/platform-browser';
 import { environment } from '../../../environments/environment';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+import { UserDataService } from '../../services/user-data.service';
+import { UserData } from '../../models/user-data';
 
 @Component({
   selector: 'app-song-list',
@@ -16,6 +18,7 @@ export class SongListComponent implements OnInit {
 
   $songs: Observable<Song[]>;
   filter: string;
+  userData: UserData;
 
   filterSongs = (song: Song) => {
     const filterString = '' + song.page + song.title + song.battleCryName + song.associationName;
@@ -24,9 +27,12 @@ export class SongListComponent implements OnInit {
 
   constructor(private songService: SongService,
               private titleService: Title,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private userDataService: UserDataService) {
+    userDataService.getUserData()
+      .subscribe(userData => this.userData = userData);
     titleService.setTitle(environment.title);
-    this.route.queryParamMap.subscribe(paramMap => this.songsInit(paramMap));
+    route.queryParamMap.subscribe(paramMap => this.songsInit(paramMap));
   }
 
   ngOnInit() {

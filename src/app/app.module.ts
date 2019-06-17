@@ -15,7 +15,11 @@ import { LoginComponent } from './login/login.component';
 import { SongsComponent } from './songs/songs.component';
 import { SongListComponent } from './songs/song-list/song-list.component';
 import { SongDetailComponent } from './songs/song-detail/song-detail.component';
-import { AngularFontAwesomeModule } from 'angular-font-awesome';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faStar, faEnvelope } from '@fortawesome/free-regular-svg-icons';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faLock, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
 
 @NgModule({
   declarations: [
@@ -36,10 +40,17 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
     AngularFirestoreModule,
     FirebaseUIModule,
     AppRoutingModule,
-    AngularFontAwesomeModule
+    FontAwesomeModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {
+  constructor() {
+    library.add(faStar);
+    library.add(solidStar)
+    library.add(faEnvelope);
+    library.add(faSearch);
+    library.add(faLock);
+  }
 }

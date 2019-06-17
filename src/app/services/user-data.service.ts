@@ -1,18 +1,19 @@
-import {Injectable} from '@angular/core';
-import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
-import {UserData} from '../models/user-data';
-import {environment} from '../../environments/environment';
-import {AngularFireAuth} from '@angular/fire/auth';
-import {AccountType} from '../models/account-type.enum';
-import {Observable, Subject} from 'rxjs';
-import {User} from 'firebase';
+import { Injectable } from '@angular/core';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { UserData } from '../models/user-data';
+import { environment } from '../../environments/environment';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { AccountType } from '../models/account-type.enum';
+import { EMPTY, Observable } from 'rxjs';
+import { User } from 'firebase';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserDataService {
 
-  private userData: Subject<UserData> = new Subject();
+  private static currentUid: string;
+  // private userData: Subject<UserData>;
   private userDataCollection: AngularFirestoreCollection<UserData>;
 
   constructor(private angularFireAuth: AngularFireAuth,
@@ -25,21 +26,28 @@ export class UserDataService {
       const userDataDoc = this.userDataCollection.doc<UserData>(user.uid);
       userDataDoc.get()
         .subscribe(userData => {
-            if (userData && userData.data()) {
-              this.userData.next(userData.data() as UserData);
-            } else {
+            if (!userData && !userData.data()) {
               const initUserData: UserData = {accountType: AccountType.USER};
-              userDataDoc.set(initUserData)
-                .then(() => this.userData.next(initUserData));
+              userDataDoc.set(initUserData);
             }
           }
         );
+      // this.userData = userDataDoc.valueChanges();
+      UserDataService.currentUid = user.uid;
     } else {
-      this.userData.next();
+      UserDataService.currentUid = null;
     }
   }
 
   getUserData(): Observable<UserData> {
-    return this.userData.asObservable();
+    if (UserDataService.currentUid) {
+      return this.userDataCollection.doc<UserData>(UserDataService.currentUid)
+        .valueChanges();
+    }
+    return EMPTY;
+  }
+
+  updateUserData(userData: UserData) {
+    this.userDataCollection.doc<UserData>(UserDataService.currentUid).update(userData);
   }
 }
