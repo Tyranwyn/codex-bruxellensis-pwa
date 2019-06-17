@@ -1,8 +1,9 @@
 <div class="control has-icons-left">
-  <input class="input" [(ngModel)]="filter" (ngModelChange)="search()" type="email" placeholder="Search">
+  <input class="input is-rounded" [(ngModel)]="filter"
+         (ngModelChange)="search()" type="email" placeholder="Search">
   <span class="icon is-small is-left">
-        <fa name="search"></fa>
-      </span>
+    <fa name="search"></fa>
+  </span>
 </div>
 <table class="table is-hoverable is-fullwidth" *ngIf="$songs | async as songs;">
   <tbody>

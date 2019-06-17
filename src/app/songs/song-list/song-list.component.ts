@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Song } from '../../models/song';
 import { SongService } from '../../services/song-service';
-import { filter, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
+import { Title } from '@angular/platform-browser';
+import { environment } from '../../../environments/environment';
 
 const comparePageNumbers = (a: Song, b: Song) => {
   if (a.page < b.page) {
@@ -29,7 +31,9 @@ export class SongListComponent implements OnInit {
     return filterString.toLowerCase().indexOf(this.filter.toLowerCase()) !== -1;
   }
 
-  constructor(private songService: SongService) {
+  constructor(private songService: SongService,
+              private titleService: Title) {
+    titleService.setTitle(environment.title);
     this.$songs = songService.getAllSongs()
       .pipe(
         map(s => s.sort(comparePageNumbers))

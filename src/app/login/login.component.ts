@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
-import {AuthProviders} from '../models/auth-providers.enum';
-import {AuthenticationService} from '../services/authentication.service';
-import UserCredential = firebase.auth.UserCredential;
-import {UserDataService} from '../services/user-data.service';
+import { AuthProviders } from '../models/auth-providers.enum';
+import { AuthenticationService } from '../services/authentication.service';
 
 @Component({
   selector: 'app-login',
@@ -21,8 +19,7 @@ export class LoginComponent implements OnInit {
 
   constructor(private router: Router,
               private angularFireAuth: AngularFireAuth,
-              private authService: AuthenticationService,
-              private userDataService: UserDataService) {
+              private authService: AuthenticationService) {
     this.angularFireAuth.user.subscribe(user => {
       if (user) {
         router.navigate(['']);

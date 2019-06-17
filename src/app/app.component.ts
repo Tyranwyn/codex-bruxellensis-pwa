@@ -1,6 +1,7 @@
-import {Component} from '@angular/core';
-import {AngularFireAuth} from '@angular/fire/auth';
-import {UserDataService} from './services/user-data.service';
+import { Component } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { UserDataService } from './services/user-data.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -8,10 +9,11 @@ import {UserDataService} from './services/user-data.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'Codex-Bruxellensis-Webapp';
 
   constructor(auth: AngularFireAuth,
-              userDataService: UserDataService) {
+              userDataService: UserDataService,
+              private titleService: Title) {
     auth.user.subscribe(user => userDataService.setUserData(user));
   }
+
 }
