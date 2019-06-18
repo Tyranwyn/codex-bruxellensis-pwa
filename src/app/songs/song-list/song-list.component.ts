@@ -66,4 +66,12 @@ export class SongListComponent implements OnInit {
     }
     return false;
   }
+
+  updateFavorites(id: string) {
+    if (this.isSongFavorite(id)) {
+      this.userDataService.removeFavorite(id);
+    } else {
+      this.userDataService.addFavorite(id);
+    }
+  }
 }

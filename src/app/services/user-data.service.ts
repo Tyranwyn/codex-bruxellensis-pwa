@@ -5,19 +5,20 @@ import { environment } from '../../environments/environment';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AccountType } from '../models/account-type.enum';
 import { EMPTY, Observable } from 'rxjs';
+import * as firebase from 'firebase';
 import { User } from 'firebase';
+import { SongService } from './song-service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserDataService {
 
-  // private static currentUid: string;
-  // private userData: Subject<UserData>;
   private userDataCollection: AngularFirestoreCollection<UserData>;
 
   constructor(private angularFireAuth: AngularFireAuth,
-              afs: AngularFirestore) {
+              afs: AngularFirestore,
+              private songService: SongService) {
     this.userDataCollection = afs.collection<UserData>(environment.databases.userData);
   }
 
@@ -32,10 +33,6 @@ export class UserDataService {
             }
           }
         );
-      // this.userData = userDataDoc.valueChanges();
-      // UserDataService.currentUid = user.uid;
-    } else {
-      // UserDataService.currentUid = null;
     }
   }
 
@@ -47,9 +44,30 @@ export class UserDataService {
     return EMPTY;
   }
 
-  updateUserData(userData: UserData) {
-    this.angularFireAuth.user.subscribe( user =>
-      this.userDataCollection.doc<UserData>(user.uid).update(userData)
+  addFavorite(id: string) {
+    this.angularFireAuth.user.subscribe(user => {
+      if (user) {
+        const favorite = this.songService.getSongReferenceById(id);
+        this.userDataCollection.doc<UserData>(user.uid)
+          .update({
+            // @ts-ignore
+            favorites: firebase.firestore.FieldValue.arrayUnion(favorite)
+          });
+      }
+    });
+  }
+
+  removeFavorite(id: string) {
+    this.angularFireAuth.user.subscribe(user => {
+        if (user) {
+          const favorite = this.songService.getSongReferenceById(id);
+          this.userDataCollection.doc<UserData>(user.uid)
+            .update({
+              // @ts-ignore
+              favorites: firebase.firestore.FieldValue.arrayRemove(favorite)
+            });
+        }
+      }
     );
   }
 }

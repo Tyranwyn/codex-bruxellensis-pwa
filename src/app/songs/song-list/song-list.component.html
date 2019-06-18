@@ -8,7 +8,7 @@
 <table class="table is-hoverable is-fullwidth" *ngIf="$songs | async as songs; else progressBar">
   <tbody>
   <tr *ngFor="let song of songs" style="cursor: pointer; border: 0;">
-    <td *ngIf="auth.user | async">
+    <td *ngIf="auth.user | async" class="has-text-primary" (click)="updateFavorites(song.id)">
       <fa-icon *ngIf="userData" [icon]="isSongFavorite(song.id)? ['fas', 'star']: ['far', 'star']"></fa-icon>
     </td>
     <td [routerLink]="['/song', song.id]">{{song.title}}</td>

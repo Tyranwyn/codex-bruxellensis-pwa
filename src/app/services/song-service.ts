@@ -1,9 +1,8 @@
-import {Injectable} from '@angular/core';
-import {AngularFirestore, AngularFirestoreCollection, DocumentReference} from '@angular/fire/firestore';
-import {Song} from '../models/song';
-import {Observable} from 'rxjs';
-import {environment} from '../../environments/environment';
-import { Category } from '../models/category.enum';
+import { Injectable } from '@angular/core';
+import { AngularFirestore, AngularFirestoreCollection, DocumentReference } from '@angular/fire/firestore';
+import { Song } from '../models/song';
+import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +17,7 @@ export class SongService {
 
   getAllSongs(): Observable<Song[]> {
     return this.songCollection
-      .valueChanges({ idField: 'id'});
+      .valueChanges({idField: 'id'});
   }
 
   getSongsByCategory(category: string): Observable<Song[]> {
@@ -29,6 +28,10 @@ export class SongService {
   getSongById(id: string): Observable<Song> {
     return this.songCollection.doc<Song>(id)
       .valueChanges();
+  }
+
+  getSongReferenceById(id: string): DocumentReference {
+    return this.songCollection.doc<Song>(id).ref;
   }
 
   addSong(song: Song): Promise<DocumentReference> {
