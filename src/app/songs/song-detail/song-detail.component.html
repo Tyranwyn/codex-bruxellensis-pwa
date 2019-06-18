@@ -1,6 +1,9 @@
-<section class="hero" *ngIf="$song | async as song">
+<section class="hero" *ngIf="$song | async as song; else progressBar">
   <div class="hero-body">
     <p>{{song.page}}</p>
+    <a *ngIf="auth.user | async" class="has-text-primary" (click)="updateFavorites(songId)">
+      <fa-icon *ngIf="userData" [icon]="isSongFavorite(songId)? ['fas', 'star']: ['far', 'star']"></fa-icon>
+    </a>
     <div class="columns">
       <div class="column" *ngIf="song.associationName">
         <h1 class="title">{{song.associationName}}</h1>
@@ -23,3 +26,6 @@
     </div>
   </div>
 </section>
+<ng-template #progressBar>
+  <progress class="progress is-small is-primary" max="100"></progress>
+</ng-template>

@@ -2,14 +2,20 @@
   <input class="input is-rounded" [(ngModel)]="filter"
          (ngModelChange)="search()" type="email" placeholder="Search">
   <span class="icon is-small is-left">
-    <fa name="search"></fa>
+    <fa-icon [icon]="['fas', 'search']"></fa-icon>
   </span>
 </div>
-<table class="table is-hoverable is-fullwidth" *ngIf="$songs | async as songs;">
+<table class="table is-hoverable is-fullwidth" *ngIf="$songs | async as songs; else progressBar">
   <tbody>
-    <tr *ngFor="let song of songs" [routerLink]="['/song', song.id]" style="cursor: pointer; border: 0;">
-      <td>{{song.title}}</td>
-      <td>{{song.page}}</td>
-    </tr>
+  <tr *ngFor="let song of songs" style="cursor: pointer; border: 0;">
+    <td *ngIf="auth.user | async" class="has-text-primary" (click)="updateFavorites(song.id)">
+      <fa-icon *ngIf="userData" [icon]="isSongFavorite(song.id)? ['fas', 'star']: ['far', 'star']"></fa-icon>
+    </td>
+    <td [routerLink]="['/song', song.id]">{{song.title}}</td>
+    <td [routerLink]="['/song', song.id]">{{song.page}}</td>
+  </tr>
   </tbody>
 </table>
+<ng-template #progressBar>
+  <progress class="progress is-small is-primary" max="100"></progress>
+</ng-template>

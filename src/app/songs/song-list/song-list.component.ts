@@ -6,6 +6,9 @@ import { map } from 'rxjs/operators';
 import { Title } from '@angular/platform-browser';
 import { environment } from '../../../environments/environment';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+import { UserDataService } from '../../services/user-data.service';
+import { UserData } from '../../models/user-data';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-song-list',
@@ -16,16 +19,26 @@ export class SongListComponent implements OnInit {
 
   $songs: Observable<Song[]>;
   filter: string;
+  userData: UserData;
 
   filterSongs = (song: Song) => {
     const filterString = '' + song.page + song.title + song.battleCryName + song.associationName;
     return filterString.toLowerCase().indexOf(this.filter.toLowerCase()) !== -1;
-  }
+  };
 
   constructor(private songService: SongService,
               private titleService: Title,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private userDataService: UserDataService,
+              private auth: AngularFireAuth) {
     titleService.setTitle(environment.title);
+    auth.user
+      .subscribe(user => {
+          if (user) {
+            this.userDataService.getUserData(user.uid).subscribe(userData => this.userData = userData);
+          }
+        }
+      );
     this.route.queryParamMap.subscribe(paramMap => this.songsInit(paramMap));
   }
 
@@ -44,6 +57,21 @@ export class SongListComponent implements OnInit {
       this.$songs = this.songService.getSongsByCategory(category);
     } else {
       this.$songs = this.songService.getAllSongs();
+    }
+  }
+
+  isSongFavorite(id: string): boolean {
+    if (this.userData.favorites) {
+      return !!this.userData.favorites.find(ref => ref.id === id);
+    }
+    return false;
+  }
+
+  updateFavorites(id: string) {
+    if (this.isSongFavorite(id)) {
+      this.userDataService.removeFavorite(id);
+    } else {
+      this.userDataService.addFavorite(id);
     }
   }
 }
