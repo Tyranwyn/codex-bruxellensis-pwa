@@ -1,4 +1,4 @@
-<section class="hero" *ngIf="$song | async as song">
+<section class="hero" *ngIf="$song | async as song; else progressBar">
   <div class="hero-body">
     <p>{{song.page}}</p>
     <div class="columns">
@@ -23,3 +23,6 @@
     </div>
   </div>
 </section>
+<ng-template #progressBar>
+  <progress class="progress is-small is-primary" max="100"></progress>
+</ng-template>

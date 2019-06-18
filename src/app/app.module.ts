@@ -16,10 +16,9 @@ import { SongsComponent } from './songs/songs.component';
 import { SongListComponent } from './songs/song-list/song-list.component';
 import { SongDetailComponent } from './songs/song-detail/song-detail.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faStar, faEnvelope } from '@fortawesome/free-regular-svg-icons';
+import { faEnvelope, faStar } from '@fortawesome/free-regular-svg-icons';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faLock, faSearch } from '@fortawesome/free-solid-svg-icons';
-import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
+import { faLock, faSearch, faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
 
 @NgModule({
   declarations: [
@@ -37,7 +36,7 @@ import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
     AppRoutingModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireAuthModule,
-    AngularFirestoreModule,
+    AngularFirestoreModule.enablePersistence(),
     FirebaseUIModule,
     AppRoutingModule,
     FontAwesomeModule
@@ -45,7 +44,7 @@ import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule {
+export class AppModule  {
   constructor() {
     library.add(faStar);
     library.add(solidStar)

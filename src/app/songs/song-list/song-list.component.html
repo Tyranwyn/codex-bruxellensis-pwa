@@ -5,15 +5,17 @@
     <fa-icon [icon]="['fas', 'search']"></fa-icon>
   </span>
 </div>
-<p *ngIf="userData"><span *ngFor="let favorite of userData.favorites">{{favorite}}</span></p>
-<table class="table is-hoverable is-fullwidth" *ngIf="$songs | async as songs;">
+<table class="table is-hoverable is-fullwidth" *ngIf="$songs | async as songs; else progressBar">
   <tbody>
   <tr *ngFor="let song of songs" style="cursor: pointer; border: 0;">
     <td *ngIf="auth.user | async">
-<!--      <fa-icon *ngIf="userData" [icon]="isSongFavorite(song.id)? ['fas', 'star']: ['far', 'star']"></fa-icon>-->
+      <fa-icon *ngIf="userData" [icon]="isSongFavorite(song.id)? ['fas', 'star']: ['far', 'star']"></fa-icon>
     </td>
     <td [routerLink]="['/song', song.id]">{{song.title}}</td>
     <td [routerLink]="['/song', song.id]">{{song.page}}</td>
   </tr>
   </tbody>
 </table>
+<ng-template #progressBar>
+  <progress class="progress is-small is-primary" max="100"></progress>
+</ng-template>

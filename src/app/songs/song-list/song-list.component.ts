@@ -62,8 +62,7 @@ export class SongListComponent implements OnInit {
 
   isSongFavorite(id: string): boolean {
     if (this.userData.favorites) {
-      this.userData.favorites.find(ref => ref.id === id);
-      return true;
+      return !!this.userData.favorites.find(ref => ref.id === id);
     }
     return false;
   }
