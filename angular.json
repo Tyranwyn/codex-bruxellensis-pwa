@@ -21,12 +21,12 @@
             "aot": false,
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/manifest.webmanifest"
             ],
             "styles": [
               "src/styles.scss",
-              "node_modules/bulma/css/bulma.min.css",
-              "node_modules/firebaseui/dist/firebaseui.css"
+              "node_modules/bulma/css/bulma.min.css"
             ],
             "scripts": []
           },
@@ -53,7 +53,9 @@
                   "maximumWarning": "2mb",
                   "maximumError": "5mb"
                 }
-              ]
+              ],
+              "serviceWorker": true,
+              "ngswConfigPath": "ngsw-config.json"
             }
           }
         },
@@ -83,12 +85,12 @@
             "karmaConfig": "karma.conf.js",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/manifest.webmanifest"
             ],
             "styles": [
               "node_modules/bulma/css/bulma.min.css",
-              "src/styles.css",
-              "node_modules/firebaseui/dist/firebaseui.css"
+              "src/styles.css"
             ],
             "scripts": []
           }
@@ -119,6 +121,7 @@
           }
         }
       }
-    }},
+    }
+  },
   "defaultProject": "Codex-Bruxellensis-Webapp"
 }

@@ -5,7 +5,6 @@ import { AppComponent } from './app.component';
 import { FormsModule } from '@angular/forms';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
-import { FirebaseUIModule } from 'firebaseui-angular';
 import { AppRoutingModule } from './app-routing.module';
 import { firebaseConfig } from './firebase-config';
 import { NavbarComponent } from './common/navbar/navbar.component';
@@ -19,6 +18,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faEnvelope, faStar } from '@fortawesome/free-regular-svg-icons';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faLock, faSearch, faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -37,9 +38,9 @@ import { faLock, faSearch, faStar as solidStar } from '@fortawesome/free-solid-s
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireAuthModule,
     AngularFirestoreModule.enablePersistence(),
-    FirebaseUIModule,
     AppRoutingModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [],
   bootstrap: [AppComponent]

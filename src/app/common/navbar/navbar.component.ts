@@ -12,7 +12,7 @@ export class NavbarComponent implements OnInit {
 
   categories = Category;
 
-  constructor(private angularFireAuth: AngularFireAuth,
+  constructor(public angularFireAuth: AngularFireAuth,
               private router: Router) {
   }
 

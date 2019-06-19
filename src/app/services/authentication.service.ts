@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import {AuthProviders} from '../models/auth-providers.enum';
-import {auth} from 'firebase';
-import {AngularFireAuth} from '@angular/fire/auth';
+import { AuthProviders } from '../models/auth-providers.enum';
+import { auth } from 'firebase';
+import { AngularFireAuth } from '@angular/fire/auth';
 import UserCredential = firebase.auth.UserCredential;
 
 @Injectable({
@@ -9,7 +9,8 @@ import UserCredential = firebase.auth.UserCredential;
 })
 export class AuthenticationService {
 
-  constructor(private angularFireAuth: AngularFireAuth) { }
+  constructor(private angularFireAuth: AngularFireAuth) {
+  }
 
   login(provider: string, email?: string, password?: string): Promise<UserCredential> {
     switch (provider) {
