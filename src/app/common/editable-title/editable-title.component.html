@@ -1,0 +1,27 @@
+<div *ngIf="!editing" class="field has-addons">
+  <div class="control">
+    <h1 class="title">{{title}}</h1>
+  </div>
+  <div class="control">
+    <a *ngIf="editable" class="button is-primary" (click)="editing = !editing">
+    <span class="icon is-primary">
+      <fa-icon [icon]="['fas', 'edit']"></fa-icon>
+    </span>
+    </a>
+  </div>
+</div>
+<div *ngIf="editing">
+  <div class="field">
+    <div class="control is-medium">
+      <input class="input is-medium" type="text" placeholder="Title" [(ngModel)]="title"/>
+    </div>
+    <div class="control is-medium">
+      <a class="button is-primary is-medium" (click)="editing = !editing">
+      <span *ngIf="!buttonText" class="icon is-primary is-medium">
+        <fa-icon [icon]="['far', 'save']"></fa-icon>
+      </span>
+        {{buttonText}}
+      </a>
+    </div>
+  </div>
+</div>

@@ -6,7 +6,9 @@
     </a>
     <div class="columns">
       <div class="column" *ngIf="song.associationName">
-        <h1 class="title">{{song.associationName}}</h1>
+        <app-editable-title [title]="song.associationName"
+                            [editable]="true">
+        </app-editable-title>
         <div class="preformatted">{{song.associationInfo}}</div>
       </div>
       <div class="column" *ngIf="song.battleCryName">

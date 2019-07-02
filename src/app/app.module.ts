@@ -15,11 +15,12 @@ import { SongsComponent } from './songs/songs.component';
 import { SongListComponent } from './songs/song-list/song-list.component';
 import { SongDetailComponent } from './songs/song-detail/song-detail.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faEnvelope, faStar } from '@fortawesome/free-regular-svg-icons';
+import { faEnvelope, faStar, faSave } from '@fortawesome/free-regular-svg-icons';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faLock, faSearch, faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
+import { faLock, faSearch, faStar as solidStar, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { EditableTitleComponent } from './common/editable-title/editable-title.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { environment } from '../environments/environment';
     LoginComponent,
     SongsComponent,
     SongListComponent,
-    SongDetailComponent
+    SongDetailComponent,
+    EditableTitleComponent
   ],
   imports: [
     BrowserModule,
@@ -52,5 +54,7 @@ export class AppModule  {
     library.add(faEnvelope);
     library.add(faSearch);
     library.add(faLock);
+    library.add(faEdit);
+    library.add(faSave);
   }
 }
