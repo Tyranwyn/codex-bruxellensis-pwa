@@ -1,6 +1,7 @@
 <div *ngIf="!editing" class="field has-addons">
   <div class="control">
     <h1 class="title">{{title}}</h1>
+    <h2 *ngIf="subtitle" class="subtitle" style="white-space: pre;">{{subtitle}}</h2>
   </div>
   <div class="control">
     <a *ngIf="editable" class="button is-primary" (click)="editing = !editing">
@@ -15,8 +16,11 @@
     <div class="control is-medium">
       <input class="input is-medium" type="text" placeholder="Title" [(ngModel)]="title"/>
     </div>
+    <div *ngIf="subtitle" class="control is-medium">
+      <textarea class="textarea" placeholder="Subtitle" [(ngModel)]="subtitle"></textarea>
+    </div>
     <div class="control is-medium">
-      <a class="button is-primary is-medium" (click)="editing = !editing">
+      <a class="button is-primary is-medium" (click)="save()">
       <span *ngIf="!buttonText" class="icon is-primary is-medium">
         <fa-icon [icon]="['far', 'save']"></fa-icon>
       </span>

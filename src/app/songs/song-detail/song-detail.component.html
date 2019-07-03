@@ -7,21 +7,28 @@
     <div class="columns">
       <div class="column" *ngIf="song.associationName">
         <app-editable-title [title]="song.associationName"
-                            [editable]="true">
+                            [editable]="true"
+                            (saved)="saveAssociationName($event)">
         </app-editable-title>
         <div class="preformatted">{{song.associationInfo}}</div>
       </div>
       <div class="column" *ngIf="song.battleCryName">
         <div>
-          <h1 class="title">{{song.battleCryName}}</h1>
-          <h2 class="subtitle">{{song.battleCryInfo}}</h2>
+          <app-editable-title [title]="song.battleCryName"
+                              [subtitle]="song.battleCryInfo"
+                              [editable]="true"
+                              (saved)="saveBattleCryNameAndInfo($event)">
+          </app-editable-title>
           <div class="preformatted">{{song.battleCry}}</div>
         </div>
       </div>
       <div class="column" *ngIf="song.title">
         <div>
-          <h1 class="title">{{song.title}}</h1>
-          <h2 class="subtitle" style="white-space: pre;">{{song.bgInfo}}</h2>
+          <app-editable-title [title]="song.title"
+                              [subtitle]="song.bgInfo"
+                              [editable]="true"
+                              (saved)="saveTitleAndBgInfo($event)">
+          </app-editable-title>
           <div class="preformatted">{{song.lyrics}}</div>
         </div>
       </div>

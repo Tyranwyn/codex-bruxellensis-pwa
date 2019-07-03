@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-editable-title',
@@ -10,12 +10,15 @@ export class EditableTitleComponent implements OnInit {
   @Input()
   title: string;
   @Input()
-  subTitle: string;
+  subtitle: string;
   @Input()
   buttonText: string;
   @Input()
   editable: boolean;
   editing: boolean;
+
+  @Output()
+  saved = new EventEmitter<any>();
 
   constructor() {
   }
@@ -23,4 +26,8 @@ export class EditableTitleComponent implements OnInit {
   ngOnInit() {
   }
 
+  save() {
+    this.saved.emit({title: this.title, subtitle: this.subtitle});
+    this.editing = !this.editing;
+  }
 }

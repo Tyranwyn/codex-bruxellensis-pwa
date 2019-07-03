@@ -58,4 +58,16 @@ export class SongDetailComponent implements OnInit {
       this.userDataService.addFavorite(id);
     }
   }
+
+  saveTitleAndBgInfo($event: any) {
+    this.songService.updateSong(this.songId, {title: $event.title, bgInfo: $event.subtitle});
+  }
+
+  saveAssociationName($event: any) {
+    this.songService.updateSong(this.songId, {associationName: $event.title});
+  }
+
+  saveBattleCryNameAndInfo($event: any) {
+    this.songService.updateSong(this.songId, {battleCryName: $event.title, battleCryInfo: $event.subtitle});
+  }
 }
