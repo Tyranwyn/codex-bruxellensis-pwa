@@ -21,6 +21,7 @@ import { faLock, faSearch, faStar as solidStar, faEdit } from '@fortawesome/free
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { EditableTitleComponent } from './common/editable-title/editable-title.component';
+import { EditableTextComponent } from './common/editable-lyrics/editable-text.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { EditableTitleComponent } from './common/editable-title/editable-title.c
     SongsComponent,
     SongListComponent,
     SongDetailComponent,
-    EditableTitleComponent
+    EditableTitleComponent,
+    EditableTextComponent
   ],
   imports: [
     BrowserModule,

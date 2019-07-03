@@ -70,4 +70,12 @@ export class SongDetailComponent implements OnInit {
   saveBattleCryNameAndInfo($event: any) {
     this.songService.updateSong(this.songId, {battleCryName: $event.title, battleCryInfo: $event.subtitle});
   }
+
+  saveLyrics($event: any) {
+    this.songService.updateSong(this.songId, {lyrics: $event.text});
+  }
+
+  saveBattleCry($event: any) {
+    this.songService.updateSong(this.songId, {battleCry: $event.text});
+  }
 }

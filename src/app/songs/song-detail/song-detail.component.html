@@ -10,7 +10,9 @@
                             [editable]="true"
                             (saved)="saveAssociationName($event)">
         </app-editable-title>
-        <div class="preformatted">{{song.associationInfo}}</div>
+        <app-editable-text [text]="song.associationInfo"
+                           [editable]="true">
+        </app-editable-text>
       </div>
       <div class="column" *ngIf="song.battleCryName">
         <div>
@@ -19,7 +21,9 @@
                               [editable]="true"
                               (saved)="saveBattleCryNameAndInfo($event)">
           </app-editable-title>
-          <div class="preformatted">{{song.battleCry}}</div>
+          <app-editable-text [text]="song.battleCry"
+                             [editable]="true">
+          </app-editable-text>
         </div>
       </div>
       <div class="column" *ngIf="song.title">
@@ -29,7 +33,9 @@
                               [editable]="true"
                               (saved)="saveTitleAndBgInfo($event)">
           </app-editable-title>
-          <div class="preformatted">{{song.lyrics}}</div>
+          <app-editable-text [text]="song.lyrics"
+                             [editable]="true">
+          </app-editable-text>
         </div>
       </div>
     </div>
