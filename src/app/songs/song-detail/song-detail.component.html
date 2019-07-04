@@ -9,13 +9,13 @@
         <app-editable-title [title]="song.associationName"
                             titleFieldName="associationName"
                             titlePlaceholder="Association Name"
-                            [editable]="true"
+                            [editable]="canModifySong()"
                             (saved)="updateSong($event)">
         </app-editable-title>
         <app-editable-text [text]="song.associationInfo"
                            textFieldName="associationInfo"
                            textPlaceholder="Association Info"
-                           [editable]="true"
+                           [editable]="canModifySong()"
                            (saved)="updateSong($event)">
         </app-editable-text>
       </div>
@@ -27,13 +27,13 @@
                               [subtitle]="song.battleCryInfo"
                               subtitleFieldName="battleCryInfo"
                               subtitlePlaceholder="Kreet Info"
-                              [editable]="true"
+                              [editable]="canModifySong()"
                               (saved)="updateSong($event)">
           </app-editable-title>
           <app-editable-text [text]="song.battleCry"
                              textFieldName="battleCry"
                              textPlaceholder="Kreet"
-                             [editable]="true"
+                             [editable]="canModifySong()"
                              (saved)="updateSong($event)">
           </app-editable-text>
         </div>
@@ -44,13 +44,13 @@
                               [subtitle]="song.bgInfo"
                               subtitleFieldName="bgInfo"
                               subtitlePlaceholder="Background Info"
-                              [editable]="true"
+                              [editable]="canModifySong()"
                               (saved)="updateSong($event)">
           </app-editable-title>
           <app-editable-text [text]="song.lyrics"
                              textFieldName="lyrics"
                              textPlaceholder="Lyrics"
-                             [editable]="true"
+                             [editable]="canModifySong()"
                              (saved)="updateSong($event)">
           </app-editable-text>
         </div>

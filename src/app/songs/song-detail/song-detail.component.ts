@@ -8,6 +8,7 @@ import { Title } from '@angular/platform-browser';
 import { UserDataService } from '../../services/user-data.service';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { UserData } from '../../models/user-data';
+import { AccountType } from '../../models/account-type.enum';
 
 @Component({
   selector: 'app-song-detail',
@@ -61,5 +62,9 @@ export class SongDetailComponent implements OnInit {
 
   updateSong($event: any) {
     this.songService.updateSong(this.songId, $event);
+  }
+
+  canModifySong(): boolean {
+    return this.userData && this.userData.accountType === AccountType.ADMIN;
   }
 }

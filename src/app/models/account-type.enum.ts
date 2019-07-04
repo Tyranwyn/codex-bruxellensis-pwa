@@ -1,4 +1,4 @@
 export enum AccountType {
-  ADMIN,
-  USER
+  USER,
+  ADMIN
 }
