@@ -14,10 +14,10 @@
 <div *ngIf="editing">
   <div class="field">
     <div class="control is-medium">
-      <input class="input is-medium" type="text" placeholder="Title" [(ngModel)]="title"/>
+      <input class="input is-medium" type="text" [placeholder]="subtitlePlaceholder" [(ngModel)]="title"/>
     </div>
-    <div *ngIf="subtitle" class="control is-medium">
-      <textarea class="textarea" placeholder="Subtitle" [(ngModel)]="subtitle"></textarea>
+    <div *ngIf="subtitle != undefined" class="control is-medium">
+      <textarea class="textarea" [placeholder]="subtitleFieldName" [(ngModel)]="subtitle"></textarea>
     </div>
     <div class="control is-medium">
       <a class="button is-primary is-medium" (click)="save()">

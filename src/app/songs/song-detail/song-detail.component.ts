@@ -59,23 +59,7 @@ export class SongDetailComponent implements OnInit {
     }
   }
 
-  saveTitleAndBgInfo($event: any) {
-    this.songService.updateSong(this.songId, {title: $event.title, bgInfo: $event.subtitle});
-  }
-
-  saveAssociationName($event: any) {
-    this.songService.updateSong(this.songId, {associationName: $event.title});
-  }
-
-  saveBattleCryNameAndInfo($event: any) {
-    this.songService.updateSong(this.songId, {battleCryName: $event.title, battleCryInfo: $event.subtitle});
-  }
-
-  saveLyrics($event: any) {
-    this.songService.updateSong(this.songId, {lyrics: $event.text});
-  }
-
-  saveBattleCry($event: any) {
-    this.songService.updateSong(this.songId, {battleCry: $event.text});
+  updateSong($event: any) {
+    this.songService.updateSong(this.songId, $event);
   }
 }

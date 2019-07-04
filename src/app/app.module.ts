@@ -22,6 +22,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { EditableTitleComponent } from './common/editable-title/editable-title.component';
 import { EditableTextComponent } from './common/editable-lyrics/editable-text.component';
+import { AutosizeModule } from 'ngx-autosize';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { EditableTextComponent } from './common/editable-lyrics/editable-text.co
     AngularFirestoreModule.enablePersistence(),
     AppRoutingModule,
     FontAwesomeModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    AutosizeModule
   ],
   providers: [],
   bootstrap: [AppComponent]

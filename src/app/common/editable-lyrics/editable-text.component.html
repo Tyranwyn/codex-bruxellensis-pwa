@@ -13,7 +13,7 @@
 <div *ngIf="editing">
   <div class="field">
     <div class="control is-medium">
-      <textarea class="textarea" placeholder="Subtitle" [(ngModel)]="text"></textarea>
+      <textarea autosize class="textarea" [placeholder]="textPlaceholder" [(ngModel)]="text"></textarea>
     </div>
     <div class="control is-medium">
       <a class="button is-primary is-medium" (click)="save()">

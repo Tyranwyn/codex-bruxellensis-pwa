@@ -16,6 +16,10 @@ export class EditableTitleComponent implements OnInit {
   @Input()
   subtitleFieldName = 'subtitle';
   @Input()
+  subtitlePlaceholder = 'Subtitle';
+  @Input()
+  titlePlaceholder = 'Title';
+  @Input()
   buttonText: string;
   @Input()
   editable: boolean;
@@ -31,7 +35,11 @@ export class EditableTitleComponent implements OnInit {
   }
 
   save() {
-    this.saved.emit({[this.titleFieldName]: this.title, [this.subtitleFieldName]: this.subtitle});
+    const returnObject = {[this.titleFieldName]: this.title};
+    if (this.subtitle) {
+      returnObject[this.subtitleFieldName] = this.subtitle;
+    }
+    this.saved.emit(returnObject);
     this.editing = !this.editing;
   }
 }

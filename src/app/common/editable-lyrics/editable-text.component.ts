@@ -10,13 +10,17 @@ export class EditableTextComponent implements OnInit {
   @Input()
   text: string;
   @Input()
+  textFieldName = 'text';
+  @Input()
+  textPlaceholder = 'Text';
+  @Input()
   buttonText: string;
   @Input()
   editable: boolean;
   editing: boolean;
 
   @Output()
-  saved = new EventEmitter<string>();
+  saved = new EventEmitter<any>();
 
   constructor() {
   }
@@ -25,7 +29,7 @@ export class EditableTextComponent implements OnInit {
   }
 
   save() {
-    this.saved.emit(this.text);
+    this.saved.emit({[this.textFieldName]: this.text});
     this.editing = !this.editing;
   }
 

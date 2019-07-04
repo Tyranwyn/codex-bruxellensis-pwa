@@ -7,22 +7,34 @@
     <div class="columns">
       <div class="column" *ngIf="song.associationName">
         <app-editable-title [title]="song.associationName"
+                            titleFieldName="associationName"
+                            titlePlaceholder="Association Name"
                             [editable]="true"
-                            (saved)="saveAssociationName($event)">
+                            (saved)="updateSong($event)">
         </app-editable-title>
         <app-editable-text [text]="song.associationInfo"
-                           [editable]="true">
+                           textFieldName="associationInfo"
+                           textPlaceholder="Association Info"
+                           [editable]="true"
+                           (saved)="updateSong($event)">
         </app-editable-text>
       </div>
       <div class="column" *ngIf="song.battleCryName">
         <div>
           <app-editable-title [title]="song.battleCryName"
+                              titleFieldName="battleCryName"
+                              titlePlaceholder="Kreet Titel"
                               [subtitle]="song.battleCryInfo"
+                              subtitleFieldName="battleCryInfo"
+                              subtitlePlaceholder="Kreet Info"
                               [editable]="true"
-                              (saved)="saveBattleCryNameAndInfo($event)">
+                              (saved)="updateSong($event)">
           </app-editable-title>
           <app-editable-text [text]="song.battleCry"
-                             [editable]="true">
+                             textFieldName="battleCry"
+                             textPlaceholder="Kreet"
+                             [editable]="true"
+                             (saved)="updateSong($event)">
           </app-editable-text>
         </div>
       </div>
@@ -30,11 +42,16 @@
         <div>
           <app-editable-title [title]="song.title"
                               [subtitle]="song.bgInfo"
+                              subtitleFieldName="bgInfo"
+                              subtitlePlaceholder="Background Info"
                               [editable]="true"
-                              (saved)="saveTitleAndBgInfo($event)">
+                              (saved)="updateSong($event)">
           </app-editable-title>
           <app-editable-text [text]="song.lyrics"
-                             [editable]="true">
+                             textFieldName="lyrics"
+                             textPlaceholder="Lyrics"
+                             [editable]="true"
+                             (saved)="updateSong($event)">
           </app-editable-text>
         </div>
       </div>
