@@ -38,7 +38,7 @@ export class SongService {
     return this.songCollection.add(song);
   }
 
-  updateSong(id: string, song: Song): Promise<void> {
+  updateSong(id: string, song: any): Promise<void> {
     return this.songCollection.doc<Song>(id).update(song);
   }
 }

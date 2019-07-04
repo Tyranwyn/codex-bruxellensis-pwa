@@ -3,11 +3,11 @@ import {Category} from './category.enum';
 export interface Song {
   id?: string;
   title: string;
-  associationInfo: string;
   associationName: string;
-  battleCry: string;
-  battleCryInfo: string;
+  associationInfo: string;
   battleCryName: string;
+  battleCryInfo: string;
+  battleCry: string;
   bgInfo: string;
   category: Category;
   lyrics: string;

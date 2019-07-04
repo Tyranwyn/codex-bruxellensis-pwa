@@ -6,21 +6,53 @@
     </a>
     <div class="columns">
       <div class="column" *ngIf="song.associationName">
-        <h1 class="title">{{song.associationName}}</h1>
-        <div class="preformatted">{{song.associationInfo}}</div>
+        <app-editable-title [title]="song.associationName"
+                            titleFieldName="associationName"
+                            titlePlaceholder="Association Name"
+                            [editable]="canModifySong()"
+                            (saved)="updateSong($event)">
+        </app-editable-title>
+        <app-editable-text [text]="song.associationInfo"
+                           textFieldName="associationInfo"
+                           textPlaceholder="Association Info"
+                           [editable]="canModifySong()"
+                           (saved)="updateSong($event)">
+        </app-editable-text>
       </div>
       <div class="column" *ngIf="song.battleCryName">
         <div>
-          <h1 class="title">{{song.battleCryName}}</h1>
-          <h2 class="subtitle">{{song.battleCryInfo}}</h2>
-          <div class="preformatted">{{song.battleCry}}</div>
+          <app-editable-title [title]="song.battleCryName"
+                              titleFieldName="battleCryName"
+                              titlePlaceholder="Kreet Titel"
+                              [subtitle]="song.battleCryInfo"
+                              subtitleFieldName="battleCryInfo"
+                              subtitlePlaceholder="Kreet Info"
+                              [editable]="canModifySong()"
+                              (saved)="updateSong($event)">
+          </app-editable-title>
+          <app-editable-text [text]="song.battleCry"
+                             textFieldName="battleCry"
+                             textPlaceholder="Kreet"
+                             [editable]="canModifySong()"
+                             (saved)="updateSong($event)">
+          </app-editable-text>
         </div>
       </div>
       <div class="column" *ngIf="song.title">
         <div>
-          <h1 class="title">{{song.title}}</h1>
-          <h2 class="subtitle" style="white-space: pre;">{{song.bgInfo}}</h2>
-          <div class="preformatted">{{song.lyrics}}</div>
+          <app-editable-title [title]="song.title"
+                              [subtitle]="song.bgInfo"
+                              subtitleFieldName="bgInfo"
+                              subtitlePlaceholder="Background Info"
+                              [editable]="canModifySong()"
+                              (saved)="updateSong($event)">
+          </app-editable-title>
+          <app-editable-text [text]="song.lyrics"
+                             textFieldName="lyrics"
+                             textPlaceholder="Lyrics"
+                             [editable]="canModifySong()"
+                             (saved)="updateSong($event)">
+          </app-editable-text>
         </div>
       </div>
     </div>
