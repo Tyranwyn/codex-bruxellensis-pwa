@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start:os": "http-server dist/Codex-Bruxellensis-Webapp/",
     "pwa": "ng build --prod & http-server -c-1 dist/Codex-Bruxellensis-Webapp/",
     "pwa:serve": "http-server -c-1 dist/Codex-Bruxellensis-Webapp/",
     "build": "ng build",

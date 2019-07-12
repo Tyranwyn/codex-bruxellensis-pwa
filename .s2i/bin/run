@@ -21,7 +21,7 @@ run_node() {
   echo -e "Using Node.js version: $(node --version)"
   echo -e "Environment: \n\tDEV_MODE=${DEV_MODE}\n\tNODE_ENV=${NODE_ENV}\n\tDEBUG_PORT=${DEBUG_PORT}"
   echo -e "Running as user $(id)"
-  npm run start:pwa
+  npm run start:os
 }
 
 # Allow debugging the builder image itself, by using:
