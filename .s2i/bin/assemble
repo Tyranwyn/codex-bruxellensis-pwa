@@ -7,8 +7,6 @@ if [ "$(ls /tmp/artifacts/ 2>/dev/null)" ]; then
     mv /tmp/artifacts/* .
 fi
 
-echo "---> Fixing permissions"
-fix-permissions ./
 echo "---> Installing NPM Dependencies (with dev)"
 npm install
 
