@@ -52,7 +52,7 @@ echo -e "Current git config"
 git config --list
 
 echo "---> Importing firebase config"
-echo $FIREBASE_CONFIG >> src/app/firebase-config.ts
+cp /firebase/firebase-config.ts src/app/firebase-config.ts
 
 if [ ! -z "$YARN_ENABLED" ]; then
 	echo "---> Using 'yarn install' with YARN_ARGS"
