@@ -24,7 +24,7 @@ export class SongListComponent implements OnInit {
   filterSongs = (song: Song) => {
     const filterString = '' + song.page + song.title + song.battleCryName + song.associationName;
     return filterString.toLowerCase().indexOf(this.filter.toLowerCase()) !== -1;
-  };
+  }
 
   constructor(private songService: SongService,
               private titleService: Title,

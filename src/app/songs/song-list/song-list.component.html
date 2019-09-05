@@ -1,21 +1,35 @@
-<div class="control has-icons-left">
-  <input class="input is-rounded" [(ngModel)]="filter"
-         (ngModelChange)="search()" type="email" placeholder="Search">
-  <span class="icon is-small is-left">
-    <fa-icon [icon]="['fas', 'search']"></fa-icon>
-  </span>
+
+
+<div class="search-container">
+  <div class="control has-icons-left search">
+    <input class="input" [(ngModel)]="filter" (ngModelChange)="search()" type="email" placeholder="Search">
+    <span class="icon is-small is-left">
+      <fa-icon [icon]="['fas', 'search']"></fa-icon>
+    </span>
+  </div>
 </div>
-<table class="table is-hoverable is-fullwidth" *ngIf="$songs | async as songs; else progressBar">
-  <tbody>
-  <tr *ngFor="let song of songs" style="cursor: pointer; border: 0;">
-    <td *ngIf="auth.user | async" class="has-text-primary" (click)="updateFavorites(song.id)">
-      <fa-icon *ngIf="userData" [icon]="isSongFavorite(song.id)? ['fas', 'star']: ['far', 'star']"></fa-icon>
-    </td>
-    <td [routerLink]="['/song', song.id]">{{song.title}}</td>
-    <td [routerLink]="['/song', song.id]">{{song.page}}</td>
-  </tr>
-  </tbody>
-</table>
-<ng-template #progressBar>
-  <progress class="progress is-small is-primary" max="100"></progress>
+
+<div class="container">
+  <div class="song-list" *ngIf="$songs | async as songs; else progress">
+    <ng-container *ngFor="let song of songs">
+      <div class="card song-element">
+        <div class="card-content">
+          <div *ngIf="auth.user | async" class="song-favorite" (click)="updateFavorites(song.id)">
+            <fa-icon *ngIf="userData" [icon]="isSongFavorite(song.id)? ['fas', 'star']: ['far', 'star']"></fa-icon>
+          </div>
+          <div class="song-info" [routerLink]="['/song', song.id]">
+            <div class="song-title">{{song.title}}</div>
+            <div class="song-page">p. {{song.page}}</div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>
+
+<ng-template #progress>
+    <progress class="progress is-small is-primary" max="100"></progress>
 </ng-template>
+
+
+
