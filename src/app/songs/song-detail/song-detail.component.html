@@ -1,14 +1,48 @@
-<div class="container song-detail">
+<div class="container song-detail" *ngIf="$song | async as song; else progressBar">
 
-  <a (click)="back()" class="back-button"><i class="fas fa-chevron-left"></i> Back</a>
+  <div class="song-top">
+    <a (click)="back()" class="back-button"><i class="fas fa-chevron-left"></i> Back</a>
+    <div class="page">p. {{ song.page }}</div>
+  </div>
 
-  <section class="hero" *ngIf="$song | async as song; else progressBar">
+  <div class="song-content">
+
+    <a *ngIf="auth.user | async" class="has-text-primary favorite" (click)="updateFavorites(songId)">
+      <fa-icon *ngIf="userData" [icon]="isSongFavorite(songId)? ['fas', 'star']: ['far', 'star']"></fa-icon>
+    </a>
+
+    <div class="association" *ngIf="song.associationName">
+      <p class="song-title">{{ song.associationName }}</p>
+      <p class="song-text">{{ song.associationInfo }}</p>
+      <hr style="background-color: black">
+    </div>
+
+    <div class="battleCry" *ngIf="song.battleCryName">
+      <p class="song-title">{{ song.battleCryName }}</p>
+      <p class="song-subtitle">{{ song.battleCryInfo }}</p>
+      <p class="song-text">{{ song.battleCry }}</p>
+      <hr style="background-color: black">
+    </div>
+
+    <div class="song" *ngIf="song.title">
+      <p class="song-title">{{ song.title }}</p>
+      <p class="song-subtitle">{{ song.bgInfo }}</p>
+      <p class="song-text">{{ song.lyrics }}</p>
+    </div>
+  </div>
+
+
+
+
+  <!--<section class="hero" *ngIf="$song | async as song; else progressBar">
     <div class="hero-body">
       <p>{{song.page}}</p>
       <a *ngIf="auth.user | async" class="has-text-primary" (click)="updateFavorites(songId)">
         <fa-icon *ngIf="userData" [icon]="isSongFavorite(songId)? ['fas', 'star']: ['far', 'star']"></fa-icon>
       </a>
+
       <div class="columns">
+
         <div class="column" *ngIf="song.associationName">
           <app-editable-title [title]="song.associationName" titleFieldName="associationName"
             titlePlaceholder="Association Name" [editable]="canModifySong()" (saved)="updateSong($event)">
@@ -17,6 +51,7 @@
             textPlaceholder="Association Info" [editable]="canModifySong()" (saved)="updateSong($event)">
           </app-editable-text>
         </div>
+
         <div class="column" *ngIf="song.battleCryName">
           <div>
             <app-editable-title [title]="song.battleCryName" titleFieldName="battleCryName"
@@ -28,6 +63,7 @@
             </app-editable-text>
           </div>
         </div>
+
         <div class="column" *ngIf="song.title">
           <div>
             <app-editable-title [title]="song.title" [subtitle]="song.bgInfo" subtitleFieldName="bgInfo"
@@ -38,9 +74,11 @@
             </app-editable-text>
           </div>
         </div>
+
       </div>
     </div>
-  </section>
+  </section>-->
+
 </div>
 
 <ng-template #progressBar>

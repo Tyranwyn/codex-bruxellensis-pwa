@@ -35,7 +35,7 @@ $navbar-item-hover-color: $main;
 $family-primary: 'Poppins',
 sans-serif;
 $body-weight: 500;
-$body-line-height: 2;
+$body-line-height: 1.5;
 $navbar-breakpoint: $breakpoint-desktop;
 
 @import "../node_modules/bulma/bulma.sass";
@@ -96,6 +96,10 @@ html {
   z-index: 99999;
   border-radius: 0;
   height: 5px !important;
+}
+
+.modal {
+  z-index: 99999;
 }
 
 /*** HEADER  ***/
@@ -289,17 +293,12 @@ main {
   border: none;
   box-shadow: none;
   box-shadow: $shadow-hover;
-  //transform: translateY(-4px);
 }
 
 .search .icon {
   transition-duration: 172ms;
   will-change: transform;
   height: 100% !important;
-}
-
-.search .input:focus~.icon {
-  //transform: translateY(-4px);
 }
 
 /*** SONG LIST  ***/
@@ -332,18 +331,83 @@ main {
   align-items: center;
 }
 
-.song-title {
+.song-name {
   color: $primary;
+}
+
+.song-edit {
+  flex-grow: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.song-delete {
+  color: red;
+  margin-top: 2em;
+  margin-bottom: 1em;
+  text-decoration: underline;
+  display: block;
 }
 
 /*** SONG DETAIL  ***/
 
-.back-button {
-  padding: 1.5em;
+.song-top {
+  padding: 0 1.5em;
+  display: flex;
+  justify-content: space-between;
+  color: $primary;
 }
 
 .song-detail {
   margin-top: 2rem;
+}
+
+.song-content {
+  background-color: white;
+  padding: 1.5em;
+  box-shadow: $shadow;
+  border-radius: 10px;
+  width: 590px;
+  margin: 0 auto;
+  margin-top: 2em;
+  white-space: pre-line;
+  max-width: $width-desktop;
+  @media only screen and (max-width: $breakpoint-desktop) {
+    max-width: $width-tablet;
+  }
+
+  @media only screen and (max-width: $breakpoint-tablet) {
+    max-width: $width-mobile;
+  }
+}
+
+.song-content:hover {
+  box-shadow: $shadow-hover;
+}
+
+.song-content .favorite {
+  color: $main-grey !important;
+  margin-bottom: 0.7em;
+  display: block;
+}
+
+.song-title {
+  font-size: 2em;
+  font-weight: 700;
+  color: $primary;
+  margin-bottom: 0.5em !important;
+}
+
+.song-subtitle {
+  font-size: 1em;
+  font-weight: 700;
+  margin-bottom: 0.7em !important;
+}
+
+.song-text {
+  font-size: 1em;
+  font-weight: 300;
 }
 
 /*** LOGIN ***/

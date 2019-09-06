@@ -9,6 +9,9 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 import { UserDataService } from '../../services/user-data.service';
 import { UserData } from '../../models/user-data';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { AccountType } from 'src/app/models/account-type.enum';
+import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { Category } from 'src/app/models/category.enum';
 
 @Component({
   selector: 'app-song-list',
@@ -21,16 +24,36 @@ export class SongListComponent implements OnInit {
   filter: string;
   userData: UserData;
 
+  public showEditModal = false;
+  public editSongForm: FormGroup;
+  public songToEdit: any = {};
+  public categories: any[] = [];
+
   filterSongs = (song: Song) => {
     const filterString = '' + song.page + song.title + song.battleCryName + song.associationName;
     return filterString.toLowerCase().indexOf(this.filter.toLowerCase()) !== -1;
   }
 
-  constructor(private songService: SongService,
-              private titleService: Title,
-              private route: ActivatedRoute,
-              private userDataService: UserDataService,
-              private auth: AngularFireAuth) {
+  constructor(
+    private songService: SongService,
+    private titleService: Title,
+    private route: ActivatedRoute,
+    private userDataService: UserDataService,
+    private auth: AngularFireAuth,
+    public fb: FormBuilder,
+  ) {
+    this.editSongForm = fb.group({
+      category: new FormControl('', []),
+      page: new FormControl('', []),
+      title: new FormControl('', []),
+      bgInfo: new FormControl('', []),
+      lyrics: new FormControl('', []),
+      associationName: new FormControl('', []),
+      associationInfo: new FormControl('', []),
+      battleCryName: new FormControl('', []),
+      battleCryInfo: new FormControl('', []),
+      battleCry: new FormControl('', [])
+    });
     titleService.setTitle(environment.title);
     auth.user
       .subscribe(user => {
@@ -43,6 +66,12 @@ export class SongListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.categories = Object.keys(Category);
+  }
+
+  capitalize(text) {
+    text = text.toLowerCase();
+    return text.charAt(0).toUpperCase() + text.slice(1);
   }
 
   search() {
@@ -74,4 +103,35 @@ export class SongListComponent implements OnInit {
       this.userDataService.addFavorite(id);
     }
   }
+
+  edit() {
+    console.log(this.editSongForm.value);
+    this.songService.updateSong(this.songToEdit.id, this.editSongForm.value);
+    this.hideEdit();
+  }
+
+  delete(id) {
+    console.log(id);
+  }
+
+  editSong(song) {
+    this.songToEdit = song;
+    console.log(song);
+    this.showEdit();
+  }
+
+  canEditSong(): boolean {
+    return this.userData && this.userData.accountType === AccountType.ADMIN;
+  }
+
+  showEdit() {
+    this.showEditModal = true;
+  }
+
+  hideEdit() {
+    this.showEditModal = false;
+  }
+
+
+
 }
