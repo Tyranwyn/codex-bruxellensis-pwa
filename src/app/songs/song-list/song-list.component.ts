@@ -24,6 +24,9 @@ export class SongListComponent implements OnInit {
   filter: string;
   userData: UserData;
 
+  public showAddModal = false;
+  public addSongForm: FormGroup;
+
   public showEditModal = false;
   public editSongForm: FormGroup;
   public songToEdit: any = {};
@@ -43,6 +46,18 @@ export class SongListComponent implements OnInit {
     public fb: FormBuilder,
   ) {
     this.editSongForm = fb.group({
+      category: new FormControl('', []),
+      page: new FormControl('', []),
+      title: new FormControl('', []),
+      bgInfo: new FormControl('', []),
+      lyrics: new FormControl('', []),
+      associationName: new FormControl('', []),
+      associationInfo: new FormControl('', []),
+      battleCryName: new FormControl('', []),
+      battleCryInfo: new FormControl('', []),
+      battleCry: new FormControl('', [])
+    });
+    this.addSongForm = fb.group({
       category: new FormControl('', []),
       page: new FormControl('', []),
       title: new FormControl('', []),
@@ -104,19 +119,23 @@ export class SongListComponent implements OnInit {
     }
   }
 
+  add() {
+    this.songService.addSong(this.addSongForm.value);
+    this.hideAdd();
+  }
+
   edit() {
-    console.log(this.editSongForm.value);
     this.songService.updateSong(this.songToEdit.id, this.editSongForm.value);
     this.hideEdit();
   }
 
   delete(id) {
-    console.log(id);
+    this.songService.deleteSong(id);
+    this.hideEdit();
   }
 
   editSong(song) {
     this.songToEdit = song;
-    console.log(song);
     this.showEdit();
   }
 
@@ -132,6 +151,13 @@ export class SongListComponent implements OnInit {
     this.showEditModal = false;
   }
 
+  showAdd() {
+    this.showAddModal = true;
+  }
+
+  hideAdd() {
+    this.showAddModal = false;
+  }
 
 
 }
