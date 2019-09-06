@@ -40,7 +40,7 @@
       </a>
 
       <a class="navbar-item login-button" *ngIf="angularFireAuth.user | async as user" (click)="active($event)">
-        <div (click)="showLogout()">{{user.displayName}}</div>
+        <div (click)="showLogout()">{{ user.displayName ? user.displayName : user.email }}</div>
       </a>
     </div>
   </div>
