@@ -4,11 +4,13 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "start:os": "http-server dist/Codex-Bruxellensis-Webapp/",
-    "pwa": "ng build --prod & http-server -c-1 dist/Codex-Bruxellensis-Webapp/",
-    "pwa:serve": "http-server -c-1 dist/Codex-Bruxellensis-Webapp/",
+    "start:os": "http-server dist/",
+    "pwa": "ng build --prod & http-server -c-1 dist/",
+    "pwa:serve": "http-server -c-1 dist/",
     "build": "ng build",
     "build:prod": "ng build --prod",
+    "deploy": "npm run build && sls client deploy",
+    "undeploy": "sls client remove",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -57,6 +59,7 @@
     "karma-jasmine": "~2.0.1",
     "karma-jasmine-html-reporter": "^1.4.0",
     "protractor": "~5.4.0",
+    "serverless-finch": "^2.4.3",
     "ts-node": "~7.0.0",
     "tslint": "~5.15.0",
     "typescript": "~3.4.3"
