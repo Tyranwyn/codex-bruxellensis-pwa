@@ -45,30 +45,6 @@ export class SongListComponent implements OnInit {
     private auth: AngularFireAuth,
     public fb: FormBuilder,
   ) {
-    this.editSongForm = fb.group({
-      category: new FormControl('', []),
-      page: new FormControl('', []),
-      title: new FormControl('', []),
-      bgInfo: new FormControl('', []),
-      lyrics: new FormControl('', []),
-      associationName: new FormControl('', []),
-      associationInfo: new FormControl('', []),
-      battleCryName: new FormControl('', []),
-      battleCryInfo: new FormControl('', []),
-      battleCry: new FormControl('', [])
-    });
-    this.addSongForm = fb.group({
-      category: new FormControl('', []),
-      page: new FormControl('', []),
-      title: new FormControl('', []),
-      bgInfo: new FormControl('', []),
-      lyrics: new FormControl('', []),
-      associationName: new FormControl('', []),
-      associationInfo: new FormControl('', []),
-      battleCryName: new FormControl('', []),
-      battleCryInfo: new FormControl('', []),
-      battleCry: new FormControl('', [])
-    });
     titleService.setTitle(environment.title);
     auth.user
       .subscribe(user => {
@@ -82,6 +58,34 @@ export class SongListComponent implements OnInit {
 
   ngOnInit() {
     this.categories = Object.keys(Category);
+    this.initializeForms();
+  }
+
+  initializeForms() {
+    this.editSongForm = this.fb.group({
+      category: new FormControl('', []),
+      page: new FormControl('', []),
+      title: new FormControl('', []),
+      bgInfo: new FormControl('', []),
+      lyrics: new FormControl('', []),
+      associationName: new FormControl('', []),
+      associationInfo: new FormControl('', []),
+      battleCryName: new FormControl('', []),
+      battleCryInfo: new FormControl('', []),
+      battleCry: new FormControl('', [])
+    });
+    this.addSongForm = this.fb.group({
+      category: new FormControl('', []),
+      page: new FormControl('', []),
+      title: new FormControl('', []),
+      bgInfo: new FormControl('', []),
+      lyrics: new FormControl('', []),
+      associationName: new FormControl('', []),
+      associationInfo: new FormControl('', []),
+      battleCryName: new FormControl('', []),
+      battleCryInfo: new FormControl('', []),
+      battleCry: new FormControl('', [])
+    });
   }
 
   capitalize(text) {
@@ -105,7 +109,7 @@ export class SongListComponent implements OnInit {
   }
 
   isSongFavorite(id: string): boolean {
-    if (this.userData.favorites) {
+    if (this.userData && this.userData.favorites) {
       return !!this.userData.favorites.find(ref => ref.id === id);
     }
     return false;
