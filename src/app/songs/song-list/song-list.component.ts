@@ -63,28 +63,28 @@ export class SongListComponent implements OnInit {
 
   initializeForms() {
     this.editSongForm = this.fb.group({
-      category: new FormControl('', []),
-      page: new FormControl('', []),
-      title: new FormControl('', []),
-      bgInfo: new FormControl('', []),
-      lyrics: new FormControl('', []),
-      associationName: new FormControl('', []),
-      associationInfo: new FormControl('', []),
-      battleCryName: new FormControl('', []),
-      battleCryInfo: new FormControl('', []),
-      battleCry: new FormControl('', [])
+      category: '',
+      page: '',
+      title: '',
+      bgInfo: '',
+      lyrics: '',
+      associationName: '',
+      associationInfo: '',
+      battleCryName: '',
+      battleCryInfo: '',
+      battleCry: '',
     });
     this.addSongForm = this.fb.group({
-      category: new FormControl('', []),
-      page: new FormControl('', []),
-      title: new FormControl('', []),
-      bgInfo: new FormControl('', []),
-      lyrics: new FormControl('', []),
-      associationName: new FormControl('', []),
-      associationInfo: new FormControl('', []),
-      battleCryName: new FormControl('', []),
-      battleCryInfo: new FormControl('', []),
-      battleCry: new FormControl('', [])
+      category: '',
+      page: '',
+      title: '',
+      bgInfo: '',
+      lyrics: '',
+      associationName: '',
+      associationInfo: '',
+      battleCryName: '',
+      battleCryInfo: '',
+      battleCry: ''
     });
   }
 
