@@ -1,29 +1,50 @@
-<div class="buttons" *ngIf="loginByEmail == false; else emailLogin">
-  <a class="button" *ngFor="let provider of authProviders | enumToArray" (click)="login(provider)">{{provider}}</a>
-  <a class="button" (click)="loginByEmail = true">Email</a>
-</div>
-<ng-template #emailLogin>
-  <div class="field">
-    <div class="control has-icons-left">
-      <input class="input" [(ngModel)]="email" type="email" placeholder="Email">
-      <span class="icon is-small is-left">
-        <fa-icon [icon]="['far', 'envelope']"></fa-icon>
-      </span>
-    </div>
-  </div>
-  <div class="field">
-    <div class="control has-icons-left">
-      <input class="input" [(ngModel)]="password" type="password" placeholder="Password">
-      <span class="icon is-small is-left">
-        <fa-icon [icon]="['fas', 'lock']"></fa-icon>
-      </span>
-    </div>
-  </div>
-  <a class="button is-primary" (click)="login('EmailLogin')">Login</a>
-  <a class="button is-info" (click)="login('EmailSignup')">Signup</a>
-  <a class="button" (click)="loginByEmail = false">Back</a>
-</ng-template>
-<div class="notification is-danger" *ngIf="error">
-  <button class="delete" (click)="error = null"></button>
-  {{error.message}}
-</div>
+<main class="login-main">
+    <div class="login-container" [ngStyle]="style">
+        <div class="card login-card">
+          <div class="card-image">
+            <figure class="image">
+              <img class="svg logo" src="assets/codexbxl-icon.png"
+                alt="Logo">
+            </figure>
+          </div>
+          <div class="card-content">
+              <div class="notification is-danger" *ngIf="error">
+                  <button class="delete" (click)="error = null"></button>
+                  {{error.message}}
+                </div>
+            <div class="content">
+                <div class="field">
+                    <div class="control has-icons-left">
+                      <input class="input" [(ngModel)]="email" type="email" placeholder="Email">
+                      <span class="icon is-small is-left">
+                        <fa-icon [icon]="['far', 'envelope']"></fa-icon>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="field">
+                    <div class="control has-icons-left">
+                      <input class="input" [(ngModel)]="password" type="password" placeholder="Password">
+                      <span class="icon is-small is-left">
+                        <fa-icon [icon]="['fas', 'lock']"></fa-icon>
+                      </span>
+                    </div>
+                  </div>
+                <div class="field">
+                  <div class="control center login">
+                      <a class="button is-primary" (click)="login('EmailLogin')">Login</a>
+                      <a class="button is-light" (click)="login('EmailSignup')">Signup</a>
+                  </div>
+                </div>
+                <div class="providers">
+                    <a *ngFor="let provider of authProviders | enumToArray" (click)="login(provider)">
+                        <i class="fab fa-{{provider.toLowerCase()}}"></i>
+                    </a>
+                </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+</main>
+

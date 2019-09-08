@@ -9,6 +9,7 @@ import { UserDataService } from '../../services/user-data.service';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { UserData } from '../../models/user-data';
 import { AccountType } from '../../models/account-type.enum';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-song-detail',
@@ -21,11 +22,14 @@ export class SongDetailComponent implements OnInit {
   $song: Observable<Song>;
   userData: UserData;
 
-  constructor(private route: ActivatedRoute,
-              private songService: SongService,
-              private titleService: Title,
-              private userDataService: UserDataService,
-              private auth: AngularFireAuth) {
+  constructor(
+    private route: ActivatedRoute,
+    private songService: SongService,
+    private titleService: Title,
+    private userDataService: UserDataService,
+    private auth: AngularFireAuth,
+    private location: Location
+  ) {
     auth.user
       .subscribe(user => {
           if (user) {
@@ -67,4 +71,9 @@ export class SongDetailComponent implements OnInit {
   canModifySong(): boolean {
     return this.userData && this.userData.accountType === AccountType.ADMIN;
   }
+
+  back() {
+    this.location.back();
+  }
+
 }

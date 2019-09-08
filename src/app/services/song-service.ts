@@ -21,7 +21,7 @@ export class SongService {
   }
 
   getSongsByCategory(category: string): Observable<Song[]> {
-    return this.afs.collection<Song>(environment.databases.songs, ref => ref.where('category', '==', category))
+    return this.afs.collection<Song>(environment.databases.songs, ref => ref.where('category', '==', category).orderBy('page'))
       .valueChanges({idField: 'id'});
   }
 
@@ -40,5 +40,9 @@ export class SongService {
 
   updateSong(id: string, song: any): Promise<void> {
     return this.songCollection.doc<Song>(id).update(song);
+  }
+
+  deleteSong(id: string): Promise<void> {
+    return this.songCollection.doc<Song>(id).delete();
   }
 }
