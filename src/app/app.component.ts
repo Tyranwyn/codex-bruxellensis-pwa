@@ -10,9 +10,11 @@ import { SwUpdate } from '@angular/service-worker';
 })
 export class AppComponent implements OnInit {
 
-  constructor(auth: AngularFireAuth,
-              userDataService: UserDataService,
-              private swUpdate: SwUpdate) {
+  constructor(
+    auth: AngularFireAuth,
+    userDataService: UserDataService,
+    private swUpdate: SwUpdate
+  ) {
     auth.user.subscribe(user => userDataService.setUserData(user));
   }
 
