@@ -12,4 +12,6 @@ dev:
     - npm run deploy
   only:
     - develop
+  tags:
+    - bash
 
