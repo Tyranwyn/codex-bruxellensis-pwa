@@ -8,6 +8,7 @@ cache:
 
 dev:
   script:
+    - echo $FIREBASE_CRED_DEV > src/app/firebase-config.ts
     - npm install
     - npm run deploy
   only:
