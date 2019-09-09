@@ -1,0 +1,19 @@
+image: node:latest
+
+# This folder is cached between builds
+# http://docs.gitlab.com/ce/ci/yaml/README.html#cache
+cache:
+  paths:
+    - node_modules/
+
+dev:
+  script:
+    - mv $FIREBASE_CRED_DEV src/app/firebase-config.ts
+    - cat src/app/firebase-config.ts
+    - npm install
+    - npm run deploy
+  only:
+    - develop
+  tags:
+    - bash
+
