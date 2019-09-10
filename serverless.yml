@@ -1,4 +1,4 @@
-service: beta.codex.brussels
+service: ${env:SERVICE_NAME}
 provider:
   name: aws
   runtime: nodejs8.10
@@ -7,7 +7,7 @@ provider:
 plugins:
   - serverless-finch
 custom:
-  siteName: beta.codex.brussels
+  siteName: ${env:SERVICE_NAME}
   client:
     bucketName: ${self:custom.siteName}
     distributionFolder: dist

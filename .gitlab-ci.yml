@@ -6,10 +6,11 @@ cache:
   paths:
     - node_modules/
 
-dev:
+deploy_dev:
+  variables:
+    SERVICE_NAME: beta.codex.brussels
   script:
-    - mv $FIREBASE_CRED_DEV src/app/firebase-config.ts
-    - cat src/app/firebase-config.ts
+    - mv $FIREBASE_CRED src/app/firebase-config.ts
     - npm install
     - npm run deploy
   only:
@@ -17,3 +18,14 @@ dev:
   tags:
     - bash
 
+deploy_prd:
+  variables:
+    SERVICE_NAME: codex.brussels
+  script:
+    - mv $FIREBASE_CRED src/app/firebase-config.ts
+    - npm install
+    - npm run deploy:prd
+  only:
+    - master
+  tags:
+    - bash
