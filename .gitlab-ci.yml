@@ -1,15 +1,10 @@
-image: node:latest
-
-# This folder is cached between builds
-# http://docs.gitlab.com/ce/ci/yaml/README.html#cache
 cache:
   paths:
     - node_modules/
 
-default:
-  before_script:
+before_script:
     - mv $FIREBASE_CRED src/app/firebase-config.ts
-
+    
 deploy_dev:
   variables:
     SERVICE_NAME: beta.codex.brussels
