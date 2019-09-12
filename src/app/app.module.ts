@@ -23,6 +23,8 @@ import { environment } from '../environments/environment';
 import { EditableTitleComponent } from './common/editable-title/editable-title.component';
 import { EditableTextComponent } from './common/editable-lyrics/editable-text.component';
 import { AutosizeModule } from 'ngx-autosize';
+import { StoreModule } from '@ngrx/store';
+import { reducers, metaReducers } from './reducers';
 
 @NgModule({
   declarations: [
@@ -47,7 +49,14 @@ import { AutosizeModule } from 'ngx-autosize';
     AppRoutingModule,
     FontAwesomeModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
-    AutosizeModule
+    AutosizeModule,
+    StoreModule.forRoot(reducers, {
+      metaReducers,
+      runtimeChecks: {
+        strictStateImmutability: true,
+        strictActionImmutability: true
+      }
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]
