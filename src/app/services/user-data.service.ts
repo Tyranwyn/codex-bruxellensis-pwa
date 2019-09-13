@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { UserData } from '../models/user-data';
 import { environment } from '../../environments/environment';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AccountType } from '../models/account-type.enum';
 import { EMPTY, Observable } from 'rxjs';
 import * as firebase from 'firebase';
 import { User } from 'firebase';
-import { SongService } from './song-service';
+import { SongService } from '../songs/services/song-service';
+import { UserData } from '../models/user-data';
 
 @Injectable({
   providedIn: 'root'

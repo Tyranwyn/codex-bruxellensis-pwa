@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { Category } from '../../models/category.enum';
 import { Router } from '@angular/router';
+import { Category } from '../../songs/models/category.enum';
 
 @Component({
   selector: 'app-navbar',

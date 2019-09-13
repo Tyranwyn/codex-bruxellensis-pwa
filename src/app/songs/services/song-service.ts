@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, DocumentReference } from '@angular/fire/firestore';
-import { Song } from '../models/song';
 import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
+import { Song } from '../models/song';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'

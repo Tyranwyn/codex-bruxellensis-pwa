@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Song } from '../../models/song';
-import { SongService } from '../../services/song-service';
 import { map } from 'rxjs/operators';
 import { Title } from '@angular/platform-browser';
 import { environment } from '../../../environments/environment';
@@ -11,7 +9,9 @@ import { UserData } from '../../models/user-data';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AccountType } from 'src/app/models/account-type.enum';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { Category } from 'src/app/models/category.enum';
+import { Song } from '../models/song';
+import { SongService } from '../services/song-service';
+import { Category } from '../models/category.enum';
 
 @Component({
   selector: 'app-song-list',

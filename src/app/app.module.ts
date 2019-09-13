@@ -11,52 +11,44 @@ import { NavbarComponent } from './common/navbar/navbar.component';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { EnumToArrayPipe } from './tools/enum-to-array-pipe';
 import { LoginComponent } from './login/login.component';
-import { SongsComponent } from './songs/songs.component';
-import { SongListComponent } from './songs/song-list/song-list.component';
-import { SongDetailComponent } from './songs/song-detail/song-detail.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faEnvelope, faStar, faSave } from '@fortawesome/free-regular-svg-icons';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faLock, faSearch, faStar as solidStar, faEdit, faUser } from '@fortawesome/free-solid-svg-icons';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
-import { EditableTitleComponent } from './common/editable-title/editable-title.component';
-import { EditableTextComponent } from './common/editable-lyrics/editable-text.component';
 import { AutosizeModule } from 'ngx-autosize';
 import { StoreModule } from '@ngrx/store';
-import { reducers, metaReducers } from './reducers';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { reducer } from './state/user-data.reducer';
+import { SongsModule } from './songs/songs.module';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faEnvelope, faSave, faStar } from '@fortawesome/free-regular-svg-icons';
+import { faEdit, faLock, faSearch, faStar as solidStar, faUser } from '@fortawesome/free-solid-svg-icons';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
     EnumToArrayPipe,
-    LoginComponent,
-    SongsComponent,
-    SongListComponent,
-    SongDetailComponent,
-    EditableTitleComponent,
-    EditableTextComponent
+    LoginComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
+    FontAwesomeModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireAuthModule,
     AngularFirestoreModule.enablePersistence(),
     AppRoutingModule,
-    FontAwesomeModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     AutosizeModule,
-    StoreModule.forRoot(reducers, {
-      metaReducers,
-      runtimeChecks: {
-        strictStateImmutability: true,
-        strictActionImmutability: true
-      }
-    })
+    StoreModule.forRoot(reducer),
+    StoreDevtoolsModule.instrument({
+      name: 'Codex Bruxellensis',
+      maxAge: 25,
+      logOnly: environment.production
+    }),
+    SongsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

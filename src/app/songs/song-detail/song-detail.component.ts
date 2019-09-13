@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { SongService } from '../../services/song-service';
 import { Observable } from 'rxjs';
-import { Song } from '../../models/song';
 import { switchMap } from 'rxjs/operators';
 import { Title } from '@angular/platform-browser';
 import { UserDataService } from '../../services/user-data.service';
@@ -10,6 +8,8 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { UserData } from '../../models/user-data';
 import { AccountType } from '../../models/account-type.enum';
 import { Location } from '@angular/common';
+import { Song } from '../models/song';
+import { SongService } from '../services/song-service';
 
 @Component({
   selector: 'app-song-detail',
