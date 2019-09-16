@@ -8,6 +8,8 @@ export enum SongActionTypes {
   AddSong = '[Songs List] Add song',
   RemoveSong = '[Song] Remove song',
   EditSong = '[Song] Edit song',
+  EditSongSuccess = '[Song] Edit song success',
+  EditSongFail = '[Song] Edit song fail',
   Load = '[Songs List] Load all songs',
   LoadSuccess = '[Songs List] Load success',
   LoadFail = '[Songs List] Load error'
@@ -31,7 +33,7 @@ export class InitializeCurrentSong implements Action {
 export class AddSong implements Action {
   readonly type = SongActionTypes.AddSong;
 
-  constructor(public payload: Song) {
+  constructor(public payload: any) {
   }
 }
 
@@ -45,7 +47,21 @@ export class RemoveSong implements Action {
 export class EditSong implements Action {
   readonly type = SongActionTypes.EditSong;
 
-  constructor(public payload: Song) {
+  constructor(public id, public payload: any) {
+  }
+}
+
+export class EditSongSuccess implements Action {
+  readonly type = SongActionTypes.EditSongSuccess;
+
+  constructor(public payload: string) {
+  }
+}
+
+export class EditSongFail implements Action {
+  readonly type = SongActionTypes.EditSongFail;
+
+  constructor(public payload: string) {
   }
 }
 
@@ -73,6 +89,8 @@ export type SongActions = SetCurrentSong
   | AddSong
   | RemoveSong
   | EditSong
+  | EditSongSuccess
+  | EditSongFail
   | Load
   | LoadSuccess
   | LoadFail;

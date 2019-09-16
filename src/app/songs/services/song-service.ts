@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, DocumentReference } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { from, Observable } from 'rxjs';
 import { Song } from '../models/song';
 import { environment } from '../../../environments/environment';
 
@@ -34,15 +34,15 @@ export class SongService {
     return this.songCollection.doc<Song>(id).ref;
   }
 
-  addSong(song: Song): Promise<DocumentReference> {
-    return this.songCollection.add(song);
+  addSong(song: Song): Observable<DocumentReference> {
+    return from(this.songCollection.add(song));
   }
 
-  updateSong(id: string, song: any): Promise<void> {
-    return this.songCollection.doc<Song>(id).update(song);
+  updateSong(id: string, song: any): Observable<void> {
+    return from(this.songCollection.doc<Song>(id).update(song));
   }
 
-  deleteSong(id: string): Promise<void> {
-    return this.songCollection.doc<Song>(id).delete();
+  deleteSong(id: string): Observable<void> {
+    return from(this.songCollection.doc<Song>(id).delete());
   }
 }
