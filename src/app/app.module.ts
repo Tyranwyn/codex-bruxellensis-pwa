@@ -22,6 +22,7 @@ import { SongsModule } from './songs/songs.module';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faEnvelope, faSave, faStar } from '@fortawesome/free-regular-svg-icons';
 import { faEdit, faLock, faSearch, faStar as solidStar, faUser } from '@fortawesome/free-solid-svg-icons';
+import { EffectsModule } from '@ngrx/effects';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { faEdit, faLock, faSearch, faStar as solidStar, faUser } from '@fortawes
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     AutosizeModule,
     StoreModule.forRoot(reducer),
+    EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument({
       name: 'Codex Bruxellensis',
       maxAge: 25,

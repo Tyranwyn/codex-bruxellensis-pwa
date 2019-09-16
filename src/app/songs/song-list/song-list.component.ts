@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, takeWhile } from 'rxjs/operators';
 import { Title } from '@angular/platform-browser';
 import { environment } from '../../../environments/environment';
 import { ActivatedRoute, ParamMap } from '@angular/router';
@@ -8,12 +8,13 @@ import { UserDataService } from '../../services/user-data.service';
 import { UserData } from '../../models/user-data';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AccountType } from 'src/app/models/account-type.enum';
-import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Song } from '../models/song';
 import { SongService } from '../services/song-service';
 import { Category } from '../models/category.enum';
 import { select, Store } from '@ngrx/store';
-import * as fromSongs from '../state/songs-state.reducer';
+import * as fromSong from '../state/song.reducer';
+import * as songAction from '../state/song.actions';
 
 @Component({
   selector: 'app-song-list',
@@ -22,8 +23,8 @@ import * as fromSongs from '../state/songs-state.reducer';
 })
 export class SongListComponent implements OnInit {
 
-  $songs: Observable<Song[]>;
-  songs: Song[];
+  songs$: Observable<Song[]>;
+  errormessage$: Observable<string>;
   filter: string;
   userData: UserData;
 
@@ -35,11 +36,6 @@ export class SongListComponent implements OnInit {
   songToEdit: any = {};
   categories: any[] = [];
 
-  filterSongs = (song: Song) => {
-    const filterString = '' + song.page + song.title + song.battleCryName + song.associationName;
-    return filterString.toLowerCase().indexOf(this.filter.toLowerCase()) !== -1;
-  }
-
   constructor(
     private songService: SongService,
     private titleService: Title,
@@ -47,7 +43,7 @@ export class SongListComponent implements OnInit {
     private userDataService: UserDataService,
     private auth: AngularFireAuth,
     public fb: FormBuilder,
-    private store: Store<fromSongs.State>
+    private store: Store<fromSong.State>
   ) {
     titleService.setTitle(environment.title);
     auth.user
@@ -58,8 +54,10 @@ export class SongListComponent implements OnInit {
         }
       );
     // this.route.queryParamMap.subscribe(paramMap => this.songsInit(paramMap));
-    this.store.pipe(select(fromSongs.getSongs))
-      .subscribe(songs => this.songs = songs);
+
+    this.errormessage$ = this.store.pipe(select(fromSong.getError));
+    this.store.dispatch(new songAction.Load());
+    this.songs$ = this.store.pipe(select(fromSong.getSongs));
   }
 
   ngOnInit() {
@@ -100,17 +98,22 @@ export class SongListComponent implements OnInit {
   }
 
   search() {
-    this.$songs = this.$songs.pipe(
+    this.songs$ = this.songs$.pipe(
       map(songs => songs.filter(song => this.filterSongs(song)))
     );
+  }
+
+  filterSongs = (song: Song) => {
+    const filterString = '' + song.page + song.title + song.battleCryName + song.associationName;
+    return filterString.toLowerCase().indexOf(this.filter.toLowerCase()) !== -1;
   }
 
   songsInit(paramMap: ParamMap) {
     const category = paramMap.get('category');
     if (category) {
-      this.$songs = this.songService.getSongsByCategory(category);
+      this.songs$ = this.songService.getSongsByCategory(category);
     } else {
-      this.$songs = this.songService.getAllSongs();
+      this.songs$ = this.songService.getAllSongs();
     }
   }
 
@@ -168,6 +171,4 @@ export class SongListComponent implements OnInit {
   hideAdd() {
     this.showAddModal = false;
   }
-
-
 }

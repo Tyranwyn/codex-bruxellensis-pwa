@@ -1,4 +1,4 @@
-import { reducer, initialState } from './songs-state.reducer';
+import { reducer, initialState } from './song.reducer';
 
 describe('SongsState Reducer', () => {
   describe('an unknown action', () => {
