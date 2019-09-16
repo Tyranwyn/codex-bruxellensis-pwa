@@ -99,11 +99,11 @@ export class SongListComponent implements OnInit {
 
   search() {
     this.songs$ = this.songs$.pipe(
-      map(songs => songs.filter(song => this.filterSongs(song)))
+      map(songs => songs.filter(song => this.filterSongsByPageTitleBattleCryNameOrAssociationName(song)))
     );
   }
 
-  filterSongs = (song: Song) => {
+  filterSongsByPageTitleBattleCryNameOrAssociationName = (song: Song) => {
     const filterString = '' + song.page + song.title + song.battleCryName + song.associationName;
     return filterString.toLowerCase().indexOf(this.filter.toLowerCase()) !== -1;
   }
