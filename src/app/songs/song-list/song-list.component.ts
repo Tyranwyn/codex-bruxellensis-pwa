@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map, takeWhile } from 'rxjs/operators';
+import { map, filter } from 'rxjs/operators';
 import { Title } from '@angular/platform-browser';
 import { environment } from '../../../environments/environment';
 import { ActivatedRoute, ParamMap } from '@angular/router';
@@ -53,11 +53,10 @@ export class SongListComponent implements OnInit {
           }
         }
       );
-    // this.route.queryParamMap.subscribe(paramMap => this.songsInit(paramMap));
-
     this.errormessage$ = this.store.pipe(select(fromSong.getError));
     this.store.dispatch(new songAction.Load());
     this.songs$ = this.store.pipe(select(fromSong.getSongs));
+    this.route.queryParamMap.subscribe(paramMap => this.filterSongsByCategory(paramMap.get('category')));
   }
 
   ngOnInit() {
@@ -108,13 +107,11 @@ export class SongListComponent implements OnInit {
     return filterString.toLowerCase().indexOf(this.filter.toLowerCase()) !== -1;
   }
 
-  songsInit(paramMap: ParamMap) {
-    const category = paramMap.get('category');
-    if (category) {
-      this.songs$ = this.songService.getSongsByCategory(category);
-    } else {
-      this.songs$ = this.songService.getAllSongs();
-    }
+  filterSongsByCategory = (category: string) => {
+    this.songs$ = this.store.pipe(
+      select(fromSong.getSongs),
+      map(songs => songs.filter(song => song.category.match(category)))
+    );
   }
 
   isSongFavorite(id: string): boolean {
