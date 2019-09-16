@@ -1,5 +1,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { Song } from '../models/song';
+import * as fromRoot from '../../state/app.state';
+import { SongsActions, SongsActionTypes } from './songs.actions';
 
 
 export const songsStateFeatureKey = 'songsState';
@@ -23,10 +25,10 @@ export const getSongs = createSelector(
   state => state.songs
 );
 
-export function reducer(state = initialState, action): SongsState {
+export function reducer(state = initialState, action: SongsActions): SongsState {
   switch (action.type) {
-    case 'INITIALIZE_SONGS':
-      return  {
+    case SongsActionTypes.LoadSongs:
+      return {
         songs: [...action.payload]
       };
     default:

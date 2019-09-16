@@ -12,6 +12,8 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 import { Song } from '../models/song';
 import { SongService } from '../services/song-service';
 import { Category } from '../models/category.enum';
+import { select, Store } from '@ngrx/store';
+import * as fromSongs from '../state/songs-state.reducer';
 
 @Component({
   selector: 'app-song-list',
@@ -21,16 +23,17 @@ import { Category } from '../models/category.enum';
 export class SongListComponent implements OnInit {
 
   $songs: Observable<Song[]>;
+  songs: Song[];
   filter: string;
   userData: UserData;
 
-  public showAddModal = false;
-  public addSongForm: FormGroup;
+  showAddModal = false;
+  addSongForm: FormGroup;
 
-  public showEditModal = false;
-  public editSongForm: FormGroup;
-  public songToEdit: any = {};
-  public categories: any[] = [];
+  showEditModal = false;
+  editSongForm: FormGroup;
+  songToEdit: any = {};
+  categories: any[] = [];
 
   filterSongs = (song: Song) => {
     const filterString = '' + song.page + song.title + song.battleCryName + song.associationName;
@@ -44,6 +47,7 @@ export class SongListComponent implements OnInit {
     private userDataService: UserDataService,
     private auth: AngularFireAuth,
     public fb: FormBuilder,
+    private store: Store<fromSongs.State>
   ) {
     titleService.setTitle(environment.title);
     auth.user
@@ -53,7 +57,9 @@ export class SongListComponent implements OnInit {
           }
         }
       );
-    this.route.queryParamMap.subscribe(paramMap => this.songsInit(paramMap));
+    // this.route.queryParamMap.subscribe(paramMap => this.songsInit(paramMap));
+    this.store.pipe(select(fromSongs.getSongs))
+      .subscribe(songs => this.songs = songs);
   }
 
   ngOnInit() {
