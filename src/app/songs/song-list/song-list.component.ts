@@ -5,7 +5,7 @@ import { Title } from '@angular/platform-browser';
 import { environment } from '../../../environments/environment';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { UserDataService } from '../../services/user-data.service';
-import { UserData } from '../../models/user-data';
+import { ICodexUser } from '../../models/codex-user.model';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AccountType } from 'src/app/models/account-type.enum';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -26,7 +26,7 @@ export class SongListComponent implements OnInit {
   songs$: Observable<Song[]>;
   errormessage$: Observable<string>;
   filter: string;
-  userData: UserData;
+  userData: ICodexUser;
 
   showAddModal = false;
   addSongForm: FormGroup;

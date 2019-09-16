@@ -7,40 +7,47 @@ import { EMPTY, Observable } from 'rxjs';
 import * as firebase from 'firebase';
 import { User } from 'firebase';
 import { SongService } from '../songs/services/song-service';
-import { UserData } from '../models/user-data';
+import { ICodexUser } from '../models/codex-user.model';
+import { Store } from '@ngrx/store';
+import { State } from '../state/app.state';
+import * as userActions from '../state/user.actions';
+import * as fromUser from '../state/user.reducer';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserDataService {
 
-  private userDataCollection: AngularFirestoreCollection<UserData>;
+  private userDataCollection: AngularFirestoreCollection<ICodexUser>;
 
   constructor(private angularFireAuth: AngularFireAuth,
               afs: AngularFirestore,
-              private songService: SongService) {
-    this.userDataCollection = afs.collection<UserData>(environment.databases.userData);
+              private songService: SongService,
+              private store: Store<State>) {
+    this.userDataCollection = afs.collection<ICodexUser>(environment.databases.userData);
   }
 
   setUserData(user: User) {
-    if (user) {
-      const userDataDoc = this.userDataCollection.doc<UserData>(user.uid);
+    /*if (user) {
+      const userDataDoc = this.userDataCollection.doc<ICodexUser>(user.uid);
       userDataDoc.get()
         .subscribe(userData => {
             if (!userData.data()) {
-              const initUserData: UserData = {accountType: AccountType.USER, favorites: []};
+              const initUserData: CodexUser = {accountType: AccountType.USER, favorites: []};
               userDataDoc.set(initUserData).catch(e => console.log(e));
             }
           }
         );
-    }
+    }*/
   }
 
-  getUserData(id: string): Observable<UserData> {
-    if (id) {
-      return this.userDataCollection.doc<UserData>(id)
+  getUserData(id: string): Observable<ICodexUser> {
+    /*if (id) {
+      return this.userDataCollection.doc<ICodexUser>(id)
         .valueChanges();
-    }
+    }*/
+    // this.store.select(fromUser.getUser);
+    // this.store.dispatch(new userActions.LoadUserData());
     return EMPTY;
   }
 
@@ -48,7 +55,7 @@ export class UserDataService {
     this.angularFireAuth.user.subscribe(user => {
       if (user) {
         const favorite = this.songService.getSongReferenceById(id);
-        this.userDataCollection.doc<UserData>(user.uid)
+        this.userDataCollection.doc<ICodexUser>(user.uid)
           .update({
             // @ts-ignore
             favorites: firebase.firestore.FieldValue.arrayUnion(favorite)
@@ -61,7 +68,7 @@ export class UserDataService {
     this.angularFireAuth.user.subscribe(user => {
         if (user) {
           const favorite = this.songService.getSongReferenceById(id);
-          this.userDataCollection.doc<UserData>(user.uid)
+          this.userDataCollection.doc<ICodexUser>(user.uid)
             .update({
               // @ts-ignore
               favorites: firebase.firestore.FieldValue.arrayRemove(favorite)

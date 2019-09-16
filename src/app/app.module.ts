@@ -17,12 +17,13 @@ import { environment } from '../environments/environment';
 import { AutosizeModule } from 'ngx-autosize';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { reducer } from './state/user-data.reducer';
+import { userReducer } from './state/user.reducer';
 import { SongsModule } from './songs/songs.module';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faEnvelope, faSave, faStar } from '@fortawesome/free-regular-svg-icons';
 import { faEdit, faLock, faSearch, faStar as solidStar, faUser } from '@fortawesome/free-solid-svg-icons';
 import { EffectsModule } from '@ngrx/effects';
+import { UserEffects } from './state/user.effects';
 
 @NgModule({
   declarations: [
@@ -43,8 +44,8 @@ import { EffectsModule } from '@ngrx/effects';
     AppRoutingModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     AutosizeModule,
-    StoreModule.forRoot(reducer),
-    EffectsModule.forRoot([]),
+    StoreModule.forRoot(userReducer),
+    EffectsModule.forRoot([UserEffects]),
     StoreDevtoolsModule.instrument({
       name: 'Codex Bruxellensis',
       maxAge: 25,

@@ -12,13 +12,13 @@ export interface State extends fromRoot.State {
 
 export interface SongsState {
   songs: Song[];
-  currendSongId: string | null;
+  currentSongId: string | null;
   error: string;
 }
 
 export const initialState: SongsState = {
   songs: [],
-  currendSongId: null,
+  currentSongId: null,
   error: ''
 };
 
@@ -26,7 +26,7 @@ const getSongFeatureState = createFeatureSelector<SongsState>(songsStateFeatureK
 
 export const getCurrentSongId = createSelector(
   getSongFeatureState,
-  state => state.currendSongId
+  state => state.currentSongId
 );
 
 export const getCurrentSong = createSelector(
@@ -58,17 +58,17 @@ export function reducer(state = initialState, action: SongActions): SongsState {
     case SongActionTypes.SetCurrentSong:
       return {
         ...state,
-        currendSongId: action.payload.id
+        currentSongId: action.payload.id
       };
     case SongActionTypes.ClearCurrentSong:
       return {
         ...state,
-        currendSongId: null
+        currentSongId: null
       };
     case SongActionTypes.InitializeCurrentSong:
         return {
           ...state,
-          currendSongId: '',
+          currentSongId: '',
         };
     case SongActionTypes.LoadSuccess:
       return {

@@ -10,7 +10,6 @@ import { Action } from '@ngrx/store';
 @Injectable()
 export class SongEffects {
 
-
   constructor(private actions$: Actions,
               private songService: SongService) {
   }

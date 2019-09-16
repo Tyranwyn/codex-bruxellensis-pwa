@@ -3,6 +3,9 @@ import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AuthProviders } from '../models/auth-providers.enum';
 import { AuthenticationService } from '../services/authentication.service';
+import { Store } from '@ngrx/store';
+import { State } from '../state/app.state';
+import * as userActions from '../state/user.actions';
 
 @Component({
   selector: 'app-login',
@@ -12,14 +15,14 @@ import { AuthenticationService } from '../services/authentication.service';
 export class LoginComponent implements OnInit {
 
   authProviders = AuthProviders;
-  loginByEmail = false;
+  // loginByEmail = false;
   email;
   password;
   error;
 
   constructor(private router: Router,
               private angularFireAuth: AngularFireAuth,
-              private authService: AuthenticationService) {
+              private store: Store<State>) {
     this.angularFireAuth.user.subscribe(user => {
       if (user) {
         router.navigate(['']);
@@ -31,7 +34,7 @@ export class LoginComponent implements OnInit {
   }
 
   login(provider: string) {
-    try {
+    /*try {
       if (provider.startsWith('Email')) {
         this.authService.login(provider, this.email, this.password);
       } else {
@@ -39,6 +42,7 @@ export class LoginComponent implements OnInit {
       }
     } catch (e) {
       this.error = e;
-    }
+    }*/
+    this.store.dispatch(new userActions.GoogleLogin());
   }
 }

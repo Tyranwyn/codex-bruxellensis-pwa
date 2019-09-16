@@ -8,11 +8,11 @@
       </div>
     </a>
 
-    <a class="login-mobile" routerLink="/login" *ngIf="!(angularFireAuth.user | async)" (click)="active($event)">
+    <a class="login-mobile" routerLink="/login" *ngIf="!(user$ | async)" (click)="active($event)">
         <fa-icon [icon]="['fas', 'user']"></fa-icon>
     </a>
 
-    <a class="login-mobile" *ngIf="angularFireAuth.user | async as user" (click)="active($event)" (click)="showLogout()">
+    <a class="login-mobile" *ngIf="user$ | async as user" (click)="active($event)" (click)="showLogout()">
       <fa-icon [icon]="['fas', 'user']"></fa-icon>
   </a>
 
@@ -34,19 +34,19 @@
         {{ capitalize(category) }}
       </a>
 
-      <a class="navbar-item login-button" routerLink="/login" *ngIf="!(angularFireAuth.user | async)"
+      <a class="navbar-item login-button" routerLink="/login" *ngIf="!(user$ | async)"
         (click)="active($event)">
         <div>Login</div>
       </a>
 
-      <a class="navbar-item login-button" *ngIf="angularFireAuth.user | async as user" (click)="active($event)">
+      <a class="navbar-item login-button" *ngIf="user$ | async as user" (click)="active($event)">
         <div (click)="showLogout()">{{ user.displayName ? user.displayName : user.email }}</div>
       </a>
     </div>
   </div>
 </nav>
 
-<div *ngIf="angularFireAuth.user | async as user" class="modal {{ showLogoutModal ? 'is-active' : '' }}">
+<div *ngIf="user$ | async as user" class="modal {{ showLogoutModal ? 'is-active' : '' }}">
   <div class="modal-background"></div>
   <div class="modal-card">
     <header class="modal-card-head">
