@@ -1,30 +1,20 @@
 import * as userActions from './user.actions';
 import { User } from '../models/user.model';
-import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { UserData } from '../models/user-data.model';
+import { createSelector } from '@ngrx/store';
+import { getUserFeatureState } from './app.state';
 
-export const userStateFeatureKey = 'userState';
+const defaultUser: User = {
+  uid: null,
+  displayName: 'GUEST',
+  email: null
+};
 
-export interface UserState {
-  user: User;
-  userData: UserData;
-}
-
-const defaultUser = new User(null, 'GUEST', null);
-
-const getUserFeatureState = createFeatureSelector<UserState>(userStateFeatureKey);
-
-const getUser = createSelector(
+export const getUser = createSelector(
   getUserFeatureState,
   state => state.user
 );
 
-const getUserData = createSelector(
-  getUserFeatureState,
-  state => state.userData
-);
-
-export function userReducer(state = defaultUser, action: userActions.All) {
+export function userReducer(state: User = defaultUser, action: userActions.All): User {
   switch (action.type) {
     case userActions.GET_USER:
       return {...state, loading: true};
@@ -40,3 +30,4 @@ export function userReducer(state = defaultUser, action: userActions.All) {
       return {...state, loading: true};
   }
 }
+

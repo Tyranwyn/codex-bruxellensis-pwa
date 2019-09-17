@@ -6,11 +6,9 @@ import { Action } from '@ngrx/store';
 
 import * as userActions from './user.actions';
 import { catchError, map, switchMap } from 'rxjs/operators';
-import { User } from '../models/user.model';
-import * as firebase from 'firebase';
-import UserCredential = firebase.auth.UserCredential;
-import { AuthProviders } from '../models/auth-providers.enum';
 import { auth } from 'firebase';
+import { AuthProviders } from '../models/auth-providers.enum';
+import UserCredential = firebase.auth.UserCredential;
 
 @Injectable()
 export class UserEffects {
@@ -25,7 +23,7 @@ export class UserEffects {
     switchMap(payload => this.afAuth.authState),
     map(authData => {
       if (authData) {
-        const user = new User(authData.uid, authData.displayName, authData.email);
+        const user = { uid: authData.uid, displayName: authData.displayName, email: authData.email };
         return new userActions.Authenticated(user);
       } else {
         return new userActions.NotAuthenticated();

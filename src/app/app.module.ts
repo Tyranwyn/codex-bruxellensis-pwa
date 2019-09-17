@@ -24,6 +24,7 @@ import { faEnvelope, faSave, faStar } from '@fortawesome/free-regular-svg-icons'
 import { faEdit, faLock, faSearch, faStar as solidStar, faUser } from '@fortawesome/free-solid-svg-icons';
 import { EffectsModule } from '@ngrx/effects';
 import { UserEffects } from './state/user.effects';
+import { userDataReducer } from './state/user-data.reducer';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,7 @@ import { UserEffects } from './state/user.effects';
     AppRoutingModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     AutosizeModule,
-    StoreModule.forRoot(userReducer),
+    StoreModule.forRoot([userReducer, userDataReducer]),
     EffectsModule.forRoot([UserEffects]),
     StoreDevtoolsModule.instrument({
       name: 'Codex Bruxellensis',
