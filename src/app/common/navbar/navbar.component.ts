@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Category } from '../../songs/models/category.enum';
 import { Observable } from 'rxjs';
-import { CodexUser } from '../../models/codex-user.model';
+import { User } from '../../models/user.model';
 import { Store } from '@ngrx/store';
 import { State } from '../../state/app.state';
 import * as fromUser from '../../state/user.reducer';
@@ -17,7 +17,7 @@ export class NavbarComponent implements OnInit {
 
   categories = Category;
   public showLogoutModal = false;
-  user$: Observable<CodexUser>;
+  user$: Observable<User>;
 
   constructor(
     // public angularFireAuth: AngularFireAuth,

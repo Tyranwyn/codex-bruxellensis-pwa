@@ -5,7 +5,7 @@ import { switchMap } from 'rxjs/operators';
 import { Title } from '@angular/platform-browser';
 import { UserDataService } from '../../services/user-data.service';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { ICodexUser } from '../../models/codex-user.model';
+import { IUser } from '../../models/user.model';
 import { AccountType } from '../../models/account-type.enum';
 import { Location } from '@angular/common';
 import { Song } from '../models/song';
@@ -20,7 +20,7 @@ export class SongDetailComponent implements OnInit {
 
   songId: string;
   $song: Observable<Song>;
-  userData: ICodexUser;
+  userData: IUser;
 
   constructor(
     private route: ActivatedRoute,

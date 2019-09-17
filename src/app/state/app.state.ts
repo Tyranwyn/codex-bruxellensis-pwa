@@ -1,5 +1,5 @@
-import { CodexUser } from '../models/codex-user.model';
+import { UserState } from './user.reducer';
 
 export interface State {
-  userState: CodexUser;
+  userState: UserState;
 }
