@@ -1,8 +1,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { Song } from '../models/song';
 import * as fromRoot from '../../state/app.state';
-import { SongActions, SongActionTypes } from './song.actions';
-
+import * as songActions from './song.actions';
 
 export const songsStateFeatureKey = 'songsState';
 
@@ -16,7 +15,7 @@ export interface SongsState {
   error: string;
 }
 
-export const initialState: SongsState = {
+export const defaultState: SongsState = {
   songs: [],
   currentSongId: null,
   error: ''
@@ -53,33 +52,32 @@ export const getError = createSelector(
   state => state.error
 );
 
-export function reducer(state = initialState, action: SongActions): SongsState {
+export function reducer(state = defaultState, action: songActions.All): SongsState {
   switch (action.type) {
-    case SongActionTypes.SetCurrentSong:
+    case songActions.SET_CURRENT_SONG:
       return {
         ...state,
         currentSongId: action.payload.id
       };
-    case SongActionTypes.ClearCurrentSong:
+    case songActions.CLEAR_CURRENT_SONG:
       return {
         ...state,
         currentSongId: null
       };
-    case SongActionTypes.InitializeCurrentSong:
+    case songActions.INITIALIZE_CURRENT_SONG:
         return {
           ...state,
           currentSongId: '',
         };
-    case SongActionTypes.LoadSuccess:
+    case songActions.LOAD_SUCCESS:
       return {
         ...state,
         songs: action.payload,
         error: ''
       };
-    case SongActionTypes.LoadFail:
+    case songActions.LOAD_FAIL:
       return {
-        ...state,
-        songs: [],
+        ...defaultState,
         error: action.payload
       };
     default:

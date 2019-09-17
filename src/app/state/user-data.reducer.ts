@@ -4,7 +4,7 @@ import { createSelector } from '@ngrx/store';
 import { getUserFeatureState } from './app.state';
 import * as userDataActions from './user-data.actions';
 
-const defaultUserData: UserData = {
+export const defaultUserData: UserData = {
   accountType: AccountType.USER,
   favorites: []
 };
@@ -48,5 +48,7 @@ export function userDataReducer(state: UserData = defaultUserData, action: userD
         ...state,
         error: action.payload
       };
+    default:
+      return state;
   }
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
+import { act, Actions, Effect, ofType } from '@ngrx/effects';
 import { SongService } from '../services/song-service';
 import * as songActions from './song.actions';
 import { catchError, map, mergeMap } from 'rxjs/operators';
@@ -16,21 +16,24 @@ export class SongEffects {
 
   @Effect()
   loadSongs$: Observable<Action> = this.actions$.pipe(
-    ofType(songActions.SongActionTypes.Load),
-    mergeMap((action: songActions.SongActionTypes.Load) => this.songService.getAllSongs().pipe(
+    ofType(songActions.LOAD),
+    mergeMap((action: songActions.Load) => this.songService.getAllSongs().pipe(
       map((songs: Song[]) => new songActions.LoadSuccess(songs)),
       catchError(err => of(new songActions.LoadFail(err)))
     ))
   );
 
-  @Effect()
+  /*@Effect()
   updateSong$: Observable<Action> = this.actions$.pipe(
-    ofType(songActions.SongActionTypes.EditSong),
-    map((action: songActions.EditSong) => action.payload),
+    ofType(songActions.EDIT_SONG),
+    mergeMap((action: songActions.EditSong) => this.songService.updateSong(action.payload.id, action.payload.song)
+      .pipe(
+        map(() => new songActions.EditSongSuccess())
+      )
+    ),
     map((id: string, value: any) => {
-        this.songService.updateSong(id, value);
         return new songActions.EditSongSuccess(id);
       }
     )
-  );
+  );*/
 }
