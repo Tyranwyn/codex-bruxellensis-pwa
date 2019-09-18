@@ -26,7 +26,7 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.user$ = this.store.select(fromUserState.userSelector);
+    this.user$ = this.store.select(fromUserState.getUser);
   }
 
   active(event) {
@@ -70,7 +70,6 @@ export class NavbarComponent implements OnInit {
 
   logout() {
     this.showLogoutModal = false;
-    // this.angularFireAuth.auth.signOut();
     this.store.dispatch(new userActions.Logout());
   }
 

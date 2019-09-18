@@ -17,7 +17,7 @@ export function reducer(state: User = defaultUser, action: userActions.All): Use
     case userActions.AUTHENTICATED:
       return {...state, ...action.payload, loading: false};
     case userActions.NOT_AUTHENTICATED:
-      return {...defaultUser, loading: false};
+      return {...state, ...defaultUser, loading: false};
     case userActions.LOGIN:
       return {...state, loading: true};
     case userActions.AUTH_ERROR:

@@ -7,10 +7,9 @@ import { Action } from '@ngrx/store';
 import * as userActions from './user.actions';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { auth } from 'firebase';
-import UserCredential = firebase.auth.UserCredential;
 import { AuthProviders } from '../../auth-providers.enum';
-import { User } from '../../user';
 import { UserDataService } from '../../user-data.service';
+import UserCredential = firebase.auth.UserCredential;
 
 @Injectable()
 export class UserEffects {
@@ -29,23 +28,19 @@ export class UserEffects {
         return this.userDataService.getUserData(authData.uid)
           .pipe(
             map(userData => {
-              const user: User = {
-                uid: authData.uid,
-                displayName: authData.displayName,
-                email: authData.email,
-                accountType: userData.accountType,
-                favorites: userData.favorites
-              };
-              return user;
-            })
+                return {
+                  uid: authData.uid,
+                  displayName: authData.displayName,
+                  email: authData.email,
+                  accountType: userData.accountType,
+                  favorites: userData.favorites
+                };
+              }
+            ),
+            map(userData => new userActions.Authenticated(userData))
           );
-      }
-    }),
-    map(userData => {
-      if (userData) {
-        return new userActions.Authenticated(userData);
       } else {
-        return new userActions.NotAuthenticated();
+        return of(new userActions.NotAuthenticated());
       }
     }),
     catchError(err => of(new userActions.AuthError({error: err.message})))

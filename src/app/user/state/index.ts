@@ -13,12 +13,7 @@ export const reducers = {
 
 export const userStateFeatureSelector = createFeatureSelector<UserState>('userState');
 
-export const userSelector = createSelector(
+export const getUser = createSelector(
   userStateFeatureSelector,
   state => state.user
 );
-
-/*export const userDataSelector = createSelector(
-  userStateFeatureSelector,
-  state => state.user
-);*/

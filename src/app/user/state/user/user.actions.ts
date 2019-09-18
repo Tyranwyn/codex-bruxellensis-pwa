@@ -24,9 +24,6 @@ export class Authenticated implements Action {
 
 export class NotAuthenticated implements Action {
   readonly type = NOT_AUTHENTICATED;
-
-  constructor(public payload?: any) {
-  }
 }
 
 export class Login implements Action {
