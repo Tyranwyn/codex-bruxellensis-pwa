@@ -19,7 +19,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(new userActions.GetUser());
-    this.store.dispatch(new userDataActions.GetUserData());
     if (this.swUpdate.isEnabled) {
       this.swUpdate.available.subscribe(() => {
         if (confirm('New version available. Load new version?')) {

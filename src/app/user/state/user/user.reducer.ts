@@ -1,10 +1,13 @@
 import * as userActions from './user.actions';
-import { User } from '../../models/user';
+import { AccountType } from '../../account-type.enum';
+import { User } from '../../user';
 
 const defaultUser: User = {
   uid: null,
   displayName: 'GUEST',
-  email: null
+  email: null,
+  accountType: AccountType.USER,
+  favorites: []
 };
 
 export function reducer(state: User = defaultUser, action: userActions.All): User {

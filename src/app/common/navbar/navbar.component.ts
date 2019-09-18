@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store';
 import * as fromRoot from '../../state';
 import * as fromUserState from '../../user/state';
 import * as userActions from '../../user/state/user/user.actions';
-import { User } from '../../user/models/user';
+import { User } from '../../user/user';
 
 @Component({
   selector: 'app-navbar',

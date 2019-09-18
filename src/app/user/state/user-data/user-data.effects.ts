@@ -7,7 +7,7 @@ import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
 import { DocumentReference } from '@angular/fire/firestore';
 import { UserDataService } from '../../user-data.service';
 import { SongService } from '../../../songs/services/song-service';
-import { UserData } from '../../models/user-data';
+import { UserData } from '../../user-data';
 
 @Injectable()
 export class UserDataEffects {
@@ -16,11 +16,11 @@ export class UserDataEffects {
               private songService: SongService) {
   }
 
-  @Effect()
+  /*@Effect()
   getUserData$: Observable<Action> = this.actions$.pipe(
     ofType(userDataActions.GET_USER_DATA),
     switchMap((action: userDataActions.GetUserData) => this.userDataService.getUserData().pipe(
-      map((userData: UserData) => new userDataActions.GetUserDataSuccess(userData)),
+      map((user: UserData) => new userDataActions.GetUserDataSuccess(user)),
       catchError(err => of(new userDataActions.GetUserDataFail(err)))
     ))
   );
@@ -45,5 +45,5 @@ export class UserDataEffects {
         catchError(err => of(new userDataActions.RemoveFavoriteFail(err)))
       )
     )
-  );
+  );*/
 }

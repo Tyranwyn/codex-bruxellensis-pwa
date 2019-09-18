@@ -9,11 +9,14 @@ import { catchError, map, switchMap } from 'rxjs/operators';
 import { auth } from 'firebase';
 import UserCredential = firebase.auth.UserCredential;
 import { AuthProviders } from '../../auth-providers.enum';
+import { User } from '../../user';
+import { UserDataService } from '../../user-data.service';
 
 @Injectable()
 export class UserEffects {
   constructor(private actions$: Actions,
-              private afAuth: AngularFireAuth) {
+              private afAuth: AngularFireAuth,
+              private userDataService: UserDataService) {
   }
 
   @Effect()
@@ -21,10 +24,26 @@ export class UserEffects {
     ofType(userActions.GET_USER),
     map((action: userActions.GetUser) => action.payload),
     switchMap(payload => this.afAuth.authState),
-    map(authData => {
+    switchMap(authData => {
       if (authData) {
-        const user = { uid: authData.uid, displayName: authData.displayName, email: authData.email };
-        return new userActions.Authenticated(user);
+        return this.userDataService.getUserData(authData.uid)
+          .pipe(
+            map(userData => {
+              const user: User = {
+                uid: authData.uid,
+                displayName: authData.displayName,
+                email: authData.email,
+                accountType: userData.accountType,
+                favorites: userData.favorites
+              };
+              return user;
+            })
+          );
+      }
+    }),
+    map(userData => {
+      if (userData) {
+        return new userActions.Authenticated(userData);
       } else {
         return new userActions.NotAuthenticated();
       }

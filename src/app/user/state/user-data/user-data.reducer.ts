@@ -1,6 +1,6 @@
 import * as userDataActions from './user-data.actions';
-import { UserData } from '../../models/user-data';
-import { AccountType } from '../../models/account-type.enum';
+import { UserData } from '../../user-data';
+import { AccountType } from '../../account-type.enum';
 
 export const defaultUserData: UserData = {
   accountType: AccountType.USER,
@@ -8,7 +8,7 @@ export const defaultUserData: UserData = {
 };
 
 export function reducer(state: UserData = defaultUserData, action: userDataActions.All): UserData {
-  switch (action.type) {
+  /*switch (action.type) {
     case userDataActions.GET_USER_DATA_SUCCESS:
       return {
         ...state
@@ -43,5 +43,6 @@ export function reducer(state: UserData = defaultUserData, action: userDataActio
       };
     default:
       return state;
-  }
+  }*/
+  return null;
 }

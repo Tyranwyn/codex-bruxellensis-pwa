@@ -14,9 +14,9 @@ import * as fromSong from '../state/song.reducer';
 import * as songActions from '../state/song.actions';
 import * as userDataActions from '../../user/state/user-data/user-data.actions';
 import * as fromUserState from '../../user/state';
-import { UserData } from '../../user/models/user-data';
 import { UserDataService } from '../../user/user-data.service';
-import { AccountType } from '../../user/models/account-type.enum';
+import { User } from '../../user/user';
+import { AccountType } from '../../user/account-type.enum';
 
 @Component({
   selector: 'app-song-list',
@@ -28,7 +28,7 @@ export class SongListComponent implements OnInit, OnDestroy {
   songs$: Observable<Song[]>;
   errormessage$: Observable<string>;
   filter: string;
-  userData: UserData;
+  user: User;
   userDataSub: Subscription;
 
   showAddModal = false;
@@ -52,7 +52,7 @@ export class SongListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.userDataSub = this.store.select(fromUserState.userDataSelector).subscribe(userdata => this.userData = userdata);
+    this.userDataSub = this.store.select(fromUserState.userSelector).subscribe(userdata => this.user = userdata);
 
     this.errormessage$ = this.store.pipe(select(fromSong.getError));
     this.store.dispatch(new songActions.Load());
@@ -114,8 +114,8 @@ export class SongListComponent implements OnInit, OnDestroy {
   }
 
   isSongFavorite(id: string): boolean {
-    if (this.userData && this.userData.favorites) {
-      return !!this.userData.favorites.find(ref => ref.id === id);
+    if (this.user && this.user.favorites) {
+      return !!this.user.favorites.find(ref => ref.id === id);
     }
     return false;
   }
@@ -149,7 +149,7 @@ export class SongListComponent implements OnInit, OnDestroy {
   }
 
   canEditSong(): boolean {
-    return this.userData && this.userData.accountType === AccountType.ADMIN;
+    return this.user && this.user.accountType === AccountType.ADMIN;
   }
 
   showEdit() {

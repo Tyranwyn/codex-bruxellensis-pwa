@@ -9,12 +9,11 @@ import { Song } from '../models/song';
 import { SongService } from '../services/song-service';
 import * as fromSong from '../state/song.reducer';
 import * as fromUser from '../../user/state';
-import * as fromRoot from '../../state';
 import * as userDataActions from '../../user/state/user-data/user-data.actions';
 import { Store } from '@ngrx/store';
-import { UserData } from '../../user/models/user-data';
 import { UserDataService } from '../../user/user-data.service';
-import { AccountType } from '../../user/models/account-type.enum';
+import { User } from '../../user/user';
+import { AccountType } from '../../user/account-type.enum';
 
 @Component({
   selector: 'app-song-detail',
@@ -25,7 +24,7 @@ export class SongDetailComponent implements OnInit, OnDestroy {
 
   songId: string;
   $song: Observable<Song>;
-  userData: UserData;
+  user: User;
   userDataSub: Subscription;
 
   constructor(
@@ -40,8 +39,8 @@ export class SongDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.userDataSub = this.store.select(fromUser.userDataSelector)
-      .subscribe(userdata => this.userData = userdata);
+    this.userDataSub = this.store.select(fromUser.userSelector)
+      .subscribe(userdata => this.user = userdata);
     this.$song = this.route.paramMap.pipe(
       switchMap(params => {
         this.songId = params.get('id');
@@ -52,8 +51,8 @@ export class SongDetailComponent implements OnInit, OnDestroy {
   }
 
   isSongFavorite(id: string): boolean {
-    if (this.userData.favorites) {
-      return !!this.userData.favorites.find(ref => ref.id === id);
+    if (this.user.favorites) {
+      return !!this.user.favorites.find(ref => ref.id === id);
     }
     return false;
   }
@@ -71,7 +70,7 @@ export class SongDetailComponent implements OnInit, OnDestroy {
   }
 
   canModifySong(): boolean {
-    return this.userData && this.userData.accountType === AccountType.ADMIN;
+    return this.user && this.user.accountType === AccountType.ADMIN;
   }
 
   back() {

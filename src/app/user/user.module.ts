@@ -4,7 +4,6 @@ import { StoreModule } from '@ngrx/store';
 import { reducers } from './state';
 import { EffectsModule } from '@ngrx/effects';
 import { UserEffects } from './state/user/user.effects';
-import { UserDataEffects } from './state/user-data/user-data.effects';
 import { LoginComponent } from './login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -18,7 +17,7 @@ import { EnumToArrayModule } from '../enum-to-array/enum-to-array.module';
     ReactiveFormsModule,
     FontAwesomeModule,
     StoreModule.forFeature('userState', reducers),
-    EffectsModule.forFeature([UserEffects, UserDataEffects]),
+    EffectsModule.forFeature([UserEffects]),
     EnumToArrayModule
   ],
   exports: [LoginComponent]

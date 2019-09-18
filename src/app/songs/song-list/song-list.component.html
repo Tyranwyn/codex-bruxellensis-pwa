@@ -22,7 +22,7 @@
         <div class="card song-element" *ngIf="isSongFavorite(song.id)">
           <div class="card-content">
             <div *ngIf="auth.user | async" class="song-favorite" (click)="updateFavorites(song.id)">
-              <fa-icon *ngIf="userData" [icon]="isSongFavorite(song.id)? ['fas', 'star']: ['far', 'star']"></fa-icon>
+              <fa-icon *ngIf="user" [icon]="isSongFavorite(song.id)? ['fas', 'star']: ['far', 'star']"></fa-icon>
             </div>
             <div class="song-info" [routerLink]="['/song', song.id]">
               <div class="song-name">{{ song.associationName ? song.associationName : song.title}}</div>
@@ -38,7 +38,7 @@
       <div class="card song-element" *ngIf="!isSongFavorite(song.id)">
         <div class="card-content">
           <div *ngIf="auth.user | async" class="song-favorite" (click)="updateFavorites(song.id)">
-            <fa-icon *ngIf="userData" [icon]="isSongFavorite(song.id)? ['fas', 'star']: ['far', 'star']"></fa-icon>
+            <fa-icon *ngIf="user" [icon]="isSongFavorite(song.id)? ['fas', 'star']: ['far', 'star']"></fa-icon>
           </div>
           <div class="song-info" [routerLink]="['/song', song.id]">
             <div class="song-name">{{ song.associationName ? song.associationName : song.title}}</div>
