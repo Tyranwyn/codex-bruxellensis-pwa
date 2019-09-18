@@ -1,7 +1,7 @@
 <nav class="navbar" role="navigation" aria-label="main navigation">
   <div class="navbar-brand" name="navbar-brand">
     <a class="navbar-item" routerLink="/">
-      <img src="assets/codexbxl-icon.png" class="svg" />
+      <img src="assets/codexbxl-icon.png" class="svg"/>
       <div class="nav-title">
         <h1>Codex Bruxellensis</h1>
         <h2>Vivat, Crescat, Floreat</h2>
@@ -9,15 +9,15 @@
     </a>
 
     <a class="login-mobile" routerLink="/login" *ngIf="!(user$ | async)" (click)="active($event)">
-        <fa-icon [icon]="['fas', 'user']"></fa-icon>
+      <fa-icon [icon]="['fas', 'user']"></fa-icon>
     </a>
 
     <a class="login-mobile" *ngIf="user$ | async as user" (click)="active($event)" (click)="showLogout()">
       <fa-icon [icon]="['fas', 'user']"></fa-icon>
-  </a>
+    </a>
 
     <a role="button" class="navbar-burger burger" name="navbar-burger" aria-label="menu" aria-expanded="false"
-      data-target="navbarBasicExample" (click)="toggleClass($event)">
+       data-target="navbarBasicExample" (click)="toggleClass($event)">
       <span aria-hidden="true"></span>
       <span aria-hidden="true"></span>
       <span aria-hidden="true"></span>
@@ -30,12 +30,12 @@
         Home
       </a>
       <a class="navbar-item" *ngFor="let category of categories | enumToArray" (click)="categoryFilter(category)"
-        (click)="closeMenu($event)" (click)="active($event)">
+         (click)="closeMenu($event)" (click)="active($event)">
         {{ capitalize(category) }}
       </a>
 
       <a class="navbar-item login-button" routerLink="/login" *ngIf="!(user$ | async)"
-        (click)="active($event)">
+         (click)="active($event)">
         <div>Login</div>
       </a>
 

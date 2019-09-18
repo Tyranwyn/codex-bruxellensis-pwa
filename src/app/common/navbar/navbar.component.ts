@@ -16,7 +16,7 @@ import { User } from '../../user/user';
 export class NavbarComponent implements OnInit {
 
   categories = Category;
-  public showLogoutModal = false;
+  showLogoutModal = false;
   user$: Observable<User>;
 
   constructor(
