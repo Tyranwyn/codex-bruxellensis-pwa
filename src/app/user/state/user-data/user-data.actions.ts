@@ -1,11 +1,11 @@
 import { Action } from '@ngrx/store';
-import { AccountType } from '../models/account-type.enum';
 import { DocumentReference } from '@angular/fire/firestore';
-import { UserData } from '../models/user-data.model';
+import { AccountType } from '../../models/account-type.enum';
+import { UserData } from '../../models/user-data';
 
-export const GET_USER_DATA = '[UserData] Get userdata';
-export const GET_USER_DATA_SUCCESS = '[UserData] Get userdata succeeded';
-export const GET_USER_DATA_FAIL = '[UserData] Get userdata failed';
+export const GET_USER_DATA = '[UserData] Get fromUserData';
+export const GET_USER_DATA_SUCCESS = '[UserData] Get fromUserData succeeded';
+export const GET_USER_DATA_FAIL = '[UserData] Get fromUserData failed';
 export const CHANGE_ACCOUNT_TYPE = '[AccountType] Change account type';
 export const CHANGE_ACCOUNT_TYPE_SUCCESS = '[AccountType] Changing account type succeeded';
 export const CHANGE_ACCOUNT_TYPE_FAIL = '[AccountType] Changing account type failed';

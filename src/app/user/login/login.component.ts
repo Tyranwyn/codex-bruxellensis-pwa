@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AuthProviders } from '../models/auth-providers.enum';
 import { Store } from '@ngrx/store';
-import { State } from '../state/app.state';
-import * as userActions from '../state/user.actions';
+import * as fromRoot from '../../state';
+import * as userActions from '../state/user/user.actions';
+import { AuthProviders } from '../auth-providers.enum';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
 
   constructor(private router: Router,
               private angularFireAuth: AngularFireAuth,
-              private store: Store<State>) {
+              private store: Store<fromRoot.State>) {
     this.angularFireAuth.user.subscribe(user => {
       if (user) {
         router.navigate(['']);

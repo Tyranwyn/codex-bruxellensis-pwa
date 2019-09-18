@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Category } from '../../songs/models/category.enum';
 import { Observable } from 'rxjs';
-import { User } from '../../models/user.model';
 import { Store } from '@ngrx/store';
-import { State } from '../../state/app.state';
-import * as fromUser from '../../state/user.reducer';
-import * as userActions from '../../state/user.actions';
+import * as fromRoot from '../../state';
+import * as fromUserState from '../../user/state';
+import * as userActions from '../../user/state/user/user.actions';
+import { User } from '../../user/models/user';
 
 @Component({
   selector: 'app-navbar',
@@ -20,14 +20,13 @@ export class NavbarComponent implements OnInit {
   user$: Observable<User>;
 
   constructor(
-    // public angularFireAuth: AngularFireAuth,
     private router: Router,
-    private store: Store<State>
+    private store: Store<fromRoot.State>
   ) {
   }
 
   ngOnInit() {
-    this.user$ = this.store.select(fromUser.userStateFeatureKey);
+    this.user$ = this.store.select(fromUserState.userSelector);
   }
 
   active(event) {

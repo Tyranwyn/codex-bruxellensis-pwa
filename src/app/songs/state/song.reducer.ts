@@ -1,6 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { Song } from '../models/song';
-import * as fromRoot from '../../state/app.state';
+import * as fromRoot from '../../state/index';
 import * as songActions from './song.actions';
 
 export const songsStateFeatureKey = 'songsState';

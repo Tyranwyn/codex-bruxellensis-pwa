@@ -1,20 +1,13 @@
-import { UserData } from '../models/user-data.model';
-import { AccountType } from '../models/account-type.enum';
-import { createSelector } from '@ngrx/store';
-import { getUserFeatureState } from './app.state';
 import * as userDataActions from './user-data.actions';
+import { UserData } from '../../models/user-data';
+import { AccountType } from '../../models/account-type.enum';
 
 export const defaultUserData: UserData = {
   accountType: AccountType.USER,
   favorites: []
 };
 
-const getUserData = createSelector(
-  getUserFeatureState,
-  state => state.userData
-);
-
-export function userDataReducer(state: UserData = defaultUserData, action: userDataActions.All): UserData {
+export function reducer(state: UserData = defaultUserData, action: userDataActions.All): UserData {
   switch (action.type) {
     case userDataActions.GET_USER_DATA_SUCCESS:
       return {

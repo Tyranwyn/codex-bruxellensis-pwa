@@ -3,6 +3,6 @@ export const environment = {
   title: 'Codex Bruxellensis',
   databases: {
     songs: 'songs',
-    userData: 'user-data'
+    userData: 'fromUser-data'
   }
 };

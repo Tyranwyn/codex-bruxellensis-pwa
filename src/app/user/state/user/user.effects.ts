@@ -7,8 +7,8 @@ import { Action } from '@ngrx/store';
 import * as userActions from './user.actions';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { auth } from 'firebase';
-import { AuthProviders } from '../models/auth-providers.enum';
 import UserCredential = firebase.auth.UserCredential;
+import { AuthProviders } from '../../auth-providers.enum';
 
 @Injectable()
 export class UserEffects {

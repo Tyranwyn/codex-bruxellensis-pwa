@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-export const GET_USER = '[Auth] Get user';
+export const GET_USER = '[Auth] Get fromUser';
 export const AUTHENTICATED = '[Auth] Authenticated';
 export const NOT_AUTHENTICATED = '[Auth] Not authenticated';
 export const LOGIN = '[Auth] Login attempt';

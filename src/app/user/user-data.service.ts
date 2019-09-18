@@ -4,9 +4,9 @@ import { environment } from '../../environments/environment';
 import { from, Observable, Subscription } from 'rxjs';
 import { SongService } from '../songs/services/song-service';
 import { Store } from '@ngrx/store';
-import { State } from '../state/app.state';
-import * as fromUser from '../state/user.reducer';
-import { UserData } from '../models/user-data.model';
+import * as fromRoot from '../state';
+import * as fromUserState from './state/index';
+import { UserData } from './models/user-data';
 
 @Injectable({
   providedIn: 'root'
@@ -19,9 +19,9 @@ export class UserDataService implements OnDestroy {
 
   constructor(afs: AngularFirestore,
               private songService: SongService,
-              private store: Store<State>) {
+              private store: Store<fromRoot.State>) {
     this.userDataCollection = afs.collection<UserData>(environment.databases.userData);
-    this.sub = store.select(fromUser.getUser).subscribe(user => this.uid = user.uid);
+    this.sub = store.select(fromUserState.userSelector).subscribe(user => this.uid = user.uid);
   }
 
   getUserData(): Observable<UserData> {

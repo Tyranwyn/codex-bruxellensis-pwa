@@ -1,32 +1,35 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map, filter } from 'rxjs/operators';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Title } from '@angular/platform-browser';
 import { environment } from '../../../environments/environment';
-import { ActivatedRoute, ParamMap } from '@angular/router';
-import { UserDataService } from '../../services/user-data.service';
-import { IUser } from '../../models/user.model';
+import { ActivatedRoute } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AccountType } from 'src/app/models/account-type.enum';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Song } from '../models/song';
 import { SongService } from '../services/song-service';
 import { Category } from '../models/category.enum';
 import { select, Store } from '@ngrx/store';
 import * as fromSong from '../state/song.reducer';
-import * as songAction from '../state/song.actions';
+import * as songActions from '../state/song.actions';
+import * as userDataActions from '../../user/state/user-data/user-data.actions';
+import * as fromUserState from '../../user/state';
+import { UserData } from '../../user/models/user-data';
+import { UserDataService } from '../../user/user-data.service';
+import { AccountType } from '../../user/models/account-type.enum';
 
 @Component({
   selector: 'app-song-list',
   templateUrl: './song-list.component.html',
   styleUrls: ['./song-list.component.scss']
 })
-export class SongListComponent implements OnInit {
+export class SongListComponent implements OnInit, OnDestroy {
 
   songs$: Observable<Song[]>;
   errormessage$: Observable<string>;
   filter: string;
-  userData: IUser;
+  userData: UserData;
+  userDataSub: Subscription;
 
   showAddModal = false;
   addSongForm: FormGroup;
@@ -46,20 +49,16 @@ export class SongListComponent implements OnInit {
     private store: Store<fromSong.State>
   ) {
     titleService.setTitle(environment.title);
-    auth.user
-      .subscribe(user => {
-          if (user) {
-            this.userDataService.getUserData(user.uid).subscribe(userData => this.userData = userData);
-          }
-        }
-      );
-    this.errormessage$ = this.store.pipe(select(fromSong.getError));
-    this.store.dispatch(new songAction.Load());
-    this.songs$ = this.store.pipe(select(fromSong.getSongs));
-    this.route.queryParamMap.subscribe(paramMap => this.filterSongsByCategory(paramMap.get('category')));
   }
 
   ngOnInit() {
+    this.userDataSub = this.store.select(fromUserState.userDataSelector).subscribe(userdata => this.userData = userdata);
+
+    this.errormessage$ = this.store.pipe(select(fromSong.getError));
+    this.store.dispatch(new songActions.Load());
+    this.songs$ = this.store.pipe(select(fromSong.getSongs));
+    this.route.queryParamMap.subscribe(paramMap => this.filterSongsByCategory(paramMap.get('category')));
+
     this.categories = Object.keys(Category);
     this.initializeForms();
   }
@@ -123,9 +122,9 @@ export class SongListComponent implements OnInit {
 
   updateFavorites(id: string) {
     if (this.isSongFavorite(id)) {
-      this.userDataService.removeFavorite(id);
+      this.store.dispatch(new userDataActions.RemoveFavorite(id));
     } else {
-      this.userDataService.addFavorite(id);
+      this.store.dispatch(new userDataActions.AddFavorite(id));
     }
   }
 
@@ -167,5 +166,9 @@ export class SongListComponent implements OnInit {
 
   hideAdd() {
     this.showAddModal = false;
+  }
+
+  ngOnDestroy(): void {
+    this.userDataSub.unsubscribe();
   }
 }
