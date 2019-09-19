@@ -8,11 +8,11 @@
       </div>
     </a>
 
-    <a class="login-mobile" routerLink="/login" *ngIf="!(user$ | async)" (click)="active($event)">
+    <a class="login-mobile" routerLink="/login" *ngIf="!(user$ | async)?.uid" (click)="active($event)">
       <fa-icon [icon]="['fas', 'user']"></fa-icon>
     </a>
 
-    <a class="login-mobile" *ngIf="user$ | async as user" (click)="active($event)" (click)="showLogout()">
+    <a class="login-mobile" *ngIf="(user$ | async)?.uid" (click)="active($event)" (click)="showLogout()">
       <fa-icon [icon]="['fas', 'user']"></fa-icon>
     </a>
 
@@ -34,32 +34,36 @@
         {{ capitalize(category) }}
       </a>
 
-      <a class="navbar-item login-button" routerLink="/login" *ngIf="!(user$ | async)"
+      <a class="navbar-item login-button" routerLink="/login" *ngIf="!(user$ | async)?.uid"
          (click)="active($event)">
         <div>Login</div>
       </a>
 
-      <a class="navbar-item login-button" *ngIf="user$ | async as user" (click)="active($event)">
-        <div (click)="showLogout()">{{ user.displayName ? user.displayName : user.email }}</div>
-      </a>
+      <div *ngIf="user$ | async as user">
+        <a class="navbar-item login-button" *ngIf="user.uid" (click)="active($event)">
+          <div (click)="showLogout()">{{ user.displayName ? user.displayName : user.email }}</div>
+        </a>
+      </div>
     </div>
   </div>
 </nav>
 
-<div *ngIf="user$ | async as user" class="modal {{ showLogoutModal ? 'is-active' : '' }}">
-  <div class="modal-background"></div>
-  <div class="modal-card">
-    <header class="modal-card-head">
-      <p class="modal-card-title">Account</p>
-      <button class="delete" aria-label="close" (click)="hideLogout()"></button>
-    </header>
-    <section class="modal-card-body">
-      <h2 class="title is-5">{{ user.displayName }}</h2>
-      <h3 class="subtitle is-6">{{ user.email }}</h3>
-    </section>
-    <footer class="modal-card-foot">
-      <button class="button is-danger" (click)="logout()">Logout</button>
-      <button class="button" (click)="hideLogout()">Cancel</button>
-    </footer>
+<div *ngIf="user$ | async as user">
+  <div *ngIf="user.uid" class="modal {{ showLogoutModal ? 'is-active' : '' }}">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Account</p>
+        <button class="delete" aria-label="close" (click)="hideLogout()"></button>
+      </header>
+      <section class="modal-card-body">
+        <h2 class="title is-5">{{ user.displayName }}</h2>
+        <h3 class="subtitle is-6">{{ user.email }}</h3>
+      </section>
+      <footer class="modal-card-foot">
+        <button class="button is-danger" (click)="logout()">Logout</button>
+        <button class="button" (click)="hideLogout()">Cancel</button>
+      </footer>
+    </div>
   </div>
 </div>
