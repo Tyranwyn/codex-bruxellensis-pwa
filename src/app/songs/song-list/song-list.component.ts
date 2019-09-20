@@ -1,10 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { from, Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Title } from '@angular/platform-browser';
 import { environment } from '../../../environments/environment';
 import { ActivatedRoute } from '@angular/router';
-import { AngularFireAuth } from '@angular/fire/auth';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Song } from '../models/song';
 import { SongService } from '../services/song-service';
@@ -14,7 +13,6 @@ import * as fromSong from '../state/song.reducer';
 import * as songActions from '../state/song.actions';
 import * as userDataActions from '../../user/state/user-data/user-data.actions';
 import * as fromUserState from '../../user/state';
-import { UserDataService } from '../../user/user-data.service';
 import { User } from '../../user/user';
 import { AccountType } from '../../user/account-type.enum';
 
@@ -28,8 +26,8 @@ export class SongListComponent implements OnInit, OnDestroy {
   songs$: Observable<Song[]>;
   errormessage$: Observable<string>;
   filter: string;
-  user: User;
   userDataSub: Subscription;
+  currentUser: User;
 
   showAddModal = false;
   addSongForm: FormGroup;
@@ -43,8 +41,6 @@ export class SongListComponent implements OnInit, OnDestroy {
     private songService: SongService,
     private titleService: Title,
     private route: ActivatedRoute,
-    private userDataService: UserDataService,
-    private auth: AngularFireAuth,
     public fb: FormBuilder,
     private store: Store<fromSong.State>
   ) {
@@ -52,12 +48,17 @@ export class SongListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.userDataSub = this.store.select(fromUserState.getUser).subscribe(userdata => this.user = userdata);
+    this.userDataSub = this.store.select(fromUserState.getUser).subscribe(userData => this.currentUser = userData);
 
     this.errormessage$ = this.store.pipe(select(fromSong.getError));
     this.store.dispatch(new songActions.Load());
-    this.songs$ = this.store.pipe(select(fromSong.getSongs));
-    this.route.queryParamMap.subscribe(paramMap => this.filterSongsByCategory(paramMap.get('category')));
+    this.songs$ = this.store.select(fromSong.getSongs);
+    this.route.queryParamMap.subscribe(paramMap => {
+      const category = paramMap.get('category');
+      if (category) {
+        this.filterSongsByCategory(category);
+      }
+    });
 
     this.categories = Object.keys(Category);
     this.initializeForms();
@@ -104,18 +105,18 @@ export class SongListComponent implements OnInit, OnDestroy {
   filterSongsByPageTitleBattleCryNameOrAssociationName = (song: Song) => {
     const filterString = '' + song.page + song.title + song.battleCryName + song.associationName;
     return filterString.toLowerCase().indexOf(this.filter.toLowerCase()) !== -1;
-  }
+  };
 
   filterSongsByCategory = (category: string) => {
     this.songs$ = this.store.pipe(
       select(fromSong.getSongs),
       map(songs => songs.filter(song => song.category.match(category)))
     );
-  }
+  };
 
   isSongFavorite(id: string): boolean {
-    if (this.user && this.user.favorites) {
-      return !!this.user.favorites.find(ref => ref.id === id);
+    if (this.currentUser && this.currentUser.favorites) {
+      return !!this.currentUser.favorites.find(ref => ref.id === id);
     }
     return false;
   }
@@ -149,7 +150,7 @@ export class SongListComponent implements OnInit, OnDestroy {
   }
 
   canEditSong(): boolean {
-    return this.user && this.user.accountType === AccountType.ADMIN;
+    return this.currentUser && this.currentUser.accountType === AccountType.ADMIN;
   }
 
   showEdit() {
