@@ -1,0 +1,104 @@
+<div *ngIf="songToEdit" class="modal {{ showEditModal ? 'is-active' : '' }}">
+  <form [formGroup]="editSongForm">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">{{ songToEdit.title }}</p>
+        <button class="delete" aria-label="close" (click)="hideEdit()"></button>
+      </header>
+      <section class="modal-card-body">
+
+        <div class="field">
+          <label class="label">Category</label>
+          <div class="control">
+            <div class="select">
+              <select formControlName="category" [ngModel]="songToEdit.category">
+                <option value="">Select Category</option>
+                <ng-container *ngFor="let category of categories">
+                  <option value="{{ category }}">{{ category | capitalize }}</option>
+                </ng-container>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Page</label>
+          <div class="control">
+            <input class="input" type="number" placeholder="Page" formControlName="page" [ngModel]="songToEdit.page">
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Title</label>
+          <div class="control">
+            <input class="input" type="text" placeholder="Title" formControlName="title" [ngModel]="songToEdit.title">
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Backround Information</label>
+          <div class="control">
+            <textarea autosize class="textarea" placeholder="Background Information..." formControlName="bgInfo"
+                      [ngModel]="songToEdit.bgInfo"></textarea>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Lyrics</label>
+          <div class="control">
+            <textarea autosize class="textarea" placeholder="Lyrics..." formControlName="lyrics"
+                      [ngModel]="songToEdit.lyrics"></textarea>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Association Name</label>
+          <div class="control">
+            <input class="input" type="text" placeholder="Association Name" formControlName="associationName"
+                   [ngModel]="songToEdit.associationName">
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Association Information</label>
+          <div class="control">
+            <textarea autosize class="textarea" placeholder="Association Information..."
+                      formControlName="associationInfo" [ngModel]="songToEdit.associationInfo"></textarea>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Battle Cry Name</label>
+          <div class="control">
+            <input class="input" type="text" placeholder="Battle Cry Name" formControlName="battleCryName"
+                   [ngModel]="songToEdit.battleCryName">
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Battly Cry Information</label>
+          <div class="control">
+            <textarea autosize class="textarea" placeholder="Battle Cry Information..." formControlName="battleCryInfo"
+                      [ngModel]="songToEdit.battleCryInfo"></textarea>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Battle Cry Lyrics</label>
+          <div class="control">
+            <textarea autosize class="textarea" placeholder="Lyrics..." formControlName="battleCry"
+                      [ngModel]="songToEdit.battleCry"></textarea>
+          </div>
+        </div>
+
+        <a class="song-delete" (click)="delete(songToEdit.id)">Delete...</a>
+
+      </section>
+      <footer class="modal-card-foot">
+        <button class="button is-success" (click)="edit()">Edit</button>
+        <button class="button" (click)="hideEdit()">Cancel</button>
+      </footer>
+    </div>
+  </form>
+</div>

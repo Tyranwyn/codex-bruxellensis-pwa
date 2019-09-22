@@ -1,13 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { from, Observable, Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Title } from '@angular/platform-browser';
 import { environment } from '../../../environments/environment';
 import { ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import { Song } from '../models/song';
 import { SongService } from '../services/song-service';
-import { Category } from '../models/category.enum';
 import { select, Store } from '@ngrx/store';
 import * as fromSong from '../state/song.reducer';
 import * as songActions from '../state/song.actions';
@@ -28,20 +26,15 @@ export class SongListComponent implements OnInit, OnDestroy {
   filter: string;
   userDataSub: Subscription;
   currentUser: User;
-
-  showAddModal = false;
-  addSongForm: FormGroup;
+  songToEdit: any = {};
 
   showEditModal = false;
-  editSongForm: FormGroup;
-  songToEdit: any = {};
-  categories: any[] = [];
+  showAddModal = false;
 
   constructor(
     private songService: SongService,
     private titleService: Title,
     private route: ActivatedRoute,
-    public fb: FormBuilder,
     private store: Store<fromSong.State>
   ) {
     titleService.setTitle(environment.title);
@@ -59,41 +52,6 @@ export class SongListComponent implements OnInit, OnDestroy {
         this.filterSongsByCategory(category);
       }
     });
-
-    this.categories = Object.keys(Category);
-    this.initializeForms();
-  }
-
-  initializeForms() {
-    this.editSongForm = this.fb.group({
-      category: '',
-      page: '',
-      title: '',
-      bgInfo: '',
-      lyrics: '',
-      associationName: '',
-      associationInfo: '',
-      battleCryName: '',
-      battleCryInfo: '',
-      battleCry: '',
-    });
-    this.addSongForm = this.fb.group({
-      category: '',
-      page: '',
-      title: '',
-      bgInfo: '',
-      lyrics: '',
-      associationName: '',
-      associationInfo: '',
-      battleCryName: '',
-      battleCryInfo: '',
-      battleCry: ''
-    });
-  }
-
-  capitalize(text) {
-    text = text.toLowerCase();
-    return text.charAt(0).toUpperCase() + text.slice(1);
   }
 
   search() {
@@ -129,21 +87,6 @@ export class SongListComponent implements OnInit, OnDestroy {
     }
   }
 
-  add() {
-    this.songService.addSong(this.addSongForm.value);
-    this.hideAdd();
-  }
-
-  edit() {
-    this.songService.updateSong(this.songToEdit.id, this.editSongForm.value);
-    this.hideEdit();
-  }
-
-  delete(id) {
-    this.songService.deleteSong(id);
-    this.hideEdit();
-  }
-
   editSong(song) {
     this.songToEdit = song;
     this.showEdit();
@@ -155,10 +98,6 @@ export class SongListComponent implements OnInit, OnDestroy {
 
   showEdit() {
     this.showEditModal = true;
-  }
-
-  hideEdit() {
-    this.showEditModal = false;
   }
 
   showAdd() {

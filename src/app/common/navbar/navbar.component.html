@@ -39,11 +39,9 @@
         <div>Login</div>
       </a>
 
-      <div *ngIf="user$ | async as user">
-        <a class="navbar-item login-button" *ngIf="user.uid" (click)="active($event)">
-          <div (click)="showLogout()">{{ user.displayName ? user.displayName : user.email }}</div>
-        </a>
-      </div>
+      <a *ngIf="user$ | async as user" class="navbar-item login-button" (click)="active($event)">
+        <div *ngIf="user.uid" (click)="showLogout()">{{ user.displayName ? user.displayName : user.email }}</div>
+      </a>
     </div>
   </div>
 </nav>
