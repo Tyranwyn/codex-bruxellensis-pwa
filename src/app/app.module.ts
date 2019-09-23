@@ -21,6 +21,7 @@ import { faEdit, faLock, faSearch, faStar as solidStar, faUser } from '@fortawes
 import { EffectsModule } from '@ngrx/effects';
 import { UserModule } from './user/user.module';
 import { EnumToArrayModule } from './enum-to-array/enum-to-array.module';
+import { stringify } from './serializer';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { EnumToArrayModule } from './enum-to-array/enum-to-array.module';
     StoreDevtoolsModule.instrument({
       name: 'Codex Bruxellensis',
       maxAge: 25,
-      logOnly: environment.production
+      logOnly: environment.production,
+      actionSanitizer: action => JSON.parse(stringify(action))
     }),
     SongsModule,
     UserModule
