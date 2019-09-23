@@ -1,50 +1,50 @@
 <main class="login-main">
-    <div class="login-container">
-        <div class="card login-card">
-          <div class="card-image">
-            <figure class="image">
-              <img class="svg logo" src="assets/codexbxl-icon.png"
-                alt="Logo">
-            </figure>
-          </div>
-          <div class="card-content">
-              <div class="notification is-danger" *ngIf="error">
-                  <button class="delete" (click)="error = null"></button>
-                  {{error.message}}
-                </div>
-            <div class="content">
-                <div class="field">
-                    <div class="control has-icons-left">
-                      <input class="input" [(ngModel)]="email" type="email" placeholder="Email">
-                      <span class="icon is-small is-left">
+  <div *ngIf="user$ | async as user" class="login-container">
+    <div class="card login-card">
+      <div class="card-image">
+        <figure class="image">
+          <img class="svg logo" src="assets/codexbxl-icon.png"
+               alt="Logo">
+        </figure>
+      </div>
+      <div class="card-content">
+        <div class="notification is-danger" *ngIf="error">
+          <button class="delete" (click)="error = null"></button>
+          {{error.message}}
+        </div>
+        <div class="content" *ngIf="!user.loading; else loading">
+          <div class="field">
+            <div class="control has-icons-left">
+              <input class="input" [(ngModel)]="email" type="email" placeholder="Email">
+              <span class="icon is-small is-left">
                         <fa-icon [icon]="['far', 'envelope']"></fa-icon>
                       </span>
-                    </div>
-                  </div>
-                  <div class="field">
-                    <div class="control has-icons-left">
-                      <input class="input" [(ngModel)]="password" type="password" placeholder="Password">
-                      <span class="icon is-small is-left">
-                        <fa-icon [icon]="['fas', 'lock']"></fa-icon>
-                      </span>
-                    </div>
-                  </div>
-                <div class="field">
-                  <div class="control center login">
-                      <a class="button is-primary" (click)="login('EmailLogin')">Login</a>
-                      <a class="button is-light" (click)="login('EmailSignup')">Signup</a>
-                  </div>
-                </div>
-                <div class="providers">
-                    <a *ngFor="let provider of authProviders | enumToArray" (click)="login(provider)">
-                        <i class="fab fa-{{provider.toLowerCase()}}"></i>
-                    </a>
-                </div>
-
             </div>
           </div>
+          <div class="field">
+            <div class="control has-icons-left">
+              <input class="input" [(ngModel)]="password" type="password" placeholder="Password">
+              <span class="icon is-small is-left">
+                        <fa-icon [icon]="['fas', 'lock']"></fa-icon>
+                      </span>
+            </div>
+          </div>
+          <div class="field">
+            <div class="control center login">
+              <a class="button is-primary" (click)="login('EmailLogin')">Login</a>
+              <a class="button is-light" (click)="login('EmailSignup')">Signup</a>
+            </div>
+          </div>
+          <div class="providers">
+            <a *ngFor="let provider of authProviders | enumToArray" (click)="login(provider)">
+              <i class="fab fa-{{provider.toLowerCase()}}"></i>
+            </a>
+          </div>
         </div>
+        <ng-template #loading>Loading...</ng-template>
       </div>
+    </div>
+  </div>
 
 </main>
 

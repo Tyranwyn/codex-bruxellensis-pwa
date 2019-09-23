@@ -3,6 +3,7 @@ import { AngularFirestore, AngularFirestoreCollection, DocumentReference } from 
 import { from, Observable } from 'rxjs';
 import { Song } from '../models/song';
 import { environment } from '../../../environments/environment';
+import { filter, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +22,10 @@ export class SongService {
   }
 
   getSongsByCategory(category: string): Observable<Song[]> {
-    return this.afs.collection<Song>(environment.databases.songs, ref => ref.where('category', '==', category).orderBy('page'))
-      .valueChanges({idField: 'id'});
+    return this.songCollection.valueChanges()
+      .pipe(
+        map(songList => songList.filter(song => song.category === category))
+      );
   }
 
   getSongById(id: string): Observable<Song> {

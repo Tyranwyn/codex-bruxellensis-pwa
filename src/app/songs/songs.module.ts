@@ -12,6 +12,13 @@ import { SongEffects } from './state/song.effects';
 import { SongEditComponent } from './song-edit/song-edit.component';
 import { CapitalizeModule } from '../capitalize/capitalize.module';
 import { SongAddComponent } from './song-add/song-add.component';
+import { AutosizeModule } from 'ngx-autosize';
+import { Route, RouterModule, Routes } from '@angular/router';
+
+const songRoutes: Routes = [
+  {path: '', component: SongListComponent},
+  {path: 'song/:id', component: SongDetailComponent}
+];
 
 @NgModule({
   declarations: [
@@ -22,13 +29,15 @@ import { SongAddComponent } from './song-add/song-add.component';
   ],
   imports: [
     CommonModule,
+    RouterModule.forChild(songRoutes),
     FormsModule,
     AppRoutingModule,
     ReactiveFormsModule,
     FontAwesomeModule,
     StoreModule.forFeature('songsState', reducer),
     EffectsModule.forFeature([SongEffects]),
-    CapitalizeModule
+    CapitalizeModule,
+    AutosizeModule
   ]
 })
 export class SongsModule {

@@ -15,12 +15,22 @@ export class SongEffects {
   }
 
   @Effect()
-  loadSongs$: Observable<Action> = this.actions$.pipe(
-    ofType(songActions.LOAD),
-    mergeMap((action: songActions.Load) => this.songService.getAllSongs().pipe(
+  loadAllSongs$: Observable<Action> = this.actions$.pipe(
+    ofType(songActions.LOAD_ALL_SONGS),
+    mergeMap((action: songActions.LoadAllSongs) => this.songService.getAllSongs().pipe(
       map((songs: Song[]) => new songActions.LoadSuccess(songs)),
       catchError(err => of(new songActions.LoadFail(err)))
     ))
+  );
+
+  @Effect()
+  loadCategorySongs$: Observable<Action> = this.actions$.pipe(
+    ofType(songActions.LOAD_CATEGORY_SONGS),
+    mergeMap((action: songActions.LoadCategorySongs) => this.songService.getSongsByCategory(action.category)
+      .pipe(
+        map((songs: Song[]) => new songActions.LoadSuccess(songs)),
+        catchError(err => of(new songActions.LoadFail(err)))
+      ))
   );
 
   /*@Effect()

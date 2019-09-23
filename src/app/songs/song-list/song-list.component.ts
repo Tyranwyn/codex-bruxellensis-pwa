@@ -44,14 +44,17 @@ export class SongListComponent implements OnInit, OnDestroy {
     this.userDataSub = this.store.select(fromUserState.getUser).subscribe(userData => this.currentUser = userData);
 
     this.errormessage$ = this.store.pipe(select(fromSong.getError));
-    this.store.dispatch(new songActions.Load());
-    this.songs$ = this.store.select(fromSong.getSongs);
+
     this.route.queryParamMap.subscribe(paramMap => {
       const category = paramMap.get('category');
       if (category) {
-        this.filterSongsByCategory(category);
+        this.store.dispatch(new songActions.LoadCategorySongs(category));
+      } else {
+        this.store.dispatch(new songActions.LoadAllSongs());
       }
     });
+
+    this.songs$ = this.store.select(fromSong.getSongs);
   }
 
   search() {

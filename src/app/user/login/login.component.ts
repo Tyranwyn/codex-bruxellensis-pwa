@@ -1,25 +1,26 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import * as fromRoot from '../../state';
 import * as userActions from '../state/user/user.actions';
 import * as fromUserState from '../state';
 import { AuthProviders } from '../auth-providers.enum';
-import { Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
+import { User } from '../user';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit, OnDestroy {
+export class LoginComponent implements OnInit {
 
   authProviders = AuthProviders;
   email;
   password;
   error;
-  uidSub: Subscription;
+  user$: Observable<User>;
 
   constructor(private router: Router,
               private angularFireAuth: AngularFireAuth,
@@ -27,11 +28,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.uidSub = this.store.select(fromUserState.getUser, select('uid')).subscribe(uid => {
-      if (uid) {
-        this.router.navigate(['']);
-      }
-    });
+    this.user$ = this.store.select(fromUserState.getUser);
+    // this.store.dispatch(new userActions.GetUser());
   }
 
   login(provider: string) {
@@ -40,9 +38,5 @@ export class LoginComponent implements OnInit, OnDestroy {
     } else {
       this.store.dispatch(new userActions.Login({provider, email: this.email, password: this.password}));
     }
-  }
-
-  ngOnDestroy(): void {
-    this.uidSub.unsubscribe();
   }
 }

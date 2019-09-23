@@ -12,7 +12,6 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
-import { AutosizeModule } from 'ngx-autosize';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { SongsModule } from './songs/songs.module';
@@ -39,7 +38,6 @@ import { EnumToArrayModule } from './enum-to-array/enum-to-array.module';
     AngularFirestoreModule.enablePersistence(),
     AppRoutingModule,
     ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),
-    AutosizeModule,
     EnumToArrayModule,
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),

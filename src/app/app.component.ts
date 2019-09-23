@@ -3,7 +3,6 @@ import { SwUpdate } from '@angular/service-worker';
 import * as fromRoot from './state';
 import { Store } from '@ngrx/store';
 import * as userActions from './user/state/user/user.actions';
-import * as userDataActions from './user/state/user-data/user-data.actions';
 
 @Component({
   selector: 'app-root',

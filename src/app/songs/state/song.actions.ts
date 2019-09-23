@@ -13,7 +13,8 @@ export const REMOVE_SONG_FAIL = '[Song] Removing song failed';
 export const EDIT_SONG = '[Song] Edit song';
 export const EDIT_SONG_SUCCESS = '[Song] Edit song success';
 export const EDIT_SONG_FAIL = '[Song] Edit song fail';
-export const LOAD = '[Songs List] Load all songs';
+export const LOAD_ALL_SONGS = '[Songs List] Loading all songs';
+export const LOAD_CATEGORY_SONGS = '[Songs List] Loading songs from category';
 export const LOAD_SUCCESS = '[Songs List] Load success';
 export const LOAD_FAIL = '[Songs List] Load error';
 
@@ -95,8 +96,15 @@ export class EditSongFail implements Action {
   }
 }
 
-export class Load implements Action {
-  readonly type = LOAD;
+export class LoadAllSongs implements Action {
+  readonly type = LOAD_ALL_SONGS;
+}
+
+export class LoadCategorySongs implements Action {
+  readonly type = LOAD_CATEGORY_SONGS;
+
+  constructor(public category: string) {
+  }
 }
 
 export class LoadSuccess implements Action {
@@ -125,6 +133,7 @@ export type All = SetCurrentSong
   | EditSong
   | EditSongSuccess
   | EditSongFail
-  | Load
+  | LoadAllSongs
+  | LoadCategorySongs
   | LoadSuccess
   | LoadFail;
