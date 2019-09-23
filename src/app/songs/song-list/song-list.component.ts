@@ -7,7 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Song } from '../models/song';
 import { SongService } from '../services/song-service';
 import { select, Store } from '@ngrx/store';
-import * as fromSong from '../state/song.reducer';
+import * as fromSongs from '../state';
 import * as songActions from '../state/song.actions';
 import * as userDataActions from '../../user/state/user-data/user-data.actions';
 import * as fromUserState from '../../user/state';
@@ -35,7 +35,7 @@ export class SongListComponent implements OnInit, OnDestroy {
     private songService: SongService,
     private titleService: Title,
     private route: ActivatedRoute,
-    private store: Store<fromSong.State>
+    private store: Store<fromSongs.State>
   ) {
     titleService.setTitle(environment.title);
   }
@@ -43,7 +43,7 @@ export class SongListComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.userDataSub = this.store.select(fromUserState.getUser).subscribe(userData => this.currentUser = userData);
 
-    this.errormessage$ = this.store.pipe(select(fromSong.getError));
+    this.errormessage$ = this.store.pipe(select(fromSongs.getError));
 
     this.route.queryParamMap.subscribe(paramMap => {
       const category = paramMap.get('category');
@@ -54,7 +54,7 @@ export class SongListComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.songs$ = this.store.select(fromSong.getSongs);
+    this.songs$ = this.store.select(fromSongs.getSongs);
   }
 
   search() {
@@ -70,7 +70,7 @@ export class SongListComponent implements OnInit, OnDestroy {
 
   filterSongsByCategory = (category: string) => {
     this.songs$ = this.store.pipe(
-      select(fromSong.getSongs),
+      select(fromSongs.getSongs),
       map(songs => songs.filter(song => song.category.match(category)))
     );
   };

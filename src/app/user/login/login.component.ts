@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import * as fromRoot from '../../state';
 import * as userActions from '../state/user/user.actions';
 import * as fromUserState from '../state';

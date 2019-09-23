@@ -1,13 +1,5 @@
-import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { Song } from '../models/song';
-import * as fromRoot from '../../state';
 import * as songActions from './song.actions';
-
-export const songsStateFeatureKey = 'songsState';
-
-export interface State extends fromRoot.State {
-  songsState: SongsState;
-}
 
 export interface SongsState {
   songs: Song[];
@@ -15,42 +7,11 @@ export interface SongsState {
   error: string;
 }
 
-export const defaultState: SongsState = {
+const defaultState: SongsState = {
   songs: [],
   currentSongId: null,
   error: ''
 };
-
-const getSongFeatureState = createFeatureSelector<SongsState>(songsStateFeatureKey);
-
-export const getCurrentSongId = createSelector(
-  getSongFeatureState,
-  state => state.currentSongId
-);
-
-export const getCurrentSong = createSelector(
-  getSongFeatureState,
-  getCurrentSongId,
-  (state, currentSongId) => {
-    if (currentSongId === '') {
-      return {
-        id: ''
-      };
-    } else {
-      return currentSongId ? state.songs.find(p => p.id === currentSongId) : null;
-    }
-  }
-);
-
-export const getSongs = createSelector(
-  getSongFeatureState,
-  state => state.songs
-);
-
-export const getError = createSelector(
-  getSongFeatureState,
-  state => state.error
-);
 
 export function reducer(state = defaultState, action: songActions.All): SongsState {
   switch (action.type) {
@@ -65,10 +26,10 @@ export function reducer(state = defaultState, action: songActions.All): SongsSta
         currentSongId: null
       };
     case songActions.INITIALIZE_CURRENT_SONG:
-        return {
-          ...state,
-          currentSongId: '',
-        };
+      return {
+        ...state,
+        currentSongId: '',
+      };
     case songActions.LOAD_SUCCESS:
       return {
         ...state,

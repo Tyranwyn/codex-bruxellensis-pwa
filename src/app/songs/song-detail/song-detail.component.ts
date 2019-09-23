@@ -7,7 +7,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { Location } from '@angular/common';
 import { Song } from '../models/song';
 import { SongService } from '../services/song-service';
-import * as fromSong from '../state/song.reducer';
+import * as fromSongs from '../state';
 import * as fromUser from '../../user/state';
 import * as userDataActions from '../../user/state/user-data/user-data.actions';
 import { Store } from '@ngrx/store';
@@ -34,7 +34,7 @@ export class SongDetailComponent implements OnInit, OnDestroy {
     private userDataService: UserDataService,
     private auth: AngularFireAuth,
     private location: Location,
-    private store: Store<fromSong.State>
+    private store: Store<fromSongs.State>
   ) {
   }
 

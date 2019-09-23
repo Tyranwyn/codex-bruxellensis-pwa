@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { act, Actions, Effect, ofType } from '@ngrx/effects';
+import { Actions, Effect, ofType } from '@ngrx/effects';
 import { SongService } from '../services/song-service';
 import * as songActions from './song.actions';
 import { catchError, map, mergeMap } from 'rxjs/operators';
