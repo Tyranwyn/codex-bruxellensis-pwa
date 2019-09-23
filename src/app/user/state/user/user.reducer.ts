@@ -24,6 +24,8 @@ export function reducer(state: User = defaultUser, action: userActions.All): Use
       return {...state, ...action.payload, loading: false};
     case userActions.LOGOUT:
       return {...state, loading: true};
+    default:
+      return state;
   }
 }
 

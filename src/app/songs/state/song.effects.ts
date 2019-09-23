@@ -6,6 +6,7 @@ import { catchError, map, mergeMap } from 'rxjs/operators';
 import { Song } from '../models/song';
 import { Observable, of } from 'rxjs';
 import { Action } from '@ngrx/store';
+import { SongActionTypes } from './song.actions';
 
 @Injectable()
 export class SongEffects {
@@ -16,7 +17,7 @@ export class SongEffects {
 
   @Effect()
   loadAllSongs$: Observable<Action> = this.actions$.pipe(
-    ofType(songActions.LOAD_ALL_SONGS),
+    ofType(SongActionTypes.LOAD_ALL_SONGS),
     mergeMap((action: songActions.LoadAllSongs) => this.songService.getAllSongs().pipe(
       map((songs: Song[]) => new songActions.LoadSuccess(songs)),
       catchError(err => of(new songActions.LoadFail(err)))
@@ -25,7 +26,7 @@ export class SongEffects {
 
   @Effect()
   loadCategorySongs$: Observable<Action> = this.actions$.pipe(
-    ofType(songActions.LOAD_CATEGORY_SONGS),
+    ofType(SongActionTypes.LOAD_CATEGORY_SONGS),
     mergeMap((action: songActions.LoadCategorySongs) => this.songService.getSongsByCategory(action.category)
       .pipe(
         map((songs: Song[]) => new songActions.LoadSuccess(songs)),

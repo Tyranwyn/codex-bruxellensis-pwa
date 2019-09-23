@@ -1,5 +1,5 @@
 import { Song } from '../models/song';
-import * as songActions from './song.actions';
+import { SongActions, SongActionTypes } from './song.actions';
 
 export interface SongsState {
   songs: Song[];
@@ -13,30 +13,30 @@ const defaultState: SongsState = {
   error: ''
 };
 
-export function reducer(state = defaultState, action: songActions.All): SongsState {
+export function reducer(state = defaultState, action: SongActions): SongsState {
   switch (action.type) {
-    case songActions.SET_CURRENT_SONG:
+    case SongActionTypes.SET_CURRENT_SONG:
       return {
         ...state,
         currentSongId: action.payload.id
       };
-    case songActions.CLEAR_CURRENT_SONG:
+    case SongActionTypes.CLEAR_CURRENT_SONG:
       return {
         ...state,
         currentSongId: null
       };
-    case songActions.INITIALIZE_CURRENT_SONG:
+    case SongActionTypes.INITIALIZE_CURRENT_SONG:
       return {
         ...state,
         currentSongId: '',
       };
-    case songActions.LOAD_SUCCESS:
+    case SongActionTypes.LOAD_SUCCESS:
       return {
         ...state,
         songs: action.payload,
         error: ''
       };
-    case songActions.LOAD_FAIL:
+    case SongActionTypes.LOAD_FAIL:
       return {
         ...defaultState,
         error: action.payload
