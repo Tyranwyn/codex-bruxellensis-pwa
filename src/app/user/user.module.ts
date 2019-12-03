@@ -7,7 +7,7 @@ import { UserEffects } from './state/user/user.effects';
 import { LoginComponent } from './login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { EnumToArrayModule } from '../enum-to-array/enum-to-array.module';
+import { EnumToArrayModule } from '../common/enum-to-array/enum-to-array.module';
 import { RouterModule, Routes } from '@angular/router';
 
 const userRoutes: Routes = [

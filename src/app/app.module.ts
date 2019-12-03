@@ -20,7 +20,7 @@ import { faEnvelope, faSave, faStar } from '@fortawesome/free-regular-svg-icons'
 import { faEdit, faLock, faSearch, faStar as solidStar, faUser } from '@fortawesome/free-solid-svg-icons';
 import { EffectsModule } from '@ngrx/effects';
 import { UserModule } from './user/user.module';
-import { EnumToArrayModule } from './enum-to-array/enum-to-array.module';
+import { EnumToArrayModule } from './common/enum-to-array/enum-to-array.module';
 import { stringify } from './serializer';
 
 @NgModule({
