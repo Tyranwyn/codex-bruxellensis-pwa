@@ -10,10 +10,10 @@ import { reducer } from './state/song.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { SongEffects } from './state/song.effects';
 import { SongEditComponent } from './song-edit/song-edit.component';
-import { CapitalizeModule } from '../capitalize/capitalize.module';
+import { CapitalizeModule } from '../common/capitalize/capitalize.module';
 import { SongAddComponent } from './song-add/song-add.component';
 import { AutosizeModule } from 'ngx-autosize';
-import { Route, RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
 const songRoutes: Routes = [
   {path: '', component: SongListComponent},

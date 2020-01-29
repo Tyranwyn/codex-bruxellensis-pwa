@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Category } from '../../songs/models/category.enum';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import * as fromRoot from '../../state';
+import * as fromRoot from '../../state/app.state';
 import * as fromUserState from '../../user/state';
 import * as userActions from '../../user/state/user/user.actions';
 import { User } from '../../user/user';

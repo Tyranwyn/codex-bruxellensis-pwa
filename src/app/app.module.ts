@@ -23,6 +23,10 @@ import { UserModule } from './user/user.module';
 import { EnumToArrayModule } from './common/enum-to-array/enum-to-array.module';
 import { stringify } from './serializer';
 
+export function sanitizer(action) {
+  return JSON.parse(stringify(action));
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -46,7 +50,7 @@ import { stringify } from './serializer';
       name: 'Codex Bruxellensis',
       maxAge: 25,
       logOnly: environment.production,
-      actionSanitizer: action => JSON.parse(stringify(action))
+      actionSanitizer: sanitizer
     }),
     SongsModule,
     UserModule

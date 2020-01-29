@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
-import * as fromRoot from './state';
+import * as fromRoot from './state/app.state';
 import { Store } from '@ngrx/store';
 import * as userActions from './user/state/user/user.actions';
 
