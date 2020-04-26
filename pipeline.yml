@@ -41,6 +41,7 @@ jobs:
                 echo "((firebase-config))" > src/app/firebase-config.ts
                 npm install
                 npm run build
+                node deploy.js
   - name: prod-deploy
     plan:
       - get: codex-git-master
