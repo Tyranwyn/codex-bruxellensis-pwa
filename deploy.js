@@ -27,7 +27,7 @@ s3.listObjectsV2(params, (err, data) => {
           Body: JSON.stringify(file, null, 2)
         }, (s3Err, data) => {
           if (s3Err) throw s3Err
-          console.log(`File uploaded successfully at ${data.Location}`);
+          console.log(`File uploaded successfully ${itemName}`);
         });
       });
     });
