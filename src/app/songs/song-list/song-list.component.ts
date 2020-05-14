@@ -40,7 +40,7 @@ export class SongListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.userDataSub = this.store.select(fromRoot.getUserDataSelector).subscribe(userData => this.currentUser = userData);
+    this.userDataSub = this.store.select(fromRoot.getUserData).subscribe(userData => this.currentUser = userData);
 
     this.errormessage$ = this.store.pipe(select(fromSongs.getError));
 

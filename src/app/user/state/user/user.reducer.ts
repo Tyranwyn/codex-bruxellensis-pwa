@@ -14,7 +14,7 @@ const reducer = createReducer(
   on(UserActions.GetUser, (state: User) => ({...state, loading: true})),
   on(UserActions.Authenticated, (state: User, user: User) => ({...user, loading: false})),
   on(UserActions.NotAuthenticated, state => ({...defaultUser, loading: false})),
-  on(UserActions.Login, state => ({...defaultUser, loading: true})), // TODO: verder bekijken
+  on(UserActions.Login, state => ({...state, loading: true})), // TODO: verder bekijken
   on(UserActions.Logout, state => ({...defaultUser})),
   on(UserActions.AuthError, (state: User, error: Error) => ({...state, loading: false}))
 );

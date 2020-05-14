@@ -9,6 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { EnumToArrayModule } from '../common/enum-to-array/enum-to-array.module';
 import { RouterModule, Routes } from '@angular/router';
+import {UserDataEffects} from './state/user-data/user-data.effects';
 
 const userRoutes: Routes = [
   { path: 'login', component: LoginComponent }
@@ -22,8 +23,8 @@ const userRoutes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     FontAwesomeModule,
-    StoreModule.forFeature('user', reducers),
-    EffectsModule.forFeature([UserEffects]),
+    StoreModule.forFeature('userState', reducers),
+    EffectsModule.forFeature([UserEffects, UserDataEffects]),
     EnumToArrayModule
   ],
   exports: [LoginComponent]

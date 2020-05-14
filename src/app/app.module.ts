@@ -23,7 +23,6 @@ import { UserModule } from './user/user.module';
 import { EnumToArrayModule } from './common/enum-to-array/enum-to-array.module';
 import { stringify } from './serializer';
 
-import { reducers, metaReducers } from './state';
 export function sanitizer(action) {
   return JSON.parse(stringify(action));
 }
@@ -45,13 +44,7 @@ export function sanitizer(action) {
     AppRoutingModule,
     ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),
     EnumToArrayModule,
-    StoreModule.forRoot(reducers, {
-      metaReducers,
-      runtimeChecks: {
-        strictStateImmutability: true,
-        strictActionImmutability: true
-      }
-    }),
+    StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument({
       name: 'Codex Bruxellensis',

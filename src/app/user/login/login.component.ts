@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.user$ = this.store.select(fromRoot.getUserSelector);
+    this.user$ = this.store.select(fromRoot.getUser);
   }
 
   login(provider: string) {

@@ -38,7 +38,7 @@ export class SongDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.userDataSub = this.store.select(fromRoot.getUserDataSelector)
+    this.userDataSub = this.store.select(fromRoot.getUserData)
       .subscribe(userdata => this.user = userdata);
     this.$song = this.route.paramMap.pipe(
       switchMap(params => {
