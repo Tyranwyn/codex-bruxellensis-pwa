@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StoreModule } from '@ngrx/store';
-import { reducers } from './state';
+import { reducers } from '../state';
 import { EffectsModule } from '@ngrx/effects';
 import { UserEffects } from './state/user/user.effects';
 import { LoginComponent } from './login/login.component';
@@ -22,7 +22,7 @@ const userRoutes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     FontAwesomeModule,
-    StoreModule.forFeature('userState', reducers),
+    StoreModule.forFeature('user', reducers),
     EffectsModule.forFeature([UserEffects]),
     EnumToArrayModule
   ],

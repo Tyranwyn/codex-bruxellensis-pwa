@@ -1,4 +1,4 @@
-import * as fromRoot from '../../state/app.state';
+import * as fromRoot from '../../state';
 import * as fromSongs from './song.reducer';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 

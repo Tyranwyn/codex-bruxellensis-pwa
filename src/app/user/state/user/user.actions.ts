@@ -1,55 +1,9 @@
-import { Action } from '@ngrx/store';
-import { User } from '../../user';
+import {createAction, props} from '@ngrx/store';
+import {User} from '../../user';
 
-export const GET_USER = '[Auth] Get user';
-export const AUTHENTICATED = '[Auth] Authenticated';
-export const NOT_AUTHENTICATED = '[Auth] Not authenticated';
-export const LOGIN = '[Auth] Login attempt';
-export const LOGOUT = '[Auth] Logout';
-export const AUTH_ERROR = '[Auth] Error';
-
-export class GetUser implements Action {
-  readonly type = GET_USER;
-
-  constructor(public payload?: any) {
-  }
-}
-
-export class Authenticated implements Action {
-  readonly type = AUTHENTICATED;
-
-  constructor(public payload: User) {
-  }
-}
-
-export class NotAuthenticated implements Action {
-  readonly type = NOT_AUTHENTICATED;
-}
-
-export class Login implements Action {
-  readonly type = LOGIN;
-
-  constructor(public payload: {provider: string, email?: string, password?: string}) {
-  }
-}
-
-export class Logout implements Action {
-  readonly type = LOGOUT;
-
-  constructor(public payload?: any) {
-  }
-}
-
-export class AuthError implements Action {
-  readonly type = AUTH_ERROR;
-
-  constructor(public payload?: any) {
-  }
-}
-
-export type All = GetUser
-  | Authenticated
-  | NotAuthenticated
-  | Login
-  | AuthError
-  | Logout;
+export const GetUser = createAction('[Auth] Get user');
+export const Authenticated = createAction('[Auth] Authenticated', props<User>());
+export const NotAuthenticated = createAction('[Auth] Not authenticated');
+export const Login = createAction('[Auth] Login attempt', props<{provider: string, email?: string, password?: string}>());
+export const Logout = createAction('[Auth] Logout');
+export const AuthError = createAction('[Auth] Error', props<Error>());

@@ -1,31 +1,24 @@
-import * as userActions from './user.actions';
-import { AccountType } from '../../account-type.enum';
-import { User } from '../../user';
+import * as UserActions from './user.actions';
+import {User} from '../../user';
+import {Action, createReducer, on} from '@ngrx/store';
 
 const defaultUser: User = {
   uid: null,
   displayName: 'GUEST',
   email: null,
-  accountType: AccountType.USER,
-  favorites: []
+  // favorites: []
 };
 
-export function reducer(state: User = defaultUser, action: userActions.All): User {
-  switch (action.type) {
-    case userActions.GET_USER:
-      return {...state, loading: true};
-    case userActions.AUTHENTICATED:
-      return {...state, ...action.payload, loading: false};
-    case userActions.NOT_AUTHENTICATED:
-      return {...state, ...defaultUser, loading: false};
-    case userActions.LOGIN:
-      return {...state, loading: true};
-    case userActions.AUTH_ERROR:
-      return {...state, ...action.payload, loading: false};
-    case userActions.LOGOUT:
-      return {...state, loading: true};
-    default:
-      return state;
-  }
-}
+const reducer = createReducer(
+  defaultUser,
+  on(UserActions.GetUser, (state: User) => ({...state, loading: true})),
+  on(UserActions.Authenticated, (state: User, user: User) => ({...user, loading: false})),
+  on(UserActions.NotAuthenticated, state => ({...defaultUser, loading: false})),
+  on(UserActions.Login, state => ({...defaultUser, loading: true})), // TODO: verder bekijken
+  on(UserActions.Logout, state => ({...defaultUser})),
+  on(UserActions.AuthError, (state: User, error: Error) => ({...state, loading: false}))
+);
 
+export function UserReducer(state: User | undefined, action: Action) {
+  return reducer(state, action);
+}

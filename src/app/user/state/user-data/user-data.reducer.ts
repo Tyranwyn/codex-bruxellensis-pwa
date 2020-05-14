@@ -1,48 +1,24 @@
-import * as userDataActions from './user-data.actions';
-import { UserData } from '../../user-data';
-import { AccountType } from '../../account-type.enum';
+import * as UserDataAction from './user-data.actions';
+import {Role, UserData} from '../../user';
+import {createReducer, on} from '@ngrx/store';
 
 export const defaultUserData: UserData = {
-  accountType: AccountType.USER,
+  role: Role.USER,
   favorites: []
 };
 
-export function reducer(state: UserData = defaultUserData, action: userDataActions.All): UserData {
-  /*switch (action.type) {
-    case userDataActions.GET_USER_DATA_SUCCESS:
-      return {
-        ...state
-      };
-    case userDataActions.GET_USER_DATA_FAIL:
-      return {
-        ...defaultUserData,
-        error: state.error
-      };
-    case userDataActions.ADD_FAVORITE_SUCCESS:
-      return {
-        ...state,
-        favorites: [
-          ...state.favorites,
-          action.payload
-        ]
-      };
-    case userDataActions.ADD_FAVORITE_FAIL:
-      return {
-        ...state,
-        error: action.payload
-      };
-    case userDataActions.REMOVE_FAVORITE_SUCCESS:
-      return {
-        ...state,
-        favorites: state.favorites.filter((value) => !value.isEqual(action.payload))
-      };
-    case userDataActions.REMOVE_FAVORITE_FAIL:
-      return {
-        ...state,
-        error: action.payload
-      };
-    default:
-      return state;
-  }*/
-  return null;
-}
+export const reducer = createReducer(
+  defaultUserData,
+  on(UserDataAction.GetUserData, state => state),
+  on(UserDataAction.GetUserDataSuccess, (state: UserData, userData: UserData) => ({ ...state, ...userData })),
+  on(UserDataAction.GetUserDataFail, (state: UserData, error: Error) => ({ ...defaultUserData })),
+  on(UserDataAction.ClearUserData, () => ({ ...defaultUserData }))
+  // on(UserDataAction.ChangeRole, (state: UserData, payload: {role: Role}) => ({ ...payload })),
+  // on(UserDataAction.ChangeRoleSuccess, () => {}),
+  // on(UserDataAction.ChangeRoleFail, () => {}),
+  // on(UserDataAction.AddFavorite, () => {}),
+  // on(UserDataAction.AddFavoriteSuccess, () => {}),
+  // on(UserDataAction.AddFavoriteFail, () => {}),
+  // on(UserDataAction.RemoveFavorite, () => {}),
+  // on(UserDataAction.RemoveFavoriteSuccess, () => {})
+);

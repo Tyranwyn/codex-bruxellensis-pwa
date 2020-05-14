@@ -1,13 +1,10 @@
-import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
-import { Observable, of } from 'rxjs';
-import { Action } from '@ngrx/store';
-import * as userDataActions from './user-data.actions';
-import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
-import { DocumentReference } from '@angular/fire/firestore';
-import { UserDataService } from '../../user-data.service';
-import { SongService } from '../../../songs/services/song-service';
-import { UserData } from '../../user-data';
+import {Injectable} from '@angular/core';
+import {Actions, createEffect, ofType} from '@ngrx/effects';
+import {of} from 'rxjs';
+import * as UserDataAction from './user-data.actions';
+import {catchError, switchMap} from 'rxjs/operators';
+import {UserDataService} from '../../user-data.service';
+import {SongService} from '../../../songs/services/song-service';
 
 @Injectable()
 export class UserDataEffects {
@@ -16,15 +13,22 @@ export class UserDataEffects {
               private songService: SongService) {
   }
 
-  /*@Effect()
-  getUserData$: Observable<Action> = this.actions$.pipe(
-    ofType(userDataActions.GET_USER_DATA),
-    switchMap((action: userDataActions.GetUserData) => this.userDataService.getUserData().pipe(
-      map((user: UserData) => new userDataActions.GetUserDataSuccess(user)),
-      catchError(err => of(new userDataActions.GetUserDataFail(err)))
-    ))
+  getUserData$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(UserDataAction.GetUserData),
+      switchMap(action => this.userDataService.getUserData(action.uid)),
+      switchMap(data => {
+        if (data) {
+          return of(UserDataAction.GetUserDataSuccess(data));
+        } else {
+          return of(UserDataAction.GetUserDataSuccess(data)); // TODO: create new data
+        }
+      }),
+      catchError(err => of(UserDataAction.GetUserDataFail(err)))
+    )
   );
 
+  /*
   @Effect()
   addFavorite$: Observable<Action> = this.actions$.pipe(
     ofType(userDataActions.ADD_FAVORITE),

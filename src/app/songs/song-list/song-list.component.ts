@@ -1,18 +1,17 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { Title } from '@angular/platform-browser';
-import { environment } from '../../../environments/environment';
-import { ActivatedRoute } from '@angular/router';
-import { Song } from '../models/song';
-import { SongService } from '../services/song-service';
-import { select, Store } from '@ngrx/store';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Observable, Subscription} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {Title} from '@angular/platform-browser';
+import {environment} from '../../../environments/environment';
+import {ActivatedRoute} from '@angular/router';
+import {Song} from '../models/song';
+import {SongService} from '../services/song-service';
+import {select, Store} from '@ngrx/store';
 import * as fromSongs from '../state';
 import * as songActions from '../state/song.actions';
-import * as userDataActions from '../../user/state/user-data/user-data.actions';
-import * as fromUserState from '../../user/state';
-import { User } from '../../user/user';
-import { AccountType } from '../../user/account-type.enum';
+import * as UserDataAction from '../../user/state/user-data/user-data.actions';
+import * as fromRoot from '../../state';
+import {Role, UserData} from '../../user/user';
 
 @Component({
   selector: 'app-song-list',
@@ -25,7 +24,7 @@ export class SongListComponent implements OnInit, OnDestroy {
   errormessage$: Observable<string>;
   filter: string;
   userDataSub: Subscription;
-  currentUser: User;
+  currentUser: UserData;
   songToEdit: any = {};
 
   showEditModal = false;
@@ -41,7 +40,7 @@ export class SongListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.userDataSub = this.store.select(fromUserState.getUser).subscribe(userData => this.currentUser = userData);
+    this.userDataSub = this.store.select(fromRoot.getUserDataSelector).subscribe(userData => this.currentUser = userData);
 
     this.errormessage$ = this.store.pipe(select(fromSongs.getError));
 
@@ -66,14 +65,14 @@ export class SongListComponent implements OnInit, OnDestroy {
   filterSongsByPageTitleBattleCryNameOrAssociationName = (song: Song) => {
     const filterString = '' + song.page + song.title + song.battleCryName + song.associationName;
     return filterString.toLowerCase().indexOf(this.filter.toLowerCase()) !== -1;
-  };
+  }
 
   filterSongsByCategory = (category: string) => {
     this.songs$ = this.store.pipe(
       select(fromSongs.getSongs),
       map(songs => songs.filter(song => song.category.match(category)))
     );
-  };
+  }
 
   isSongFavorite(id: string): boolean {
     if (this.currentUser && this.currentUser.favorites) {
@@ -84,9 +83,9 @@ export class SongListComponent implements OnInit, OnDestroy {
 
   updateFavorites(id: string) {
     if (this.isSongFavorite(id)) {
-      this.store.dispatch(new userDataActions.RemoveFavorite(id));
+      this.store.dispatch(UserDataAction.RemoveFavorite({id}));
     } else {
-      this.store.dispatch(new userDataActions.AddFavorite(id));
+      this.store.dispatch(UserDataAction.AddFavorite({id}));
     }
   }
 
@@ -96,7 +95,7 @@ export class SongListComponent implements OnInit, OnDestroy {
   }
 
   canEditSong(): boolean {
-    return this.currentUser && this.currentUser.accountType === AccountType.ADMIN;
+    return this.currentUser && this.currentUser.role === Role.ADMIN;
   }
 
   showEdit() {

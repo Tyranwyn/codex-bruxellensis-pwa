@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Store } from '@ngrx/store';
-import * as fromRoot from '../../state/app.state';
-import * as userActions from '../state/user/user.actions';
-import * as fromUserState from '../state';
+import * as fromRoot from '../../state';
+import * as UserAction from '../state/user/user.actions';
 import { AuthProviders } from '../auth-providers.enum';
 import { Observable } from 'rxjs';
 import { User } from '../user';
@@ -28,15 +27,14 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.user$ = this.store.select(fromUserState.getUser);
-    // this.store.dispatch(new userActions.GetUser());
+    this.user$ = this.store.select(fromRoot.getUserSelector);
   }
 
   login(provider: string) {
     if (provider.startsWith('Email')) {
-      this.store.dispatch(new userActions.Login({provider}));
+      this.store.dispatch(UserAction.Login({provider}));
     } else {
-      this.store.dispatch(new userActions.Login({provider, email: this.email, password: this.password}));
+      this.store.dispatch(UserAction.Login({provider, email: this.email, password: this.password}));
     }
   }
 }

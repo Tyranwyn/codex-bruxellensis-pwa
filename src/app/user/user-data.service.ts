@@ -4,8 +4,8 @@ import { environment } from '../../environments/environment';
 import { from, Observable } from 'rxjs';
 import { SongService } from '../songs/services/song-service';
 import { Store } from '@ngrx/store';
-import * as fromRoot from '../state/app.state';
-import { UserData } from './user-data';
+import * as fromRoot from '../state';
+import {UserData} from './user';
 
 @Injectable({
   providedIn: 'root'
