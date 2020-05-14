@@ -2,7 +2,7 @@ import * as UserDataAction from './user-data.actions';
 import {Role, UserData} from '../../user';
 import {createReducer, on} from '@ngrx/store';
 
-export const defaultUserData: UserData = {
+const defaultUserData: UserData = {
   role: Role.USER,
   favorites: []
 };
