@@ -11,7 +11,7 @@ function serializer(replacer, cycleReplacer) {
       if (stack[0] === value) {
         return '[Circular ~]';
       }
-      return `[Circular ~.${keys.slice(0, stack.indexOf(value)).join(".")}]`;
+      return `[Circular ~.${keys.slice(0, stack.indexOf(value)).join('.')}]`;
     };
   }
 
@@ -24,7 +24,7 @@ function serializer(replacer, cycleReplacer) {
         value = cycleReplacer.call(this, key, value);
       }
     } else {
-      stack.push(value)
+      stack.push(value);
     }
 
     return replacer == null ? value : replacer.call(this, key, value);

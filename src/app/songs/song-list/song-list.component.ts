@@ -47,13 +47,15 @@ export class SongListComponent implements OnInit, OnDestroy {
     this.route.queryParamMap.subscribe(paramMap => {
       const category = paramMap.get('category');
       if (category) {
-        this.store.dispatch(new songActions.LoadCategorySongs(category));
+        // this.store.dispatch(new songActions.LoadCategorySongs(category));
+        this.songs$ = this.songService.getSongsByCategory(category);
       } else {
-        this.store.dispatch(new songActions.LoadAllSongs());
+        // this.store.dispatch(new songActions.LoadAllSongs());
+        this.songs$ = this.songService.getAllSongs();
       }
     });
 
-    this.songs$ = this.store.select(fromSongs.getSongs);
+    // this.songs$ = this.store.select(fromSongs.getSongs);
   }
 
   search() {
@@ -68,10 +70,11 @@ export class SongListComponent implements OnInit, OnDestroy {
   }
 
   filterSongsByCategory = (category: string) => {
-    this.songs$ = this.store.pipe(
+    this.songs$ = this.songService.getSongsByCategory(category);
+    /*this.songs$ = this.store.pipe(
       select(fromSongs.getSongs),
       map(songs => songs.filter(song => song.category.match(category)))
-    );
+    );*/
   }
 
   isSongFavorite(id: string): boolean {

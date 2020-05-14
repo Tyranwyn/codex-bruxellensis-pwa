@@ -5,8 +5,7 @@ import {Action, createReducer, on} from '@ngrx/store';
 const defaultUser: User = {
   uid: null,
   displayName: 'GUEST',
-  email: null,
-  // favorites: []
+  email: null
 };
 
 const reducer = createReducer(
@@ -14,7 +13,7 @@ const reducer = createReducer(
   on(UserActions.GetUser, (state: User) => ({...state, loading: true})),
   on(UserActions.Authenticated, (state: User, user: User) => ({...user, loading: false})),
   on(UserActions.NotAuthenticated, state => ({...defaultUser, loading: false})),
-  on(UserActions.Login, state => ({...state, loading: true})), // TODO: verder bekijken
+  on(UserActions.Login, state => ({...state, loading: true})),
   on(UserActions.Logout, state => ({...defaultUser})),
   on(UserActions.AuthError, (state: User, error: Error) => ({...state, loading: false}))
 );
