@@ -1,7 +1,8 @@
 import {User, UserData} from '../user/user';
-import {ActionReducerMap, createFeatureSelector, createSelector} from '@ngrx/store';
+import {ActionReducerMap, createFeatureSelector, createSelector, MetaReducer} from '@ngrx/store';
 import * as fromUser from '../user/state/user/user.reducer';
 import * as fromUserData from '../user/state/user-data/user-data.reducer';
+import {environment} from '../../environments/environment';
 
 export interface State {
   user: User;
@@ -12,6 +13,8 @@ export const reducers: ActionReducerMap<State> = {
   user: fromUser.UserReducer,
   userData: fromUserData.reducer
 };
+
+export const metaReducers: MetaReducer<State>[] = !environment.production ? [] : [];
 
 export const getUserSelector = createFeatureSelector<User>('user');
 
