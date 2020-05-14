@@ -18,6 +18,7 @@ export class UserDataEffects {
       ofType(UserDataAction.GetUserData),
       switchMap(action => this.userDataService.getUserData(action.uid)),
       switchMap(data => {
+        console.log(data);
         if (data) {
           return of(UserDataAction.GetUserDataSuccess(data));
         } else {

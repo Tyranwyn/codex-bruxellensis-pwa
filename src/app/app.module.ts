@@ -21,9 +21,9 @@ import { faEdit, faLock, faSearch, faStar as solidStar, faUser } from '@fortawes
 import { EffectsModule } from '@ngrx/effects';
 import { UserModule } from './user/user.module';
 import { EnumToArrayModule } from './common/enum-to-array/enum-to-array.module';
-// import { stringify } from './serializer';
+/*import { stringify } from './serializer';
 
-/*export function sanitizer(action) {
+export function sanitizer(action) {
   return JSON.parse(stringify(action));
 }*/
 
