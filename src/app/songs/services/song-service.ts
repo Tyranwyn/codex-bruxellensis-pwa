@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {AngularFirestore, AngularFirestoreCollection, DocumentReference} from '@angular/fire/firestore';
 import {from, Observable} from 'rxjs';
-import {Song} from '../models/song';
+import {Song, SongListDto} from '../models/song';
 import {environment} from '../../../environments/environment';
 import {map} from 'rxjs/operators';
 
@@ -16,14 +16,24 @@ export class SongService {
     this.songCollection = afs.collection<Song>(environment.databases.songs, ref => ref.orderBy('page'));
   }
 
-  getAllSongs(): Observable<Song[]> {
+  getAllSongs(): Observable<SongListDto[]> {
     return this.songCollection
       .valueChanges({idField: 'id'});
   }
 
-  getSongsByCategory(category: string): Observable<Song[]> {
-    return this.songCollection.valueChanges()
-      .pipe(map(songList => songList.filter(song => song.category === category)));
+  getSongsByCategory(category: string): Observable<SongListDto[]> {
+    return this.songCollection.valueChanges({idField: 'id'})
+      .pipe(
+        map(songs => songs.filter(s => s.category === category)),
+        map(songs => songs.map(s => ({
+            id: s.id,
+            title: s.title,
+            associationName: s.associationName,
+            battleCryName: s.battleCryName,
+            page: s.page
+          })
+        ))
+      );
   }
 
   getSongById(id: string): Observable<Song> {

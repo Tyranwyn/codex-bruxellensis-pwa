@@ -14,3 +14,11 @@ export interface Song {
   page: number;
   removed: boolean;
 }
+
+export interface SongListDto {
+  id: string;
+  title: string;
+  associationName: string;
+  battleCryName: string;
+  page: number;
+}

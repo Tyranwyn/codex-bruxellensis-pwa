@@ -15,7 +15,7 @@ export class SongEffects {
               private songService: SongService) {
   }
 
-  @Effect()
+  /*@Effect()
   loadAllSongs$: Observable<Action> = this.actions$.pipe(
     ofType(SongActionTypes.LOAD_ALL_SONGS),
     mergeMap((action: songActions.LoadAllSongs) => this.songService.getAllSongs().pipe(
@@ -32,7 +32,7 @@ export class SongEffects {
         map((songs: Song[]) => new songActions.LoadSuccess(songs)),
         catchError(err => of(new songActions.LoadFail(err)))
       ))
-  );
+  );*/
 
   /*@Effect()
   updateSong$: Observable<Action> = this.actions$.pipe(

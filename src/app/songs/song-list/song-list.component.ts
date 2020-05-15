@@ -4,7 +4,7 @@ import {map} from 'rxjs/operators';
 import {Title} from '@angular/platform-browser';
 import {environment} from '../../../environments/environment';
 import {ActivatedRoute} from '@angular/router';
-import {Song} from '../models/song';
+import {SongListDto} from '../models/song';
 import {SongService} from '../services/song-service';
 import {select, Store} from '@ngrx/store';
 import * as fromSongs from '../state';
@@ -19,7 +19,7 @@ import {Role, UserData} from '../../user/user';
 })
 export class SongListComponent implements OnInit, OnDestroy {
 
-  songs$: Observable<Song[]>;
+  songs$: Observable<SongListDto[]>;
   errormessage$: Observable<string>;
   filter: string;
   subscriptions: Subscription[] = [];
@@ -69,7 +69,7 @@ export class SongListComponent implements OnInit, OnDestroy {
     );
   }
 
-  filterSongsByPageTitleBattleCryNameOrAssociationName = (song: Song) => {
+  filterSongsByPageTitleBattleCryNameOrAssociationName = (song: SongListDto) => {
     const filterString = '' + song.page + song.title + song.battleCryName + song.associationName;
     return filterString.toLowerCase().indexOf(this.filter.toLowerCase()) !== -1;
   }
