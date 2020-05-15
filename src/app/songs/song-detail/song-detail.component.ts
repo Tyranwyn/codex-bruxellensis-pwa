@@ -12,7 +12,7 @@ import * as fromRoot from '../../state';
 import * as UserDataAction from '../../user/state/user-data/user-data.actions';
 import {Store} from '@ngrx/store';
 import {UserDataService} from '../../user/user-data.service';
-import {Role, UserData} from '../../user/user';
+import {UserData} from '../../user/user';
 
 @Component({
   selector: 'app-song-detail',
