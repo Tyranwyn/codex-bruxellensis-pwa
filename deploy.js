@@ -41,7 +41,7 @@ const async = require('async');
 const AWS = require('aws-sdk');
 const readdir = require('recursive-readdir');
 
-const BUCKET = process.env = process.env.S3_BUCKET;
+const BUCKET = process.env.S3_BUCKET;
 const rootFolder = path.resolve(__dirname, './');
 const uploadFolder = './dist';
 const s3 = new AWS.S3({
