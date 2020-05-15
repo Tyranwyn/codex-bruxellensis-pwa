@@ -1,141 +1,100 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Song } from '../../models/song';
-import { SongService } from '../../services/song-service';
-import { map } from 'rxjs/operators';
-import { Title } from '@angular/platform-browser';
-import { environment } from '../../../environments/environment';
-import { ActivatedRoute, ParamMap } from '@angular/router';
-import { UserDataService } from '../../services/user-data.service';
-import { UserData } from '../../models/user-data';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { AccountType } from 'src/app/models/account-type.enum';
-import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { Category } from 'src/app/models/category.enum';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Observable, Subscription} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {Title} from '@angular/platform-browser';
+import {environment} from '../../../environments/environment';
+import {ActivatedRoute} from '@angular/router';
+import {Song} from '../models/song';
+import {SongService} from '../services/song-service';
+import {select, Store} from '@ngrx/store';
+import * as fromSongs from '../state';
+import * as UserDataAction from '../../user/state/user-data/user-data.actions';
+import * as fromRoot from '../../state';
+import {Role, UserData} from '../../user/user';
 
 @Component({
   selector: 'app-song-list',
   templateUrl: './song-list.component.html',
   styleUrls: ['./song-list.component.scss']
 })
-export class SongListComponent implements OnInit {
+export class SongListComponent implements OnInit, OnDestroy {
 
-  $songs: Observable<Song[]>;
+  songs$: Observable<Song[]>;
+  errormessage$: Observable<string>;
   filter: string;
-  userData: UserData;
+  subscriptions: Subscription[] = [];
+  currentUid: string;
+  currentUserData: UserData;
+  canEditSongs = false;
+  songToEdit: any = {};
 
-  public showAddModal = false;
-  public addSongForm: FormGroup;
-
-  public showEditModal = false;
-  public editSongForm: FormGroup;
-  public songToEdit: any = {};
-  public categories: any[] = [];
-
-  filterSongs = (song: Song) => {
-    const filterString = '' + song.page + song.title + song.battleCryName + song.associationName;
-    return filterString.toLowerCase().indexOf(this.filter.toLowerCase()) !== -1;
-  }
+  showEditModal = false;
+  showAddModal = false;
 
   constructor(
     private songService: SongService,
     private titleService: Title,
     private route: ActivatedRoute,
-    private userDataService: UserDataService,
-    private auth: AngularFireAuth,
-    public fb: FormBuilder,
+    private store: Store<fromSongs.State>
   ) {
     titleService.setTitle(environment.title);
-    auth.user
-      .subscribe(user => {
-          if (user) {
-            this.userDataService.getUserData(user.uid).subscribe(userData => this.userData = userData);
-          }
-        }
-      );
-    this.route.queryParamMap.subscribe(paramMap => this.songsInit(paramMap));
   }
 
   ngOnInit() {
-    this.categories = Object.keys(Category);
-    this.initializeForms();
-  }
+    this.subscriptions.push(this.store.select(fromRoot.getUserId).subscribe(uid => this.currentUid = uid));
+    this.subscriptions.push(this.store.select(fromRoot.getUserData).subscribe(userData => {
+      this.currentUserData = userData;
+      this.canEditSongs = userData.role === Role.ADMIN;
+    }));
 
-  initializeForms() {
-    this.editSongForm = this.fb.group({
-      category: '',
-      page: '',
-      title: '',
-      bgInfo: '',
-      lyrics: '',
-      associationName: '',
-      associationInfo: '',
-      battleCryName: '',
-      battleCryInfo: '',
-      battleCry: '',
-    });
-    this.addSongForm = this.fb.group({
-      category: '',
-      page: '',
-      title: '',
-      bgInfo: '',
-      lyrics: '',
-      associationName: '',
-      associationInfo: '',
-      battleCryName: '',
-      battleCryInfo: '',
-      battleCry: ''
-    });
-  }
+    this.errormessage$ = this.store.pipe(select(fromSongs.getError));
 
-  capitalize(text) {
-    text = text.toLowerCase();
-    return text.charAt(0).toUpperCase() + text.slice(1);
+    this.route.queryParamMap.subscribe(paramMap => {
+      const category = paramMap.get('category');
+      if (category) {
+        // this.store.dispatch(new songActions.LoadCategorySongs(category));
+        this.songs$ = this.songService.getSongsByCategory(category);
+      } else {
+        // this.store.dispatch(new songActions.LoadAllSongs());
+        this.songs$ = this.songService.getAllSongs();
+      }
+    });
+
+    // this.songs$ = this.store.select(fromSongs.getSongs);
   }
 
   search() {
-    this.$songs = this.$songs.pipe(
-      map(songs => songs.filter(song => this.filterSongs(song)))
+    this.songs$ = this.songs$.pipe(
+      map(songs => songs.filter(song => this.filterSongsByPageTitleBattleCryNameOrAssociationName(song)))
     );
   }
 
-  songsInit(paramMap: ParamMap) {
-    const category = paramMap.get('category');
-    if (category) {
-      this.$songs = this.songService.getSongsByCategory(category);
-    } else {
-      this.$songs = this.songService.getAllSongs();
-    }
+  filterSongsByPageTitleBattleCryNameOrAssociationName = (song: Song) => {
+    const filterString = '' + song.page + song.title + song.battleCryName + song.associationName;
+    return filterString.toLowerCase().indexOf(this.filter.toLowerCase()) !== -1;
+  }
+
+  filterSongsByCategory = (category: string) => {
+    this.songs$ = this.songService.getSongsByCategory(category);
+    /*this.songs$ = this.store.pipe(
+      select(fromSongs.getSongs),
+      map(songs => songs.filter(song => song.category.match(category)))
+    );*/
   }
 
   isSongFavorite(id: string): boolean {
-    if (this.userData && this.userData.favorites) {
-      return !!this.userData.favorites.find(ref => ref.id === id);
+    if (this.currentUserData && this.currentUserData.favorites) {
+      return !!this.currentUserData.favorites.find(fav => fav === id);
     }
     return false;
   }
 
   updateFavorites(id: string) {
     if (this.isSongFavorite(id)) {
-      this.userDataService.removeFavorite(id);
+      this.store.dispatch(UserDataAction.RemoveFavorite({id}));
     } else {
-      this.userDataService.addFavorite(id);
+      this.store.dispatch(UserDataAction.AddFavorite({id}));
     }
-  }
-
-  add() {
-    this.songService.addSong(this.addSongForm.value);
-    this.hideAdd();
-  }
-
-  edit() {
-    this.songService.updateSong(this.songToEdit.id, this.editSongForm.value);
-    this.hideEdit();
-  }
-
-  delete(id) {
-    this.songService.deleteSong(id);
-    this.hideEdit();
   }
 
   editSong(song) {
@@ -143,16 +102,8 @@ export class SongListComponent implements OnInit {
     this.showEdit();
   }
 
-  canEditSong(): boolean {
-    return this.userData && this.userData.accountType === AccountType.ADMIN;
-  }
-
   showEdit() {
     this.showEditModal = true;
-  }
-
-  hideEdit() {
-    this.showEditModal = false;
   }
 
   showAdd() {
@@ -163,5 +114,7 @@ export class SongListComponent implements OnInit {
     this.showAddModal = false;
   }
 
-
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
 }

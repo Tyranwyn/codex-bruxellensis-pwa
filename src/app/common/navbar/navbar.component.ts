@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { Category } from '../../models/category.enum';
 import { Router } from '@angular/router';
+import { Category } from '../../songs/models/category.enum';
+import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+import * as fromRoot from '../../state';
+import * as UserAction from '../../user/state/user/user.actions';
+import { User } from '../../user/user';
 
 @Component({
   selector: 'app-navbar',
@@ -11,16 +15,17 @@ import { Router } from '@angular/router';
 export class NavbarComponent implements OnInit {
 
   categories = Category;
-  public showLogoutModal = false;
+  showLogoutModal = false;
+  user$: Observable<User>;
 
   constructor(
-    public angularFireAuth: AngularFireAuth,
-    private router: Router
+    private router: Router,
+    private store: Store<fromRoot.State>
   ) {
-
   }
 
   ngOnInit() {
+    this.user$ = this.store.select(fromRoot.getUser);
   }
 
   active(event) {
@@ -64,7 +69,7 @@ export class NavbarComponent implements OnInit {
 
   logout() {
     this.showLogoutModal = false;
-    this.angularFireAuth.auth.signOut();
+    this.store.dispatch(UserAction.Logout());
   }
 
   categoryFilter(category: string) {

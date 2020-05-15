@@ -1,26 +1,30 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { SongService } from '../../services/song-service';
-import { Observable } from 'rxjs';
-import { Song } from '../../models/song';
-import { switchMap } from 'rxjs/operators';
-import { Title } from '@angular/platform-browser';
-import { UserDataService } from '../../services/user-data.service';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { UserData } from '../../models/user-data';
-import { AccountType } from '../../models/account-type.enum';
-import { Location } from '@angular/common';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {Observable, Subscription} from 'rxjs';
+import {switchMap} from 'rxjs/operators';
+import {Title} from '@angular/platform-browser';
+import {AngularFireAuth} from '@angular/fire/auth';
+import {Location} from '@angular/common';
+import {Song} from '../models/song';
+import {SongService} from '../services/song-service';
+import * as fromSongs from '../state';
+import * as fromRoot from '../../state';
+import * as UserDataAction from '../../user/state/user-data/user-data.actions';
+import {Store} from '@ngrx/store';
+import {UserDataService} from '../../user/user-data.service';
+import {UserData} from '../../user/user';
 
 @Component({
   selector: 'app-song-detail',
   templateUrl: './song-detail.component.html',
   styleUrls: ['./song-detail.component.css']
 })
-export class SongDetailComponent implements OnInit {
+export class SongDetailComponent implements OnInit, OnDestroy {
 
   songId: string;
   $song: Observable<Song>;
-  userData: UserData;
+  user: UserData;
+  userDataSub: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -28,18 +32,14 @@ export class SongDetailComponent implements OnInit {
     private titleService: Title,
     private userDataService: UserDataService,
     private auth: AngularFireAuth,
-    private location: Location
+    private location: Location,
+    private store: Store<fromSongs.State>
   ) {
-    auth.user
-      .subscribe(user => {
-          if (user) {
-            this.userDataService.getUserData(user.uid).subscribe(userData => this.userData = userData);
-          }
-        }
-      );
   }
 
   ngOnInit() {
+    this.userDataSub = this.store.select(fromRoot.getUserData)
+      .subscribe(userdata => this.user = userdata);
     this.$song = this.route.paramMap.pipe(
       switchMap(params => {
         this.songId = params.get('id');
@@ -50,17 +50,17 @@ export class SongDetailComponent implements OnInit {
   }
 
   isSongFavorite(id: string): boolean {
-    if (this.userData.favorites) {
-      return !!this.userData.favorites.find(ref => ref.id === id);
+    if (this.user.favorites) {
+      return !!this.user.favorites.find(fav => fav === id);
     }
     return false;
   }
 
   updateFavorites(id: string) {
     if (this.isSongFavorite(id)) {
-      this.userDataService.removeFavorite(id);
+      this.store.dispatch(UserDataAction.RemoveFavorite({id}));
     } else {
-      this.userDataService.addFavorite(id);
+      this.store.dispatch(UserDataAction.AddFavorite({id}));
     }
   }
 
@@ -68,12 +68,12 @@ export class SongDetailComponent implements OnInit {
     this.songService.updateSong(this.songId, $event);
   }
 
-  canModifySong(): boolean {
-    return this.userData && this.userData.accountType === AccountType.ADMIN;
-  }
-
   back() {
     this.location.back();
+  }
+
+  ngOnDestroy(): void {
+    this.userDataSub.unsubscribe();
   }
 
 }

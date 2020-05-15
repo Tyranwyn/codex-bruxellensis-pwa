@@ -1,23 +1,23 @@
 <nav class="navbar" role="navigation" aria-label="main navigation">
   <div class="navbar-brand" name="navbar-brand">
     <a class="navbar-item" routerLink="/">
-      <img src="assets/codexbxl-icon.png" class="svg" />
+      <img src="assets/codexbxl-icon.png" class="svg"/>
       <div class="nav-title">
         <h1>Codex Bruxellensis</h1>
         <h2>Vivat, Crescat, Floreat</h2>
       </div>
     </a>
 
-    <a class="login-mobile" routerLink="/login" *ngIf="!(angularFireAuth.user | async)" (click)="active($event)">
-        <fa-icon [icon]="['fas', 'user']"></fa-icon>
+    <a class="login-mobile" routerLink="/login" *ngIf="!(user$ | async)?.uid" (click)="active($event)">
+      <fa-icon [icon]="['fas', 'user']"></fa-icon>
     </a>
 
-    <a class="login-mobile" *ngIf="angularFireAuth.user | async as user" (click)="active($event)" (click)="showLogout()">
+    <a class="login-mobile" *ngIf="(user$ | async)?.uid" (click)="active($event)" (click)="showLogout()">
       <fa-icon [icon]="['fas', 'user']"></fa-icon>
-  </a>
+    </a>
 
     <a role="button" class="navbar-burger burger" name="navbar-burger" aria-label="menu" aria-expanded="false"
-      data-target="navbarBasicExample" (click)="toggleClass($event)">
+       data-target="navbarBasicExample" (click)="toggleClass($event)">
       <span aria-hidden="true"></span>
       <span aria-hidden="true"></span>
       <span aria-hidden="true"></span>
@@ -30,36 +30,38 @@
         Home
       </a>
       <a class="navbar-item" *ngFor="let category of categories | enumToArray" (click)="categoryFilter(category)"
-        (click)="closeMenu($event)" (click)="active($event)">
+         (click)="closeMenu($event)" (click)="active($event)">
         {{ capitalize(category) }}
       </a>
 
-      <a class="navbar-item login-button" routerLink="/login" *ngIf="!(angularFireAuth.user | async)"
-        (click)="active($event)">
+      <a class="navbar-item login-button" routerLink="/login" *ngIf="!(user$ | async)?.uid"
+         (click)="active($event)">
         <div>Login</div>
       </a>
 
-      <a class="navbar-item login-button" *ngIf="angularFireAuth.user | async as user" (click)="active($event)">
-        <div (click)="showLogout()">{{ user.displayName ? user.displayName : user.email }}</div>
+      <a *ngIf="user$ | async as user" class="navbar-item login-button" (click)="active($event)">
+        <div *ngIf="user.uid" (click)="showLogout()">{{ user.displayName ? user.displayName : user.email }}</div>
       </a>
     </div>
   </div>
 </nav>
 
-<div *ngIf="angularFireAuth.user | async as user" class="modal {{ showLogoutModal ? 'is-active' : '' }}">
-  <div class="modal-background"></div>
-  <div class="modal-card">
-    <header class="modal-card-head">
-      <p class="modal-card-title">Account</p>
-      <button class="delete" aria-label="close" (click)="hideLogout()"></button>
-    </header>
-    <section class="modal-card-body">
-      <h2 class="title is-5">{{ user.displayName }}</h2>
-      <h3 class="subtitle is-6">{{ user.email }}</h3>
-    </section>
-    <footer class="modal-card-foot">
-      <button class="button is-danger" (click)="logout()">Logout</button>
-      <button class="button" (click)="hideLogout()">Cancel</button>
-    </footer>
+<div *ngIf="user$ | async as user">
+  <div *ngIf="user.uid" class="modal {{ showLogoutModal ? 'is-active' : '' }}">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Account</p>
+        <button class="delete" aria-label="close" (click)="hideLogout()"></button>
+      </header>
+      <section class="modal-card-body">
+        <h2 class="title is-5">{{ user.displayName }}</h2>
+        <h3 class="subtitle is-6">{{ user.email }}</h3>
+      </section>
+      <footer class="modal-card-foot">
+        <button class="button is-danger" (click)="logout()">Logout</button>
+        <button class="button" (click)="hideLogout()">Cancel</button>
+      </footer>
+    </div>
   </div>
 </div>

@@ -121,5 +121,8 @@
       }
     }
   },
-  "defaultProject": "Codex-Bruxellensis-Webapp"
+  "defaultProject": "Codex-Bruxellensis-Webapp",
+  "cli": {
+    "defaultCollection": "@ngrx/schematics"
+  }
 }

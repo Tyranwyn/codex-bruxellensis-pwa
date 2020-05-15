@@ -8,7 +8,7 @@
   <div class="song-content">
 
     <a *ngIf="auth.user | async" class="has-text-primary favorite" (click)="updateFavorites(songId)">
-      <fa-icon *ngIf="userData" [icon]="isSongFavorite(songId)? ['fas', 'star']: ['far', 'star']"></fa-icon>
+      <fa-icon *ngIf="user" [icon]="isSongFavorite(songId)? ['fas', 'star']: ['far', 'star']"></fa-icon>
     </a>
 
     <div class="association" *ngIf="song.associationName">
