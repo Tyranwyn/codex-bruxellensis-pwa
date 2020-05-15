@@ -57,20 +57,25 @@ if (!BUCKET) {
   throw new Error('you must provide env. variables: [BUCKET]');
 }
 
-async function clearBucket() {
+async function getBucketItems() {
   return new Promise(resolve, reject => {
     s3.listObjectsV2(params, (err, data) => {
-      if (err) console.log(err, err.stack); // an error occurred
-      else {
-        data.Contents.forEach(value => {
-          s3.deleteObject({Key: value.Key, Bucket: bucket}, deleteErr => {
-            if (deleteErr) console.log(deleteErr, deleteErr.stack);
-            else console.log(value.Key + " succesfully removed");
-          });
-        });
+      if (err) {
+        return reject(new Error(err));
       }
+      resolve(data.Contents);
     })
   })
+}
+
+async function clearBucketItems(items) {
+  for (const item of items) {
+    await s3.deleteObject({Key: item.Key, Bucket: bucket}, err => {
+      if (err) {
+        console.log(err, err.stack);
+      } else console.log(item.Key + " succesfully removed");
+    });
+  }
 }
 
 async function deploy(upload) {
@@ -80,6 +85,7 @@ async function deploy(upload) {
     async.eachOfLimit(filesToUpload, 10, async.asyncify(async (file) => {
       const Key = file.replace(`${rootFolder}/`, '');
       console.log(`uploading: [${Key}]`);
+
       return new Promise((res, rej) => {
         s3.upload({
           Key,
@@ -101,15 +107,15 @@ async function deploy(upload) {
   });
 }
 
-clearBucket().then(() =>
-  deploy(uploadFolder)
-    .then(() => {
-      console.log('task complete');
-      process.exit(0);
-    })
-    .catch((err) => {
-      console.error(err.message);
-      process.exit(1);
-    })
-);
-
+getBucketItems()
+  .then(items => clearBucketItems(items))
+  .then(() =>
+    deploy(uploadFolder)
+      .then(() => {
+        console.log('task complete');
+        process.exit(0);
+      })
+      .catch((err) => {
+        console.error(err.message);
+        process.exit(1);
+      }));
