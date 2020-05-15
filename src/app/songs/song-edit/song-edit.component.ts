@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Category } from '../models/category.enum';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import {SongService} from '../services/song-service';
 
 @Component({
   selector: 'app-song-edit',
@@ -17,7 +18,7 @@ export class SongEditComponent implements OnInit {
   showEditModal = false;
   editSongForm: FormGroup;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, private songService: SongService) { }
 
   ngOnInit() {
     this.categories = Object.keys(Category);
@@ -36,8 +37,8 @@ export class SongEditComponent implements OnInit {
   }
 
   edit() {
-    // this.songService.updateSong(this.songToEdit.id, this.editSongForm.value);
     console.log('editing song');
+    // this.songService.updateSong(this.songToEdit.id, this.editSongForm.value);
     this.hideEdit();
   }
 

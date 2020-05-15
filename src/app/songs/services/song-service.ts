@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection, DocumentReference } from '@angular/fire/firestore';
-import { from, Observable } from 'rxjs';
-import { Song } from '../models/song';
-import { environment } from '../../../environments/environment';
-import { filter, map } from 'rxjs/operators';
+import {Injectable} from '@angular/core';
+import {AngularFirestore, AngularFirestoreCollection, DocumentReference} from '@angular/fire/firestore';
+import {from, Observable} from 'rxjs';
+import {Song} from '../models/song';
+import {environment} from '../../../environments/environment';
+import {map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -23,9 +23,7 @@ export class SongService {
 
   getSongsByCategory(category: string): Observable<Song[]> {
     return this.songCollection.valueChanges()
-      .pipe(
-        map(songList => songList.filter(song => song.category === category))
-      );
+      .pipe(map(songList => songList.filter(song => song.category === category)));
   }
 
   getSongById(id: string): Observable<Song> {
