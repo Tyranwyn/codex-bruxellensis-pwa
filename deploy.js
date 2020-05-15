@@ -43,7 +43,7 @@ const readdir = require('recursive-readdir');
 
 const BUCKET = process.env = process.env.S3_BUCKET;
 const rootFolder = path.resolve(__dirname, './');
-const uploadFolder = './upload-folder';
+const uploadFolder = './dist';
 const s3 = new AWS.S3({
   signatureVersion: 'v4',
   region: "eu-west-3"
