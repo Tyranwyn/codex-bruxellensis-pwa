@@ -51,7 +51,7 @@ export class SongDetailComponent implements OnInit, OnDestroy {
 
   isSongFavorite(id: string): boolean {
     if (this.user.favorites) {
-      return !!this.user.favorites.find(ref => ref.id === id);
+      return !!this.user.favorites.find(fav => fav === id);
     }
     return false;
   }

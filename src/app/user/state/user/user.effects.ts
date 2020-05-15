@@ -24,12 +24,14 @@ export class UserEffects {
       switchMap(() => this.afAuth.authState),
       switchMap(authData => {
         if (authData) {
-          this.store.dispatch(UserDataAction.GetUserData({uid: authData.uid})); // TODO
-          return of(UserAction.Authenticated({
-            uid: authData.uid,
-            displayName: authData.displayName,
-            email: authData.email
-          }));
+          return of(
+            UserAction.Authenticated({
+              uid: authData.uid,
+              displayName: authData.displayName,
+              email: authData.email
+            }),
+            UserDataAction.GetUserData({uid: authData.uid})
+          );
         } else {
           return of(UserAction.NotAuthenticated());
         }
@@ -42,10 +44,9 @@ export class UserEffects {
     this.actions$.pipe(
       ofType(UserAction.Logout),
       switchMap(() => {
-        this.store.dispatch(UserDataAction.ClearUserData());
         return of(this.afAuth.auth.signOut());
       }),
-      map(authData => UserAction.NotAuthenticated()),
+      switchMap(authData => of(UserAction.NotAuthenticated(), UserDataAction.ClearUserData())),
       catchError(err => of(UserAction.AuthError(err)))
     )
   );

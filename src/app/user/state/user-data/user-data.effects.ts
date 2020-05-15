@@ -18,11 +18,10 @@ export class UserDataEffects {
       ofType(UserDataAction.GetUserData),
       switchMap(action => this.userDataService.getUserData(action.uid)),
       switchMap(data => {
-        console.log(data);
         if (data) {
           return of(UserDataAction.GetUserDataSuccess(data));
         } else {
-          return of(UserDataAction.GetUserDataSuccess(data)); // TODO: create new data
+          return of(UserDataAction.GetUserDataFail(null)); // TODO: create new data
         }
       }),
       catchError(err => of(UserDataAction.GetUserDataFail(err)))

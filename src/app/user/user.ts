@@ -10,6 +10,11 @@ export interface User {
 
 export interface UserData {
   role: Role;
+  favorites: string[];
+}
+
+export interface UserDataDao {
+  role: Role;
   favorites: DocumentReference[];
 }
 

@@ -8,7 +8,6 @@ import {Song} from '../models/song';
 import {SongService} from '../services/song-service';
 import {select, Store} from '@ngrx/store';
 import * as fromSongs from '../state';
-import * as songActions from '../state/song.actions';
 import * as UserDataAction from '../../user/state/user-data/user-data.actions';
 import * as fromRoot from '../../state';
 import {Role, UserData} from '../../user/user';
@@ -79,7 +78,7 @@ export class SongListComponent implements OnInit, OnDestroy {
 
   isSongFavorite(id: string): boolean {
     if (this.currentUser && this.currentUser.favorites) {
-      return !!this.currentUser.favorites.find(ref => ref.id === id);
+      return !!this.currentUser.favorites.find(fav => fav === id);
     }
     return false;
   }
