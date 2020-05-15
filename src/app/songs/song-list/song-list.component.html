@@ -10,7 +10,7 @@
 <div class="container">
   <div class="song-list" *ngIf="(songs$ | async) as songs; else progress">
     <div *ngIf="currentUid">
-      <div class="card song-element" *ngIf="canEditSong()">
+      <div class="card song-element" *ngIf="canEditSongs">
         <div class="card-content">
           <div class="song-info" (click)="showAdd()">
             <div class="song-name">Add Song...</div>
@@ -30,7 +30,7 @@
             <div class="song-page">p. {{song.page}}</div>
           </div>
           <div class="song-edit" *ngIf="currentUid" (click)="editSong(song)">
-            <fa-icon *ngIf="canEditSong()" [icon]="['far', 'edit']"></fa-icon>
+            <fa-icon *ngIf="canEditSongs" [icon]="['far', 'edit']"></fa-icon>
           </div>
         </div>
       </div>
@@ -47,7 +47,7 @@
             <div class="song-page">p. {{song.page}}</div>
           </div>
           <div class="song-edit" *ngIf="currentUid" (click)="editSong(song)">
-            <fa-icon *ngIf="canEditSong()" [icon]="['far', 'edit']"></fa-icon>
+            <fa-icon *ngIf="canEditSongs" [icon]="['far', 'edit']"></fa-icon>
           </div>
         </div>
       </div>

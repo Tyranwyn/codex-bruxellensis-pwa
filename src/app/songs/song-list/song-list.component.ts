@@ -25,6 +25,7 @@ export class SongListComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   currentUid: string;
   currentUserData: UserData;
+  canEditSongs = false;
   songToEdit: any = {};
 
   showEditModal = false;
@@ -41,7 +42,10 @@ export class SongListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscriptions.push(this.store.select(fromRoot.getUserId).subscribe(uid => this.currentUid = uid));
-    this.subscriptions.push(this.store.select(fromRoot.getUserData).subscribe(userData => this.currentUserData = userData));
+    this.subscriptions.push(this.store.select(fromRoot.getUserData).subscribe(userData => {
+      this.currentUserData = userData;
+      this.canEditSongs = userData.role === Role.ADMIN;
+    }));
 
     this.errormessage$ = this.store.pipe(select(fromSongs.getError));
 
@@ -96,10 +100,6 @@ export class SongListComponent implements OnInit, OnDestroy {
   editSong(song) {
     this.songToEdit = song;
     this.showEdit();
-  }
-
-  canEditSong(): boolean {
-    return this.currentUserData && this.currentUserData.role === Role.ADMIN;
   }
 
   showEdit() {

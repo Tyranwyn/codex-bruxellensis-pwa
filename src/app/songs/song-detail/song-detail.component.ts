@@ -68,10 +68,6 @@ export class SongDetailComponent implements OnInit, OnDestroy {
     this.songService.updateSong(this.songId, $event);
   }
 
-  canModifySong(): boolean {
-    return this.user && this.user.role === Role.ADMIN;
-  }
-
   back() {
     this.location.back();
   }
