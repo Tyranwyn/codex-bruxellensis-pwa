@@ -9,7 +9,7 @@
 
 <div class="container">
   <div class="song-list" *ngIf="(songs$ | async) as songs; else progress">
-    <div *ngIf="currentUser?.uid">
+    <div *ngIf="currentUid">
       <div class="card song-element" *ngIf="canEditSong()">
         <div class="card-content">
           <div class="song-info" (click)="showAdd()">
@@ -21,15 +21,15 @@
     <ng-container *ngFor="let song of songs">
       <div class="card song-element" *ngIf="isSongFavorite(song.id)">
         <div class="card-content">
-          <div *ngIf="currentUser?.uid" class="song-favorite" (click)="updateFavorites(song.id)">
-            <fa-icon *ngIf="currentUser?.uid"
+          <div *ngIf="currentUid" class="song-favorite" (click)="updateFavorites(song.id)">
+            <fa-icon *ngIf="currentUid"
                      [icon]="isSongFavorite(song.id)? ['fas', 'star']: ['far', 'star']"></fa-icon>
           </div>
           <div class="song-info" [routerLink]="['/song', song.id]">
             <div class="song-name">{{ song.associationName ? song.associationName : song.title}}</div>
             <div class="song-page">p. {{song.page}}</div>
           </div>
-          <div class="song-edit" *ngIf="currentUser?.uid" (click)="editSong(song)">
+          <div class="song-edit" *ngIf="currentUid" (click)="editSong(song)">
             <fa-icon *ngIf="canEditSong()" [icon]="['far', 'edit']"></fa-icon>
           </div>
         </div>
@@ -38,15 +38,15 @@
     <ng-container *ngFor="let song of songs">
       <div class="card song-element" *ngIf="!isSongFavorite(song.id)">
         <div class="card-content">
-          <div *ngIf="currentUser?.uid" class="song-favorite" (click)="updateFavorites(song.id)">
-            <fa-icon *ngIf="currentUser?.uid"
+          <div *ngIf="currentUid" class="song-favorite" (click)="updateFavorites(song.id)">
+            <fa-icon *ngIf="currentUid"
                      [icon]="isSongFavorite(song.id)? ['fas', 'star']: ['far', 'star']"></fa-icon>
           </div>
           <div class="song-info" [routerLink]="['/song', song.id]">
             <div class="song-name">{{ song.associationName ? song.associationName : song.title}}</div>
             <div class="song-page">p. {{song.page}}</div>
           </div>
-          <div class="song-edit" *ngIf="currentUser?.uid" (click)="editSong(song)">
+          <div class="song-edit" *ngIf="currentUid" (click)="editSong(song)">
             <fa-icon *ngIf="canEditSong()" [icon]="['far', 'edit']"></fa-icon>
           </div>
         </div>

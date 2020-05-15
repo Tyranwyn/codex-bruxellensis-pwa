@@ -22,8 +22,9 @@ export class SongListComponent implements OnInit, OnDestroy {
   songs$: Observable<Song[]>;
   errormessage$: Observable<string>;
   filter: string;
-  userDataSub: Subscription;
-  currentUser: UserData;
+  subscriptions: Subscription[] = [];
+  currentUid: string;
+  currentUserData: UserData;
   songToEdit: any = {};
 
   showEditModal = false;
@@ -39,7 +40,8 @@ export class SongListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.userDataSub = this.store.select(fromRoot.getUserData).subscribe(userData => this.currentUser = userData);
+    this.subscriptions.push(this.store.select(fromRoot.getUserId).subscribe(uid => this.currentUid = uid));
+    this.subscriptions.push(this.store.select(fromRoot.getUserData).subscribe(userData => this.currentUserData = userData));
 
     this.errormessage$ = this.store.pipe(select(fromSongs.getError));
 
@@ -77,8 +79,8 @@ export class SongListComponent implements OnInit, OnDestroy {
   }
 
   isSongFavorite(id: string): boolean {
-    if (this.currentUser && this.currentUser.favorites) {
-      return !!this.currentUser.favorites.find(fav => fav === id);
+    if (this.currentUserData && this.currentUserData.favorites) {
+      return !!this.currentUserData.favorites.find(fav => fav === id);
     }
     return false;
   }
@@ -97,7 +99,7 @@ export class SongListComponent implements OnInit, OnDestroy {
   }
 
   canEditSong(): boolean {
-    return this.currentUser && this.currentUser.role === Role.ADMIN;
+    return this.currentUserData && this.currentUserData.role === Role.ADMIN;
   }
 
   showEdit() {
@@ -113,6 +115,6 @@ export class SongListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.userDataSub.unsubscribe();
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 }
