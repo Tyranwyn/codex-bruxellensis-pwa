@@ -8,9 +8,19 @@ import {SongListDto} from '../models/song';
 import {SongService} from '../services/song-service';
 import {select, Store} from '@ngrx/store';
 import * as fromSongs from '../state';
-import * as UserDataAction from '../../user/state/user-data/user-data.actions';
 import * as fromRoot from '../../state';
+import * as UserDataAction from '../../user/state/user-data/user-data.actions';
 import {Role, UserData} from '../../user/user';
+
+export const sortByFavorite = () => {
+  return map((songs: SongListDto[]) =>
+    songs.sort((a, b) => (a.favorite === b.favorite) ? 0 : a.favorite ? -1 : 1));
+};
+
+export const filterSongsByPageTitleBattleCryNameOrAssociationName = (song: SongListDto) => {
+  const filterString = '' + song.page + song.title + song.battleCryName + song.associationName;
+  return filterString.toLowerCase().indexOf(this.filter.toLowerCase()) !== -1;
+};
 
 @Component({
   selector: 'app-song-list',
@@ -53,10 +63,12 @@ export class SongListComponent implements OnInit, OnDestroy {
       const category = paramMap.get('category');
       if (category) {
         // this.store.dispatch(new songActions.LoadCategorySongs(category));
-        this.songs$ = this.songService.getSongsByCategory(category);
+        this.songs$ = this.songService.getSongsByCategory(category)
+          .pipe(sortByFavorite());
       } else {
         // this.store.dispatch(new songActions.LoadAllSongs());
-        this.songs$ = this.songService.getAllSongs();
+        this.songs$ = this.songService.getAllSongs()
+          .pipe(sortByFavorite());
       }
     });
 
@@ -65,13 +77,8 @@ export class SongListComponent implements OnInit, OnDestroy {
 
   search() {
     this.songs$ = this.songs$.pipe(
-      map(songs => songs.filter(song => this.filterSongsByPageTitleBattleCryNameOrAssociationName(song)))
+      map(songs => songs.filter(song => filterSongsByPageTitleBattleCryNameOrAssociationName(song)))
     );
-  }
-
-  filterSongsByPageTitleBattleCryNameOrAssociationName = (song: SongListDto) => {
-    const filterString = '' + song.page + song.title + song.battleCryName + song.associationName;
-    return filterString.toLowerCase().indexOf(this.filter.toLowerCase()) !== -1;
   }
 
   filterSongsByCategory = (category: string) => {
@@ -80,20 +87,13 @@ export class SongListComponent implements OnInit, OnDestroy {
       select(fromSongs.getSongs),
       map(songs => songs.filter(song => song.category.match(category)))
     );*/
-  }
+  };
 
-  isSongFavorite(id: string): boolean {
-    if (this.currentUserData && this.currentUserData.favorites) {
-      return !!this.currentUserData.favorites.find(fav => fav === id);
-    }
-    return false;
-  }
-
-  updateFavorites(id: string) {
-    if (this.isSongFavorite(id)) {
-      this.store.dispatch(UserDataAction.RemoveFavorite({id}));
+  updateFavorites(song: SongListDto) {
+    if (song.favorite) {
+      this.store.dispatch(UserDataAction.RemoveFavorite({id: song.id}));
     } else {
-      this.store.dispatch(UserDataAction.AddFavorite({id}));
+      this.store.dispatch(UserDataAction.AddFavorite({id: song.id}));
     }
   }
 
