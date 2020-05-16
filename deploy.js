@@ -1,35 +1,88 @@
-const fs = require("fs");
-const {S3} = require("aws-sdk");
+const fs = require('fs');
+const path = require('path');
+const async = require('async');
+const AWS = require('aws-sdk');
+const readdir = require('recursive-readdir');
+const mime = require('mime-types');
 
-let s3 = new S3({
-  apiVersion: "2006-03-01",
+const BUCKET = process.env.S3_BUCKET;
+const rootFolder = path.resolve(__dirname, './');
+const uploadFolder = './dist';
+const s3 = new AWS.S3({
+  signatureVersion: 'v4',
   region: "eu-west-3"
 });
 
-const bucket = process.env.S3_BUCKET;
-var params = {
-  Bucket: bucket, /* required */
-};
-s3.listObjectsV2(params, (err, data) => {
-  if (err) console.log(err, err.stack); // an error occurred
-  else {
-    data.Contents.forEach(value => {
-      s3.deleteObject({Key: value.Key, Bucket: bucket}, deleteErr => {
-        if (deleteErr) console.log(deleteErr, deleteErr.stack);
-        else console.log(value.Key + " succesfully removed");
-      });
-    });
-    fs.readdirSync("dist").forEach(itemName => {
-      fs.readFile("dist/" + itemName, (readErr, file) => {
-        s3.putObject({
-          Bucket: bucket,
-          Key: itemName,
-          Body: JSON.stringify(file, null, 2)
-        }, (s3Err, data) => {
-          if (s3Err) throw s3Err
-          console.log(`File uploaded successfully ${itemName}`);
-        });
-      });
+function getFiles(dirPath) {
+  return fs.existsSync(dirPath) ? readdir(dirPath) : [];
+}
+
+if (!BUCKET) {
+  throw new Error('you must provide env. variables: [S3_BUCKET]');
+}
+
+async function getBucketItems() {
+  return new Promise((resolve, reject) => {
+    s3.listObjectsV2({Bucket: BUCKET}, (err, data) => {
+      if (err) {
+        return reject(new Error(err));
+      }
+      resolve(data.Contents);
+    })
+  })
+}
+
+async function clearBucketItems(items) {
+  for (const item of items) {
+    await s3.deleteObject({Key: item.Key, Bucket: BUCKET}, err => {
+      if (err) {
+        console.error(err, err.stack);
+        process.exit(1);
+      } else console.log(item.Key + " succesfully removed");
     });
   }
-});
+}
+
+async function deploy(upload) {
+  const filesToUpload = await getFiles(path.resolve(__dirname, upload));
+
+  return new Promise((resolve, reject) => {
+    async.eachOfLimit(filesToUpload, 10, async.asyncify(async (file) => {
+      const Key = file.replace(`${rootFolder}/dist/`, '');
+      console.log(`uploading: [${Key}]`);
+      console.log(mime.lookup(file));
+
+      return new Promise((res, rej) => {
+        s3.putObject({
+          Key,
+          Bucket: BUCKET,
+          Body: fs.readFileSync(file),
+          ContentType: mime.lookup(file)
+        },(err) => {
+          if (err) {
+            return rej(new Error(err));
+          }
+          res({result: true});
+        });
+      });
+    }), (err) => {
+      if (err) {
+        return reject(new Error(err));
+      }
+      resolve({result: true});
+    });
+  });
+}
+
+getBucketItems()
+  .then(items => clearBucketItems(items))
+  .then(() =>
+    deploy(uploadFolder)
+      .then(() => {
+        console.log('task complete');
+        process.exit(0);
+      })
+      .catch((err) => {
+        console.error(err.message);
+        process.exit(1);
+      }));
