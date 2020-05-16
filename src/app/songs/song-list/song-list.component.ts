@@ -12,11 +12,6 @@ import * as fromRoot from '../../state';
 import * as UserDataAction from '../../user/state/user-data/user-data.actions';
 import {Role, UserData} from '../../user/user';
 
-export const sortByFavorite = () => {
-  return map((songs: SongListDto[]) =>
-    songs.sort((a, b) => (a.favorite === b.favorite) ? 0 : a.favorite ? -1 : 1));
-};
-
 @Component({
   selector: 'app-song-list',
   templateUrl: './song-list.component.html',
@@ -58,12 +53,10 @@ export class SongListComponent implements OnInit, OnDestroy {
       const category = paramMap.get('category');
       if (category) {
         // this.store.dispatch(new songActions.LoadCategorySongs(category));
-        this.songs$ = this.songService.getSongsByCategory(category)
-          .pipe(sortByFavorite());
+        this.songs$ = this.songService.getSongsByCategory(category);
       } else {
         // this.store.dispatch(new songActions.LoadAllSongs());
-        this.songs$ = this.songService.getAllSongs()
-          .pipe(sortByFavorite());
+        this.songs$ = this.songService.getAllSongs();
       }
     });
 
@@ -90,11 +83,18 @@ export class SongListComponent implements OnInit, OnDestroy {
   };
 
   updateFavorites(song: SongListDto) {
-    if (song.favorite) {
+    if (this.isSongFavorite(song.id)) {
       this.store.dispatch(UserDataAction.RemoveFavorite({id: song.id}));
     } else {
       this.store.dispatch(UserDataAction.AddFavorite({id: song.id}));
     }
+  }
+
+  isSongFavorite(id: string): boolean {
+    if (this.currentUserData && this.currentUserData.favorites) {
+      return !!this.currentUserData.favorites.find(fav => fav === id);
+    }
+    return false;
   }
 
   editSong(song) {

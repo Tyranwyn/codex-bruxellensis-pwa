@@ -20,12 +20,11 @@
     </div>
     <cdk-virtual-scroll-viewport itemSize="46.38" style="height: 70vh">
       <div *cdkVirtualFor="let song of songs">
-<!--      <div *ngFor="let song of songs">-->
         <div class="card song-element">
           <div class="card-content">
             <div *ngIf="currentUid" class="song-favorite" (click)="updateFavorites(song)">
               <fa-icon *ngIf="currentUid"
-                       [icon]="song.favorite? ['fas', 'star']: ['far', 'star']"></fa-icon>
+                       [icon]="isSongFavorite(song.id)? ['fas', 'star']: ['far', 'star']"></fa-icon>
             </div>
             <div class="song-info" [routerLink]="['/song', song.id]">
               <div class="song-name">{{ song.associationName ? song.associationName : song.title}}</div>

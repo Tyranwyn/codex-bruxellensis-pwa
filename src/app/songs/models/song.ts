@@ -21,5 +21,4 @@ export interface SongListDto {
   associationName: string;
   battleCryName: string;
   page: number;
-  favorite: boolean;
 }

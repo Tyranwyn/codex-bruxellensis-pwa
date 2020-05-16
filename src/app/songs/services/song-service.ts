@@ -11,15 +11,12 @@ import {Store} from '@ngrx/store';
 @Injectable({
   providedIn: 'root'
 })
-export class SongService implements OnDestroy{
+export class SongService {
   private songCollection: AngularFirestoreCollection<Song>;
-
-  private subscriptions : Subscription[] = [];
   private currentUserData: UserData;
-  constructor(private afs: AngularFirestore,
-              private store: Store<fromRoot.State>) {
+
+  constructor(private afs: AngularFirestore) {
     this.songCollection = afs.collection<Song>(environment.databases.songs, ref => ref.orderBy('page'));
-    this.subscriptions.push(this.store.select(fromRoot.getUserData).subscribe(userData => this.currentUserData = userData));
   }
 
   getAllSongs(): Observable<SongListDto[]> {
@@ -56,26 +53,15 @@ export class SongService implements OnDestroy{
     return from(this.songCollection.doc<Song>(id).delete());
   }
 
-  isSongFavorite(id: string): boolean {
-    if (this.currentUserData && this.currentUserData.favorites) {
-      return !!this.currentUserData.favorites.find(fav => fav === id);
-    }
-    return false;
-  }
-
   mapSongToListDto = () => {
     return map((songs: Song[]) => songs.map(s => ({
         id: s.id,
         title: s.title,
         associationName: s.associationName,
         battleCryName: s.battleCryName,
-        page: s.page,
-        favorite: this.isSongFavorite(s.id)
+        page: s.page
       } as SongListDto)
     ));
-  }
+  };
 
-  ngOnDestroy(): void {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
-  }
 }
