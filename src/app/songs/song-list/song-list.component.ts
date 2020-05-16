@@ -17,11 +17,6 @@ export const sortByFavorite = () => {
     songs.sort((a, b) => (a.favorite === b.favorite) ? 0 : a.favorite ? -1 : 1));
 };
 
-export const filterSongsByPageTitleBattleCryNameOrAssociationName = (song: SongListDto) => {
-  const filterString = '' + song.page + song.title + song.battleCryName + song.associationName;
-  return filterString.toLowerCase().indexOf(this.filter.toLowerCase()) !== -1;
-};
-
 @Component({
   selector: 'app-song-list',
   templateUrl: './song-list.component.html',
@@ -77,9 +72,14 @@ export class SongListComponent implements OnInit, OnDestroy {
 
   search() {
     this.songs$ = this.songs$.pipe(
-      map(songs => songs.filter(song => filterSongsByPageTitleBattleCryNameOrAssociationName(song)))
+      map(songs => songs.filter(song => this.filterSongsByPageTitleBattleCryNameOrAssociationName(song)))
     );
   }
+
+  filterSongsByPageTitleBattleCryNameOrAssociationName = (song: SongListDto) => {
+    const filterString = '' + song.page + song.title + song.battleCryName + song.associationName;
+    return filterString.toLowerCase().indexOf(this.filter.toLowerCase()) !== -1;
+  };
 
   filterSongsByCategory = (category: string) => {
     this.songs$ = this.songService.getSongsByCategory(category);

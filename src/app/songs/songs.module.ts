@@ -14,6 +14,7 @@ import {CapitalizeModule} from '../common/capitalize/capitalize.module';
 import {SongAddComponent} from './song-add/song-add.component';
 import {AutosizeModule} from 'ngx-autosize';
 import {RouterModule, Routes} from '@angular/router';
+import {ScrollingModule} from '@angular/cdk/scrolling';
 
 const songRoutes: Routes = [
   {path: '', component: SongListComponent},
@@ -37,7 +38,8 @@ const songRoutes: Routes = [
     StoreModule.forFeature('songsState', reducer),
     EffectsModule.forFeature([SongEffects]),
     CapitalizeModule,
-    AutosizeModule
+    AutosizeModule,
+    ScrollingModule
   ]
 })
 export class SongsModule {
