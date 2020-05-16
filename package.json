@@ -65,6 +65,7 @@
     "karma-coverage-istanbul-reporter": "~2.0.1",
     "karma-jasmine": "~2.0.1",
     "karma-jasmine-html-reporter": "^1.4.0",
+    "mime-types": "^2.1.27",
     "protractor": "~5.4.0",
     "recursive-readdir": "^2.2.2",
     "serverless-finch": "^2.4.3",

@@ -1,45 +1,9 @@
-/*
-const fs = require("fs");
-const {S3} = require("aws-sdk");
-
-let s3 = new S3({
-  apiVersion: "2006-03-01",
-  region: "eu-west-3"
-});
-
-const bucket = process.env.S3_BUCKET;
-var params = {
-  Bucket: bucket, /!* required *!/
-};
-s3.listObjectsV2(params, (err, data) => {
-  if (err) console.log(err, err.stack); // an error occurred
-  else {
-    data.Contents.forEach(value => {
-      s3.deleteObject({Key: value.Key, Bucket: bucket}, deleteErr => {
-        if (deleteErr) console.log(deleteErr, deleteErr.stack);
-        else console.log(value.Key + " succesfully removed");
-      });
-    });
-    fs.readdirSync("dist").forEach(itemName => {
-      fs.readFile("dist/" + itemName, (readErr, file) => {
-        s3.putObject({
-          Bucket: bucket,
-          Key: itemName,
-          Body: JSON.stringify(file, null, 2)
-        }, (s3Err, data) => {
-          if (s3Err) throw s3Err
-          console.log(`File uploaded successfully ${itemName}`);
-        });
-      });
-    });
-  }
-});
-*/
 const fs = require('fs');
 const path = require('path');
 const async = require('async');
 const AWS = require('aws-sdk');
 const readdir = require('recursive-readdir');
+const mime = require('mime-types');
 
 const BUCKET = process.env.S3_BUCKET;
 const rootFolder = path.resolve(__dirname, './');
@@ -54,12 +18,12 @@ function getFiles(dirPath) {
 }
 
 if (!BUCKET) {
-  throw new Error('you must provide env. variables: [BUCKET]');
+  throw new Error('you must provide env. variables: [S3_BUCKET]');
 }
 
 async function getBucketItems() {
-  return new Promise(resolve, reject => {
-    s3.listObjectsV2(params, (err, data) => {
+  return new Promise((resolve, reject) => {
+    s3.listObjectsV2({Bucket: BUCKET}, (err, data) => {
       if (err) {
         return reject(new Error(err));
       }
@@ -70,9 +34,10 @@ async function getBucketItems() {
 
 async function clearBucketItems(items) {
   for (const item of items) {
-    await s3.deleteObject({Key: item.Key, Bucket: bucket}, err => {
+    await s3.deleteObject({Key: item.Key, Bucket: BUCKET}, err => {
       if (err) {
-        console.log(err, err.stack);
+        console.error(err, err.stack);
+        process.exit(1);
       } else console.log(item.Key + " succesfully removed");
     });
   }
@@ -83,15 +48,17 @@ async function deploy(upload) {
 
   return new Promise((resolve, reject) => {
     async.eachOfLimit(filesToUpload, 10, async.asyncify(async (file) => {
-      const Key = file.replace(`${rootFolder}/`, '');
+      const Key = file.replace(`${rootFolder}/dist/`, '');
       console.log(`uploading: [${Key}]`);
+      console.log(mime.lookup(file));
 
       return new Promise((res, rej) => {
-        s3.upload({
+        s3.putObject({
           Key,
           Bucket: BUCKET,
           Body: fs.readFileSync(file),
-        }, (err) => {
+          ContentType: mime.lookup(file)
+        },(err) => {
           if (err) {
             return rej(new Error(err));
           }
