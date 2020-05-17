@@ -44,6 +44,9 @@ async function clearBucketItems(items) {
 }
 
 async function deploy(upload) {
+  let bucketItems = await getBucketItems();
+  await clearBucketItems(bucketItems);
+
   const filesToUpload = await getFiles(path.resolve(__dirname, upload));
 
   return new Promise((resolve, reject) => {
@@ -58,7 +61,7 @@ async function deploy(upload) {
           Bucket: BUCKET,
           Body: fs.readFileSync(file),
           ContentType: mime.lookup(file)
-        },(err) => {
+        }, (err) => {
           if (err) {
             return rej(new Error(err));
           }
@@ -74,15 +77,12 @@ async function deploy(upload) {
   });
 }
 
-getBucketItems()
-  .then(items => clearBucketItems(items))
-  .then(() =>
-    deploy(uploadFolder)
-      .then(() => {
-        console.log('task complete');
-        process.exit(0);
-      })
-      .catch((err) => {
-        console.error(err.message);
-        process.exit(1);
-      }));
+deploy(uploadFolder)
+  .then(() => {
+    console.log('task complete');
+    process.exit(0);
+  })
+  .catch((err) => {
+    console.error(err.message);
+    process.exit(1);
+  });
