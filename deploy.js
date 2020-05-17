@@ -48,7 +48,7 @@ async function deploy(upload) {
 
   const filesToUpload = await getFiles(path.resolve(__dirname, upload));
 
-  for (let file in filesToUpload) {
+  for (let file of filesToUpload) {
     const Key = file.replace(`${rootFolder}/dist/`, '');
     console.log(`uploading: [${Key}]`);
     await s3.putObject({
