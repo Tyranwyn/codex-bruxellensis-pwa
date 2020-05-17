@@ -26,25 +26,31 @@ async function getBucketItems() {
       if (err) {
         return reject(new Error(err));
       }
-      resolve(data.Contents);
+      resolve(data);
     })
   })
 }
 
 async function clearBucketItems(items) {
-  for (const item of items) {
-    await s3.deleteObject({Key: item.Key, Bucket: BUCKET}, err => {
-      if (err) {
-        console.error(err, err.stack);
-        process.exit(1);
-      } else console.log(item.Key + " succesfully removed");
-    });
-  }
+  let map = items.map(item => ({Key: item.Key}));
+  await s3.deleteObjects({Bucket: BUCKET, Delete: {Objects: map}}, err => {
+    if (err) {
+      console.error(err, err.message);
+      process.exit(1);
+    } else {
+      console.log("Bucket cleared");
+    }
+  }).promise();
 }
 
 async function deploy(upload) {
   let bucketItems = await getBucketItems();
-  await clearBucketItems(bucketItems);
+
+  if (bucketItems.Contents.length !== 0) {
+    await clearBucketItems(bucketItems.Contents);
+  } else {
+    console.log("Nothing to delete");
+  }
 
   const filesToUpload = await getFiles(path.resolve(__dirname, upload));
 
@@ -61,7 +67,7 @@ async function deploy(upload) {
         console.error(err, err.stack);
         process.exit(1);
       } else console.log(Key + " succesfully uploaded");
-    });
+    }).promise();
   }
 }
 
