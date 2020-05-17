@@ -22,6 +22,19 @@ import { EffectsModule } from '@ngrx/effects';
 import { UserModule } from './user/user.module';
 import { EnumToArrayModule } from './common/enum-to-array/enum-to-array.module';
 
+export function sanitize(oriState: any, id: number): any {
+  const { router, ...newState } = oriState;
+  const { state, ...newRouter } = router || { state: null };
+  const { _root, ...newRouterState } = state || { _root: null };
+  return {
+    ...newState,
+    router: {
+      ...newRouter,
+      state: newRouterState
+    }
+  };
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -45,18 +58,7 @@ import { EnumToArrayModule } from './common/enum-to-array/enum-to-array.module';
       name: 'Codex Bruxellensis',
       maxAge: 25,
       logOnly: environment.production,
-      stateSanitizer: (oriState: any, id: number): any => {
-        const { router, ...newState } = oriState;
-        const { state, ...newRouter } = router || { state: null };
-        const { _root, ...newRouterState } = state || { _root: null };
-        return {
-          ...newState,
-          router: {
-            ...newRouter,
-            state: newRouterState
-          }
-        };
-      }
+      stateSanitizer: sanitize
     }),
     SongsModule,
     UserModule

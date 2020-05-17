@@ -10,7 +10,7 @@ export interface State {
 
 export const reducers: ActionReducerMap<State> = {
   user: fromUser.UserReducer,
-  userData: fromUserData.reducer
+  userData: fromUserData.UserDataReducer
 };
 
 const getUserStateFeature = createFeatureSelector<State>('userState');

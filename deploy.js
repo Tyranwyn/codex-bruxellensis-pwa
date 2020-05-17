@@ -53,7 +53,6 @@ async function deploy(upload) {
     async.eachOfLimit(filesToUpload, 10, async.asyncify(async (file) => {
       const Key = file.replace(`${rootFolder}/dist/`, '');
       console.log(`uploading: [${Key}]`);
-      console.log(mime.lookup(file));
 
       return new Promise((res, rej) => {
         s3.putObject({

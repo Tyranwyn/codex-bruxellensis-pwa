@@ -1,13 +1,13 @@
 import * as UserDataAction from './user-data.actions';
 import {Role, UserData} from '../../user';
-import {createReducer, on} from '@ngrx/store';
+import {Action, createReducer, on} from '@ngrx/store';
 
 const defaultUserData: UserData = {
   role: Role.USER,
   favorites: []
 };
 
-export const reducer = createReducer(
+const reducer = createReducer(
   defaultUserData,
   // on(UserDataAction.GetUserData, state => state),
   on(UserDataAction.GetUserDataSuccess, (state: UserData, userData: UserData) => ({...state, ...userData})),
@@ -29,3 +29,7 @@ export const reducer = createReducer(
   })),
   on(UserDataAction.RemoveFavoriteFail, (state: UserData, err: Error) => ({...state, err}))
 );
+
+export function UserDataReducer(state: UserData | undefined, action: Action) {
+  return reducer(state, action);
+}
