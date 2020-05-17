@@ -26,7 +26,7 @@ export class SongListComponent implements OnInit, OnDestroy {
   currentUid: string;
   currentUserData: UserData;
   canEditSongs = false;
-  songToEdit: any = {};
+  songToEditId: string;
 
   showEditModal = false;
   showAddModal = false;
@@ -98,7 +98,7 @@ export class SongListComponent implements OnInit, OnDestroy {
   }
 
   editSong(song) {
-    this.songToEdit = song;
+    this.songToEditId = song.id;
     this.showEdit();
   }
 

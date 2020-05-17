@@ -1,7 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Category } from '../models/category.enum';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Category} from '../models/category.enum';
+import {FormBuilder, FormGroup} from '@angular/forms';
 import {SongService} from '../services/song-service';
+import {Song} from '../models/song';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-song-edit',
@@ -10,15 +12,32 @@ import {SongService} from '../services/song-service';
 })
 export class SongEditComponent implements OnInit {
 
-  @Input()
-  songToEdit: any = {};
+  songToEdit$: Observable<Song>;
+  showEditModalValue = false;
   categories: string[] = [];
+  editSongForm: FormGroup;
+  @Output()
+  showEditModalChange = new EventEmitter<boolean>();
 
   @Input()
-  showEditModal = false;
-  editSongForm: FormGroup;
+  set id(id: string) {
+    if (id) {
+      this.songToEdit$ = this.songService.getSongById(id);
+    }
+  }
 
-  constructor(private fb: FormBuilder, private songService: SongService) { }
+  @Input()
+  get showEditModal() {
+    return this.showEditModalValue;
+  }
+
+  set showEditModal(value: boolean) {
+    this.showEditModalValue = value;
+    this.showEditModalChange.emit(this.showEditModalValue);
+  }
+
+  constructor(private fb: FormBuilder, private songService: SongService) {
+  }
 
   ngOnInit() {
     this.categories = Object.keys(Category);
@@ -39,7 +58,7 @@ export class SongEditComponent implements OnInit {
   edit() {
     console.log('editing song');
     // this.songService.updateSong(this.songToEdit.id, this.editSongForm.value);
-    this.hideEdit();
+    // this.hideEdit();
   }
 
   delete(id) {

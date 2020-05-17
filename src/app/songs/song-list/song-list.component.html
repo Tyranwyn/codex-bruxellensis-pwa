@@ -42,8 +42,8 @@
 
 <app-song-add [showAddModal]="showAddModal">
 </app-song-add>
-<app-song-edit [showEditModal]="showEditModal"
-               [songToEdit]="songToEdit">
+<app-song-edit [(showEditModal)]="showEditModal"
+               [id]="songToEditId">
 </app-song-edit>
 
 <ng-template #progress>

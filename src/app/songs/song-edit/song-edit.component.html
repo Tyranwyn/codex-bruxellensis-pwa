@@ -1,4 +1,4 @@
-<div *ngIf="songToEdit" class="modal {{ showEditModal ? 'is-active' : '' }}">
+<div *ngIf="(songToEdit$ | async) as songToEdit" class="modal {{ showEditModalValue ? 'is-active' : '' }}">
   <form [formGroup]="editSongForm">
     <div class="modal-background"></div>
     <div class="modal-card">
