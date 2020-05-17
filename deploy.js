@@ -1,6 +1,5 @@
 const fs = require('fs');
 const path = require('path');
-const async = require('async');
 const AWS = require('aws-sdk');
 const readdir = require('recursive-readdir');
 const mime = require('mime-types');
@@ -49,31 +48,21 @@ async function deploy(upload) {
 
   const filesToUpload = await getFiles(path.resolve(__dirname, upload));
 
-  return new Promise((resolve, reject) => {
-    async.eachOfLimit(filesToUpload, 10, async.asyncify(async (file) => {
-      const Key = file.replace(`${rootFolder}/dist/`, '');
-      console.log(`uploading: [${Key}]`);
-
-      return new Promise((res, rej) => {
-        s3.putObject({
-          Key,
-          Bucket: BUCKET,
-          Body: fs.readFileSync(file),
-          ContentType: mime.lookup(file)
-        }, (err) => {
-          if (err) {
-            return rej(new Error(err));
-          }
-          res({result: true});
-        });
-      });
-    }), (err) => {
+  for (let file in filesToUpload) {
+    const Key = file.replace(`${rootFolder}/dist/`, '');
+    console.log(`uploading: [${Key}]`);
+    await s3.putObject({
+      Key,
+      Bucket: BUCKET,
+      Body: fs.readFileSync(file),
+      ContentType: mime.lookup(file)
+    }, (err) => {
       if (err) {
-        return reject(new Error(err));
-      }
-      resolve({result: true});
+        console.error(err, err.stack);
+        process.exit(1);
+      } else console.log(Key + " succesfully uploaded");
     });
-  });
+  }
 }
 
 deploy(uploadFolder)
