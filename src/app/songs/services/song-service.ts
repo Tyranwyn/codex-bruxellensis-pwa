@@ -1,19 +1,15 @@
-import {Injectable, OnDestroy} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {AngularFirestore, AngularFirestoreCollection, DocumentReference} from '@angular/fire/firestore';
-import {from, Observable, Subscription} from 'rxjs';
+import {from, Observable} from 'rxjs';
 import {Song, SongListDto} from '../models/song';
 import {environment} from '../../../environments/environment';
 import {map} from 'rxjs/operators';
-import * as fromRoot from '../../state';
-import {UserData} from '../../user/user';
-import {Store} from '@ngrx/store';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SongService {
   private songCollection: AngularFirestoreCollection<Song>;
-  private currentUserData: UserData;
 
   constructor(private afs: AngularFirestore) {
     this.songCollection = afs.collection<Song>(environment.databases.songs, ref => ref.orderBy('page'));
