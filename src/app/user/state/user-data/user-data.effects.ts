@@ -33,7 +33,10 @@ export class UserDataEffects {
       ofType(UserDataAction.AddFavorite),
       switchMap(action => this.userDataService.addFavorite(action.uid, action.songId)
         .pipe(map(() => UserDataAction.AddFavoriteSuccess({id: action.songId})))),
-      catchError(err => of(UserDataAction.AddFavoriteFail(err)))
+      catchError(err => {
+        console.error(err);
+        return of(UserDataAction.AddFavoriteFail(err));
+      })
     )
   );
 
@@ -42,7 +45,10 @@ export class UserDataEffects {
       ofType(UserDataAction.RemoveFavorite),
       switchMap(action => this.userDataService.removeFavorite(action.uid, action.songId)
         .pipe(map(() => UserDataAction.RemoveFavoriteSuccess({id: action.songId})))),
-      catchError(err => of(UserDataAction.RemoveFavoriteFail(err)))
+      catchError(err => {
+        console.error(err);
+        return of(UserDataAction.RemoveFavoriteFail(err));
+      })
     )
   );
 }

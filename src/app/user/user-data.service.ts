@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {AngularFirestore, AngularFirestoreCollection, DocumentReference} from '@angular/fire/firestore';
+import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
 import {environment} from '../../environments/environment';
 import {from, Observable} from 'rxjs';
 import {SongService} from '../songs/services/song-service';
@@ -7,6 +7,7 @@ import {Store} from '@ngrx/store';
 import * as fromRoot from '../state';
 import {UserData, UserDataDao} from './user';
 import {map} from 'rxjs/operators';
+import {firestore} from 'firebase';
 
 @Injectable({
   providedIn: 'root'
@@ -32,20 +33,20 @@ export class UserDataService {
       }));
   }
 
-  addFavorite(uid: string, songId: string): Observable<DocumentReference> {
+  addFavorite(uid: string, songId: string): Observable<any> {
     const favorite = this.songService.getSongReferenceById(songId);
     return from(
       this.userDataCollection.doc<UserDataDao>(uid)
-        .collection<DocumentReference>('favorites')
-        .add(favorite)
+        // @ts-ignore
+        .update({favorites: firestore.FieldValue.arrayUnion(favorite)})
     );
   }
 
-  removeFavorite(uid: string, songId: string): Observable<void> {
+  removeFavorite(uid: string, songId: string): Observable<any> {
+    const favorite = this.songService.getSongReferenceById(songId);
     return from(this.userDataCollection.doc<UserDataDao>(uid)
-      .collection<DocumentReference>('favorites')
-      .doc(songId)
-      .delete()
+      // @ts-ignore
+      .update({favorites: firestore.FieldValue.arrayRemove(favorite)})
     );
   }
 }
