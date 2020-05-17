@@ -5,12 +5,14 @@ export interface User {
   displayName: string;
   email: string;
   loading?: boolean;
-  error?: string;
+  error?: Error;
 }
 
 export interface UserData {
   role: Role;
   favorites: string[];
+  loading?: boolean;
+  error?: Error;
 }
 
 export interface UserDataDao {

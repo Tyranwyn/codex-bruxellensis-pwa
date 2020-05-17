@@ -1,4 +1,4 @@
-<div class="container song-detail" *ngIf="$song | async as song; else progressBar">
+<div class="container song-detail" *ngIf="song$ | async as song; else progressBar">
 
   <div class="song-top">
     <a (click)="back()" class="back-button"><i class="fas fa-chevron-left"></i> Back</a>

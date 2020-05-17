@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {of} from 'rxjs';
 import * as UserDataAction from './user-data.actions';
-import {catchError, switchMap} from 'rxjs/operators';
+import {catchError, map, switchMap} from 'rxjs/operators';
 import {UserDataService} from '../../user-data.service';
 import {SongService} from '../../../songs/services/song-service';
 
@@ -28,26 +28,21 @@ export class UserDataEffects {
     )
   );
 
-  /*
-  @Effect()
-  addFavorite$: Observable<Action> = this.actions$.pipe(
-    ofType(userDataActions.ADD_FAVORITE),
-    mergeMap((action: userDataActions.AddFavorite) => this.userDataService.addFavorite(action.payload)
-      .pipe(
-        map((documentRef: DocumentReference) => new userDataActions.AddFavoriteSuccess(documentRef)),
-        catchError(err => of(new userDataActions.AddFavoriteFail(err)))
-      )
+  addFavorite$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(UserDataAction.AddFavorite),
+      switchMap(action => this.userDataService.addFavorite(action.uid, action.songId)
+        .pipe(map(() => UserDataAction.AddFavoriteSuccess({id: action.songId})))),
+      catchError(err => of(UserDataAction.AddFavoriteFail(err)))
     )
   );
 
-  @Effect()
-  removeFavorite$: Observable<Action> = this.actions$.pipe(
-    ofType(userDataActions.REMOVE_FAVORITE),
-    mergeMap((action: userDataActions.RemoveFavorite) => this.userDataService.removeFavorite(action.payload)
-      .pipe(
-        map(() => new userDataActions.RemoveFavoriteSuccess(this.songService.getSongReferenceById(action.payload))),
-        catchError(err => of(new userDataActions.RemoveFavoriteFail(err)))
-      )
+  removeFavorite$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(UserDataAction.RemoveFavorite),
+      switchMap(action => this.userDataService.removeFavorite(action.uid, action.songId)
+        .pipe(map(() => UserDataAction.RemoveFavoriteSuccess({id: action.songId})))),
+      catchError(err => of(UserDataAction.RemoveFavoriteFail(err)))
     )
-  );*/
+  );
 }

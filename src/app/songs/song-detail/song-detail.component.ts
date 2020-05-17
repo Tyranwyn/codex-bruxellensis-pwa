@@ -22,31 +22,34 @@ import {UserData} from '../../user/user';
 export class SongDetailComponent implements OnInit, OnDestroy {
 
   songId: string;
-  $song: Observable<Song>;
+  song$: Observable<Song>;
+  currentUserId: string;
   user: UserData;
-  userDataSub: Subscription;
+  subscriptions: Subscription[] = [];
 
   constructor(
+    public auth: AngularFireAuth,
     private route: ActivatedRoute,
     private songService: SongService,
     private titleService: Title,
     private userDataService: UserDataService,
-    private auth: AngularFireAuth,
     private location: Location,
     private store: Store<fromSongs.State>
   ) {
   }
 
   ngOnInit() {
-    this.userDataSub = this.store.select(fromRoot.getUserData)
-      .subscribe(userdata => this.user = userdata);
-    this.$song = this.route.paramMap.pipe(
+    this.subscriptions.push(this.store.select(fromRoot.getUserData)
+      .subscribe(userdata => this.user = userdata));
+    this.subscriptions.push(this.store.select(fromRoot.getUserId)
+      .subscribe(uid => this.currentUserId = uid));
+    this.song$ = this.route.paramMap.pipe(
       switchMap(params => {
         this.songId = params.get('id');
         return this.songService.getSongById(this.songId);
       })
     );
-    this.$song.subscribe(song => this.titleService.setTitle(song.title));
+    this.song$.subscribe(song => this.titleService.setTitle(song.title));
   }
 
   isSongFavorite(id: string): boolean {
@@ -58,9 +61,9 @@ export class SongDetailComponent implements OnInit, OnDestroy {
 
   updateFavorites(id: string) {
     if (this.isSongFavorite(id)) {
-      this.store.dispatch(UserDataAction.RemoveFavorite({id}));
+      this.store.dispatch(UserDataAction.RemoveFavorite({uid: this.currentUserId, songId: id}));
     } else {
-      this.store.dispatch(UserDataAction.AddFavorite({id}));
+      this.store.dispatch(UserDataAction.AddFavorite({uid: this.currentUserId, songId: id}));
     }
   }
 
@@ -73,7 +76,7 @@ export class SongDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.userDataSub.unsubscribe();
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
 }

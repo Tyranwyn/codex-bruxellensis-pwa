@@ -84,9 +84,9 @@ export class SongListComponent implements OnInit, OnDestroy {
 
   updateFavorites(song: SongListDto) {
     if (this.isSongFavorite(song.id)) {
-      this.store.dispatch(UserDataAction.RemoveFavorite({id: song.id}));
+      this.store.dispatch(UserDataAction.RemoveFavorite({uid: this.currentUid, songId: song.id}));
     } else {
-      this.store.dispatch(UserDataAction.AddFavorite({id: song.id}));
+      this.store.dispatch(UserDataAction.AddFavorite({uid: this.currentUid, songId: song.id}));
     }
   }
 
