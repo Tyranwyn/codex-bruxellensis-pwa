@@ -12,6 +12,7 @@ import {Observable} from 'rxjs';
 })
 export class SongEditComponent implements OnInit {
 
+  currentSongId: string;
   songToEdit$: Observable<Song>;
   showEditModalValue = false;
   categories: string[] = [];
@@ -21,6 +22,7 @@ export class SongEditComponent implements OnInit {
 
   @Input()
   set id(id: string) {
+    this.currentSongId = id;
     if (id) {
       this.songToEdit$ = this.songService.getSongById(id);
     }
@@ -56,17 +58,14 @@ export class SongEditComponent implements OnInit {
   }
 
   edit() {
-    console.log('editing song');
-    // this.songService.updateSong(this.songToEdit.id, this.editSongForm.value);
-    // this.hideEdit();
-  }
-
-  delete(id) {
-    // this.songService.deleteSong(id);
-    console.log('deleting song');
+    this.songService.updateSong(this.currentSongId, this.editSongForm.value);
     this.hideEdit();
   }
 
+  delete(id) {
+    this.songService.deleteSong(id);
+    this.hideEdit();
+  }
 
   hideEdit() {
     this.showEditModal = false;
