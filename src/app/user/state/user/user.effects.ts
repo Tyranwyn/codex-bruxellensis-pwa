@@ -3,19 +3,16 @@ import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {from, of} from 'rxjs';
 import {catchError, map, switchMap} from 'rxjs/operators';
-import {Store} from '@ngrx/store';
 
 import * as UserAction from './user.actions';
 import * as UserDataAction from '../user-data/user-data.actions';
-import * as fromRoot from '../../../state';
 import {AuthProviders} from '../../auth-providers.enum';
 import * as firebase from 'firebase/app';
 
 @Injectable()
 export class UserEffects {
   constructor(private actions$: Actions,
-              private afAuth: AngularFireAuth,
-              private store: Store<fromRoot.State>) {
+              private afAuth: AngularFireAuth) {
   }
 
   getUser$ = createEffect(() =>

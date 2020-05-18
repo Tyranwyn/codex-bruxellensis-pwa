@@ -7,7 +7,7 @@ import {Store} from '@ngrx/store';
 import * as fromRoot from '../state';
 import {UserData, UserDataDao} from './user';
 import {map} from 'rxjs/operators';
-import {firestore} from 'firebase';
+import * as firebase from 'firebase/app';
 
 @Injectable({
   providedIn: 'root'
@@ -38,7 +38,7 @@ export class UserDataService {
     return from(
       this.userDataCollection.doc<UserDataDao>(uid)
         // @ts-ignore
-        .update({favorites: firestore.FieldValue.arrayUnion(favorite)})
+        .update({favorites: firebase.firestore.FieldValue.arrayUnion(favorite)})
     );
   }
 
@@ -46,7 +46,7 @@ export class UserDataService {
     const favorite = this.songService.getSongReferenceById(songId);
     return from(this.userDataCollection.doc<UserDataDao>(uid)
       // @ts-ignore
-      .update({favorites: firestore.FieldValue.arrayRemove(favorite)})
+      .update({favorites: firebase.firestore.FieldValue.arrayRemove(favorite)})
     );
   }
 }
