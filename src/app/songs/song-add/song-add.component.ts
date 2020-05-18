@@ -1,6 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { Category } from '../models/category.enum';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {Category} from '../models/category.enum';
+import {SongService} from '../services/song-service';
 
 @Component({
   selector: 'app-song-add',
@@ -9,13 +10,25 @@ import { Category } from '../models/category.enum';
 })
 export class SongAddComponent implements OnInit {
 
+  private showAddModalValue = false;
+  @Output()
+  private showAddModalChange = new EventEmitter<boolean>();
+
   @Input()
-  showAddModal = false;
+  get showAddModal(): boolean {
+    return this.showAddModalValue;
+  }
+
+  set showAddModal(show: boolean) {
+    this.showAddModalValue = show;
+    this.showAddModalChange.emit(this.showAddModalValue);
+  }
 
   categories: string[] = [];
   addSongForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,
+              private songService: SongService) {
   }
 
   ngOnInit() {
@@ -35,8 +48,7 @@ export class SongAddComponent implements OnInit {
   }
 
   add() {
-    // this.songService.addSong(this.addSongForm.value);
-    console.log('adding song');
+    this.songService.addSong(this.addSongForm.value);
     this.hideAdd();
   }
 
