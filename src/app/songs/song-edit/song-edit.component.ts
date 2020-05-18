@@ -62,8 +62,8 @@ export class SongEditComponent implements OnInit {
     this.hideEdit();
   }
 
-  delete(id) {
-    this.songService.deleteSong(id);
+  delete() {
+    this.songService.deleteSong(this.currentSongId);
     this.hideEdit();
   }
 
