@@ -41,7 +41,7 @@ export class UserEffects {
     this.actions$.pipe(
       ofType(UserAction.Logout),
       switchMap(() => {
-        return of(this.afAuth.auth.signOut());
+        return of(this.afAuth.signOut());
       }),
       switchMap(authData => of(UserAction.NotAuthenticated(), UserDataAction.ClearUserData())),
       catchError(err => of(UserAction.AuthError(err)))
@@ -60,17 +60,17 @@ export class UserEffects {
   private login(provider: string, email?: string, password?: string): Promise<firebase.auth.UserCredential> {
     switch (provider) {
       case AuthProviders.Google:
-        return this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+        return this.afAuth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
       case AuthProviders.Facebook:
-        return this.afAuth.auth.signInWithPopup(new firebase.auth.FacebookAuthProvider());
+        return this.afAuth.signInWithPopup(new firebase.auth.FacebookAuthProvider());
       case AuthProviders.Twitter:
-        return this.afAuth.auth.signInWithPopup(new firebase.auth.TwitterAuthProvider());
+        return this.afAuth.signInWithPopup(new firebase.auth.TwitterAuthProvider());
       case AuthProviders.GitHub:
-        return this.afAuth.auth.signInWithPopup(new firebase.auth.GithubAuthProvider());
+        return this.afAuth.signInWithPopup(new firebase.auth.GithubAuthProvider());
       case 'EmailLogin':
-        return this.afAuth.auth.signInWithEmailAndPassword(email, password);
+        return this.afAuth.signInWithEmailAndPassword(email, password);
       case 'EmailSignup':
-        return this.afAuth.auth.createUserWithEmailAndPassword(email, password);
+        return this.afAuth.createUserWithEmailAndPassword(email, password);
       default:
         console.log(`The provider: ${provider}, is not configured yet.`);
     }

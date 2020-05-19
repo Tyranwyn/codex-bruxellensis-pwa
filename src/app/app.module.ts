@@ -9,13 +9,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { firebaseConfig } from './firebase-config';
 import { NavbarComponent } from './common/navbar/navbar.component';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {FaIconLibrary, FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { SongsModule } from './songs/songs.module';
-import { library } from '@fortawesome/fontawesome-svg-core';
 import { faEnvelope, faSave, faStar } from '@fortawesome/free-regular-svg-icons';
 import { faEdit, faLock, faSearch, faStar as solidStar, faUser } from '@fortawesome/free-solid-svg-icons';
 import { EffectsModule } from '@ngrx/effects';
@@ -68,14 +67,7 @@ export function sanitize(oriState: any, id: number): any {
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  constructor() {
-    library.add(faStar);
-    library.add(solidStar);
-    library.add(faEnvelope);
-    library.add(faSearch);
-    library.add(faLock);
-    library.add(faEdit);
-    library.add(faSave);
-    library.add(faUser);
+  constructor(library: FaIconLibrary) {
+    library.addIcons(faStar, solidStar, faEnvelope, faSearch, faLock, faEdit, faSave, faUser);
   }
 }
