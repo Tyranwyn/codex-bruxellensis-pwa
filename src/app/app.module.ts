@@ -9,14 +9,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { firebaseConfig } from './firebase-config';
 import { NavbarComponent } from './common/navbar/navbar.component';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
-import {FaIconLibrary, FontAwesomeModule} from '@fortawesome/angular-fontawesome';
+import {FaConfig, FaIconLibrary, FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { SongsModule } from './songs/songs.module';
-import { faEnvelope, faSave, faStar } from '@fortawesome/free-regular-svg-icons';
-import { faEdit, faLock, faSearch, faStar as solidStar, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope, faSave, faStar, faEdit } from '@fortawesome/free-regular-svg-icons';
+import {faBan, faLock, faSearch, faStar as solidStar, faUser} from '@fortawesome/free-solid-svg-icons';
 import { EffectsModule } from '@ngrx/effects';
 import { UserModule } from './user/user.module';
 import { EnumToArrayModule } from './common/enum-to-array/enum-to-array.module';
@@ -67,7 +67,8 @@ export function sanitize(oriState: any, id: number): any {
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  constructor(library: FaIconLibrary) {
+  constructor(library: FaIconLibrary, faConfig: FaConfig) {
+    faConfig.fallbackIcon = faBan;
     library.addIcons(faStar, solidStar, faEnvelope, faSearch, faLock, faEdit, faSave, faUser);
   }
 }
