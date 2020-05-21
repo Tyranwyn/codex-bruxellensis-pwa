@@ -27,7 +27,6 @@ jobs:
             - name: codex-git-develop
           params:
             S3_BUCKET: beta.codex.brussels
-            NG_CLI_ANALYTICS: ci
             AWS_ACCESS_KEY_ID: ((aws-access-key-id))
             AWS_SECRET_ACCESS_KEY: ((aws-secret-access-key))
           run:
@@ -39,7 +38,6 @@ jobs:
                 echo "NPM Version: $(npm --version)"
                 cd codex-git-develop
                 echo "((firebase-config))" > src/app/firebase-config.ts
-                npm run analytics
                 npm install
                 npm run build
                 node deploy.js
@@ -57,7 +55,6 @@ jobs:
             - name: codex-git-master
           params:
             S3_BUCKET: codex.brussels
-            NG_CLI_ANALYTICS: ci
             AWS_ACCESS_KEY_ID: ((aws-access-key-id))
             AWS_SECRET_ACCESS_KEY: ((aws-secret-access-key))
           run:
@@ -69,7 +66,6 @@ jobs:
                 echo "NPM Version: $(npm --version)"
                 cd codex-git-master
                 echo "((firebase-config))" > src/app/firebase-config.ts
-                npm run analytics
                 npm install
                 npm run build:prd
                 node deploy.js
