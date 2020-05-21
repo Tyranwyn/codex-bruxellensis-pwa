@@ -1,9 +1,9 @@
-<div *ngIf="(songToEdit$ | async) as songToEdit" class="modal {{ showEditModalValue ? 'is-active' : '' }}">
+<div *ngIf="currentSong" class="modal {{ showEditModalValue ? 'is-active' : '' }}">
   <form [formGroup]="editSongForm">
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
-        <p class="modal-card-title">{{ songToEdit.title }}</p>
+        <p class="modal-card-title">{{ currentSong.title }}</p>
         <button class="delete" aria-label="close" (click)="hideEdit()"></button>
       </header>
       <section class="modal-card-body">
@@ -12,7 +12,7 @@
           <label class="label">Category</label>
           <div class="control">
             <div class="select">
-              <select formControlName="category" [ngModel]="songToEdit.category">
+              <select formControlName="category">
                 <option value="">Select Category</option>
                 <ng-container *ngFor="let category of categories">
                   <option value="{{ category }}">{{ category | capitalize }}</option>
@@ -25,70 +25,63 @@
         <div class="field">
           <label class="label">Page</label>
           <div class="control">
-            <input class="input" type="number" placeholder="Page" formControlName="page" [ngModel]="songToEdit.page">
+            <input class="input" type="number" placeholder="Page" formControlName="page">
           </div>
         </div>
 
         <div class="field">
           <label class="label">Title</label>
           <div class="control">
-            <input class="input" type="text" placeholder="Title" formControlName="title" [ngModel]="songToEdit.title">
+            <input class="input" type="text" placeholder="Title" formControlName="title">
           </div>
         </div>
 
         <div class="field">
           <label class="label">Background Information</label>
           <div class="control">
-            <textarea autosize class="textarea" placeholder="Background Information..." formControlName="bgInfo"
-                      [ngModel]="songToEdit.bgInfo"></textarea>
+            <textarea autosize class="textarea" placeholder="Background Information..." formControlName="bgInfo"></textarea>
           </div>
         </div>
 
         <div class="field">
           <label class="label">Lyrics</label>
           <div class="control">
-            <textarea autosize class="textarea" placeholder="Lyrics..." formControlName="lyrics"
-                      [ngModel]="songToEdit.lyrics"></textarea>
+            <textarea autosize class="textarea" placeholder="Lyrics..." formControlName="lyrics"></textarea>
           </div>
         </div>
 
         <div class="field">
           <label class="label">Association Name</label>
           <div class="control">
-            <input class="input" type="text" placeholder="Association Name" formControlName="associationName"
-                   [ngModel]="songToEdit.associationName">
+            <input class="input" type="text" placeholder="Association Name" formControlName="associationName">
           </div>
         </div>
 
         <div class="field">
           <label class="label">Association Information</label>
           <div class="control">
-            <textarea autosize class="textarea" placeholder="Association Information..."
-                      formControlName="associationInfo" [ngModel]="songToEdit.associationInfo"></textarea>
+            <textarea autosize class="textarea" placeholder="Association Information..." formControlName="associationInfo"></textarea>
           </div>
         </div>
 
         <div class="field">
           <label class="label">Battle Cry Name</label>
           <div class="control">
-            <input class="input" type="text" placeholder="Battle Cry Name" formControlName="battleCryName"
-                   [ngModel]="songToEdit.battleCryName">
+            <input class="input" type="text" placeholder="Battle Cry Name" formControlName="battleCryName">
           </div>
         </div>
 
         <div class="field">
           <label class="label">Battly Cry Information</label>
           <div class="control">
-            <textarea autosize class="textarea" placeholder="Battle Cry Information..." formControlName="battleCryInfo"
-                      [ngModel]="songToEdit.battleCryInfo"></textarea>
+            <textarea autosize class="textarea" placeholder="Battle Cry Information..." formControlName="battleCryInfo"></textarea>
           </div>
         </div>
 
         <div class="field">
           <label class="label">Battle Cry Lyrics</label>
           <div class="control">
-            <textarea autosize class="textarea" placeholder="Lyrics..." formControlName="battleCry"
-                      [ngModel]="songToEdit.battleCry"></textarea>
+            <textarea autosize class="textarea" placeholder="Lyrics..." formControlName="battleCry"></textarea>
           </div>
         </div>
 

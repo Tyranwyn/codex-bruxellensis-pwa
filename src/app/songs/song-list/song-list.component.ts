@@ -1,10 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Observable, Subscription} from 'rxjs';
+import {EMPTY, Observable, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {Title} from '@angular/platform-browser';
 import {environment} from '../../../environments/environment';
 import {ActivatedRoute} from '@angular/router';
-import {SongListDto} from '../models/song';
+import {Song, SongListDto} from '../models/song';
 import {SongService} from '../services/song-service';
 import {select, Store} from '@ngrx/store';
 import * as fromSongs from '../state';
@@ -21,12 +21,12 @@ export class SongListComponent implements OnInit, OnDestroy {
 
   songs$: Observable<SongListDto[]>;
   errormessage$: Observable<string>;
+  selectedSong$: Observable<Song> = EMPTY;
   filter: string;
   subscriptions: Subscription[] = [];
   currentUid: string;
   currentUserData: UserData;
   canEditSongs = false;
-  songToEditId: string;
 
   showEditModal = false;
   showAddModal = false;
@@ -98,7 +98,7 @@ export class SongListComponent implements OnInit, OnDestroy {
   }
 
   editSong(song) {
-    this.songToEditId = song.id;
+    this.selectedSong$ = this.songService.getSongById(song.id);
     this.showEdit();
   }
 

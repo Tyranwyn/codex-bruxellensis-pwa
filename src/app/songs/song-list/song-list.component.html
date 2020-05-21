@@ -43,7 +43,7 @@
 <app-song-add [(showAddModal)]="showAddModal">
 </app-song-add>
 <app-song-edit [(showEditModal)]="showEditModal"
-               [id]="songToEditId">
+               [song]="selectedSong$ | async">
 </app-song-edit>
 
 <ng-template #progress>

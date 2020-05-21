@@ -3,7 +3,6 @@ import {Category} from '../models/category.enum';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {SongService} from '../services/song-service';
 import {Song} from '../models/song';
-import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-song-edit',
@@ -12,8 +11,7 @@ import {Observable} from 'rxjs';
 })
 export class SongEditComponent implements OnInit {
 
-  currentSongId: string;
-  songToEdit$: Observable<Song>;
+  currentSong: Song;
   showEditModalValue = false;
   categories: string[] = [];
   editSongForm: FormGroup;
@@ -21,10 +19,10 @@ export class SongEditComponent implements OnInit {
   showEditModalChange = new EventEmitter<boolean>();
 
   @Input()
-  set id(id: string) {
-    this.currentSongId = id;
-    if (id) {
-      this.songToEdit$ = this.songService.getSongById(id);
+  set song(song: Song) {
+    if (song) {
+      this.currentSong = song;
+      this.fillUpForm(song);
     }
   }
 
@@ -58,16 +56,29 @@ export class SongEditComponent implements OnInit {
   }
 
   edit() {
-    this.songService.updateSong(this.currentSongId, this.editSongForm.value);
+    this.songService.updateSong(this.currentSong.id, this.editSongForm.value);
     this.hideEdit();
   }
 
   delete() {
-    this.songService.deleteSong(this.currentSongId);
+    this.songService.deleteSong(this.currentSong.id);
     this.hideEdit();
   }
 
   hideEdit() {
     this.showEditModal = false;
+  }
+
+  private fillUpForm(song: Song) {
+    this.editSongForm.get('category').setValue(song.category);
+    this.editSongForm.get('page').setValue(song.page);
+    this.editSongForm.get('title').setValue(song.title);
+    this.editSongForm.get('bgInfo').setValue(song.bgInfo);
+    this.editSongForm.get('lyrics').setValue(song.lyrics);
+    this.editSongForm.get('associationName').setValue(song.associationName);
+    this.editSongForm.get('associationInfo').setValue(song.associationInfo);
+    this.editSongForm.get('battleCryName').setValue(song.battleCryName);
+    this.editSongForm.get('battleCryInfo').setValue(song.battleCryInfo);
+    this.editSongForm.get('battleCry').setValue(song.battleCry);
   }
 }
