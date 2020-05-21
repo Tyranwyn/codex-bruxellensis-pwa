@@ -5,7 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "start:os": "http-server dist/",
-    "analytics": "ng analytics on",
+    "analytics": "ng analytics ci",
     "pwa": "ng build --prod && http-server -c-1 dist/",
     "pwa:serve": "http-server -c-1 dist/",
     "build": "ng build",
