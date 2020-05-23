@@ -2,24 +2,26 @@ import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {from, of} from 'rxjs';
-import {catchError, map, switchMap} from 'rxjs/operators';
+import {catchError, map, mergeMap, take, tap} from 'rxjs/operators';
+import {AuthProviders} from '../../auth-providers.enum';
 
 import * as UserAction from './user.actions';
 import * as UserDataAction from '../user-data/user-data.actions';
-import {AuthProviders} from '../../auth-providers.enum';
 import * as firebase from 'firebase/app';
+import {Router} from '@angular/router';
 
 @Injectable()
 export class UserEffects {
   constructor(private actions$: Actions,
-              private afAuth: AngularFireAuth) {
+              private afAuth: AngularFireAuth,
+              private router: Router) {
   }
 
   getUser$ = createEffect(() =>
     this.actions$.pipe(
       ofType(UserAction.GetUser),
-      switchMap(() => this.afAuth.authState),
-      switchMap(authData => {
+      mergeMap(() => this.afAuth.authState.pipe(take(1))),
+      mergeMap(authData => {
         if (authData) {
           return of(
             UserAction.Authenticated({
@@ -40,10 +42,8 @@ export class UserEffects {
   logout$ = createEffect(() =>
     this.actions$.pipe(
       ofType(UserAction.Logout),
-      switchMap(() => {
-        return of(this.afAuth.signOut());
-      }),
-      switchMap(authData => of(UserAction.NotAuthenticated(), UserDataAction.ClearUserData())),
+      tap(() => this.afAuth.signOut()),
+      map(() => UserDataAction.ClearUserData()),
       catchError(err => of(UserAction.AuthError(err)))
     )
   );
@@ -51,10 +51,17 @@ export class UserEffects {
   login$ = createEffect(() =>
     this.actions$.pipe(
       ofType(UserAction.Login),
-      switchMap(action => from(this.login(action.provider, action.email, action.password))),
-      map(() => UserAction.GetUser()),
+      mergeMap(action => from(this.login(action.provider, action.email, action.password))),
+      mergeMap(() => of(UserAction.GetUser(), UserAction.LoginSuccess())),
       catchError(err => of(UserAction.AuthError(err)))
     )
+  );
+
+  loginSucces$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(UserAction.LoginSuccess),
+      tap(() => this.router.navigate(['/']))
+    ), { dispatch: false }
   );
 
   private login(provider: string, email?: string, password?: string): Promise<firebase.auth.UserCredential> {

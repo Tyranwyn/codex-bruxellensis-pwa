@@ -1,38 +1,26 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
 
-import { AppComponent } from './app.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AngularFireModule } from '@angular/fire';
-import { AngularFireAuthModule } from '@angular/fire/auth';
-import { AppRoutingModule } from './app-routing.module';
-import { firebaseConfig } from './firebase-config';
-import { NavbarComponent } from './common/navbar/navbar.component';
-import { AngularFirestoreModule } from '@angular/fire/firestore';
+import {AppComponent} from './app.component';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {AngularFireModule} from '@angular/fire';
+import {AngularFireAuthModule} from '@angular/fire/auth';
+import {AppRoutingModule} from './app-routing.module';
+import {firebaseConfig} from './firebase-config';
+import {NavbarComponent} from './common/navbar/navbar.component';
+import {AngularFirestoreModule} from '@angular/fire/firestore';
 import {FaConfig, FaIconLibrary, FontAwesomeModule} from '@fortawesome/angular-fontawesome';
-import { ServiceWorkerModule } from '@angular/service-worker';
-import { environment } from '../environments/environment';
-import { StoreModule } from '@ngrx/store';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { SongsModule } from './songs/songs.module';
-import { faEnvelope, faSave, faStar, faEdit } from '@fortawesome/free-regular-svg-icons';
+import {ServiceWorkerModule} from '@angular/service-worker';
+import {environment} from '../environments/environment';
+import {StoreModule} from '@ngrx/store';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {SongsModule} from './songs/songs.module';
+import {faEdit, faEnvelope, faSave, faStar} from '@fortawesome/free-regular-svg-icons';
 import {faBan, faLock, faSearch, faStar as solidStar, faUser} from '@fortawesome/free-solid-svg-icons';
-import { EffectsModule } from '@ngrx/effects';
-import { UserModule } from './user/user.module';
-import { EnumToArrayModule } from './common/enum-to-array/enum-to-array.module';
-
-export function sanitize(oriState: any, id: number): any {
-  const { router, ...newState } = oriState;
-  const { state, ...newRouter } = router || { state: null };
-  const { _root, ...newRouterState } = state || { _root: null };
-  return {
-    ...newState,
-    router: {
-      ...newRouter,
-      state: newRouterState
-    }
-  };
-}
+import {EffectsModule} from '@ngrx/effects';
+import {UserModule} from './user/user.module';
+import {EnumToArrayModule} from './common/enum-to-array/enum-to-array.module';
+import {StoreRouterConnectingModule} from '@ngrx/router-store';
 
 @NgModule({
   declarations: [
@@ -53,14 +41,14 @@ export function sanitize(oriState: any, id: number): any {
     EnumToArrayModule,
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
+    StoreRouterConnectingModule.forRoot({stateKey: 'router'}),
     StoreDevtoolsModule.instrument({
       name: 'Codex Bruxellensis',
       maxAge: 25,
-      logOnly: environment.production,
-      stateSanitizer: sanitize
+      logOnly: environment.production
     }),
     SongsModule,
-    UserModule
+    UserModule,
   ],
   providers: [],
   exports: [],
