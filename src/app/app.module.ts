@@ -20,7 +20,6 @@ import {faBan, faLock, faSearch, faStar as solidStar, faUser} from '@fortawesome
 import {EffectsModule} from '@ngrx/effects';
 import {UserModule} from './user/user.module';
 import {EnumToArrayModule} from './common/enum-to-array/enum-to-array.module';
-import {StoreRouterConnectingModule} from '@ngrx/router-store';
 
 @NgModule({
   declarations: [
@@ -41,7 +40,6 @@ import {StoreRouterConnectingModule} from '@ngrx/router-store';
     EnumToArrayModule,
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
-    StoreRouterConnectingModule.forRoot({stateKey: 'router'}),
     StoreDevtoolsModule.instrument({
       name: 'Codex Bruxellensis',
       maxAge: 25,
