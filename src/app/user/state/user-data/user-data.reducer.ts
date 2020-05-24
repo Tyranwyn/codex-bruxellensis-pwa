@@ -13,6 +13,7 @@ const reducer = createReducer(
   on(UserDataAction.GetUserDataSuccess, (state: UserData, userData: UserData) => ({...state, ...userData})),
   on(UserDataAction.GetUserDataFail, (state: UserData, error: Error) => ({...defaultUserData, error})),
   on(UserDataAction.ClearUserData, () => ({...defaultUserData})),
+  on(UserDataAction.CreateDefaultUserDataFail, (state: UserData, error: Error) => ({...defaultUserData, error})),
   // on(UserDataAction.ChangeRole, (state: UserData, payload: {role: Role}) => ({ ...payload })),
   // on(UserDataAction.ChangeRoleSuccess, () => {}),
   // on(UserDataAction.ChangeRoleFail, () => {}),

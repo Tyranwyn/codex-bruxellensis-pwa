@@ -1,9 +1,13 @@
 import {createAction, props} from '@ngrx/store';
 import {Role, UserData} from '../../user';
 
+export const CheckUserDataExists = createAction('[UserData] Checking if user data exists', props<{uid: string}>());
 export const GetUserData = createAction('[UserData] Get user data', props<{ uid: string }>());
 export const GetUserDataSuccess = createAction('[UserData] Get user data succeeded', props<UserData>());
 export const GetUserDataFail = createAction('[UserData] Get user data failed', props<Error>());
+export const CreateDefaultUserData = createAction('[UserData] Create default user data', props<{uid: string}>());
+export const CreateDefaultUserDataSuccess = createAction('[UserData] Create default user data succeeded');
+export const CreateDefaultUserDataFail = createAction('[UserData] Create default user data failed', props<Error>());
 export const ClearUserData = createAction('[UserData] Clearing user data');
 export const ChangeRole = createAction('[Role] Change account type', props<{ role: Role }>());
 export const ChangeRoleSuccess = createAction('[Role] Changing role succeeded');

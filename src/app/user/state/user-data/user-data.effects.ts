@@ -4,27 +4,40 @@ import {of} from 'rxjs';
 import * as UserDataAction from './user-data.actions';
 import {catchError, map, mergeMap, take} from 'rxjs/operators';
 import {UserDataService} from '../../user-data.service';
-import {SongService} from '../../../songs/services/song-service';
 
 @Injectable()
 export class UserDataEffects {
   constructor(private actions$: Actions,
-              private userDataService: UserDataService,
-              private songService: SongService) {
+              private userDataService: UserDataService) {
   }
+
+  checkIfUserDataExists$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(UserDataAction.CheckUserDataExists),
+      mergeMap(action => this.userDataService.userDataExists(action.uid)
+        .pipe(
+          take(1),
+          map(exists => exists ? UserDataAction.GetUserData(action) : UserDataAction.CreateDefaultUserData(action))
+        )
+      ), catchError(err => of(UserDataAction.GetUserDataFail(err)))
+    )
+  );
 
   getUserData$ = createEffect(() =>
     this.actions$.pipe(
       ofType(UserDataAction.GetUserData),
       mergeMap(action => this.userDataService.getUserData(action.uid).pipe(take(1))),
-      mergeMap(data => {
-        if (data) {
-          return of(UserDataAction.GetUserDataSuccess(data));
-        } else {
-          return of(UserDataAction.GetUserDataFail(null)); // TODO: create new data
-        }
-      }),
+      mergeMap(data => of(UserDataAction.GetUserDataSuccess(data))),
       catchError(err => of(UserDataAction.GetUserDataFail(err)))
+    )
+  );
+
+  createDefaultUserData$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(UserDataAction.CreateDefaultUserData),
+      mergeMap(action => this.userDataService.setDefaultUserDataForUser(action.uid).pipe(take(1))),
+      map(() => UserDataAction.CreateDefaultUserDataSuccess()),
+      catchError(err => of(UserDataAction.CreateDefaultUserDataFail(err)))
     )
   );
 

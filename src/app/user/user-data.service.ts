@@ -3,9 +3,7 @@ import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firest
 import {environment} from '../../environments/environment';
 import {from, Observable} from 'rxjs';
 import {SongService} from '../songs/services/song-service';
-import {Store} from '@ngrx/store';
-import * as fromRoot from '../state';
-import {UserData, UserDataDao} from './user';
+import {Role, UserData, UserDataDao} from './user';
 import {map} from 'rxjs/operators';
 import * as firebase from 'firebase/app';
 
@@ -17,9 +15,21 @@ export class UserDataService {
   private userDataCollection: AngularFirestoreCollection<UserData>;
 
   constructor(afs: AngularFirestore,
-              private songService: SongService,
-              private store: Store<fromRoot.State>) {
+              private songService: SongService) {
     this.userDataCollection = afs.collection<UserData>(environment.databases.userData);
+  }
+
+  userDataExists(uid: string): Observable<boolean> {
+    return this.userDataCollection.doc(uid)
+      .valueChanges()
+      .pipe(
+        map(userData => {
+          if (userData) {
+            return true;
+          }
+          return false;
+        })
+      );
   }
 
   getUserData(uid: string): Observable<UserData> {
@@ -31,6 +41,10 @@ export class UserDataService {
           favorites: data.favorites.map(fav => fav.id)
         };
       }));
+  }
+
+  setDefaultUserDataForUser(uid: string): Observable<void> {
+    return from(this.userDataCollection.doc<UserDataDao>(uid).set({role: Role.USER, favorites: []}));
   }
 
   addFavorite(uid: string, songId: string): Observable<any> {

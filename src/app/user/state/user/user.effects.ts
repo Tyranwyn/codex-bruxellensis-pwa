@@ -29,7 +29,7 @@ export class UserEffects {
               displayName: authData.displayName,
               email: authData.email
             }),
-            UserDataAction.GetUserData({uid: authData.uid})
+            UserDataAction.CheckUserDataExists({uid: authData.uid})
           );
         } else {
           return of(UserAction.NotAuthenticated());
